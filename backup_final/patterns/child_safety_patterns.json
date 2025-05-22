@@ -1,0 +1,47 @@
+[
+  {
+    "id": "child-safety-001",
+    "title": "Child Safety: Inappropriate Content",
+    "description": "Detects content inappropriate for minors",
+    "pattern": "(?i)(explicit material|adult content|not appropriate for children)",
+    "severity": "high",
+    "tags": ["child_safety", "content"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "child-safety-002",
+    "title": "Child Safety: Personal Information",
+    "description": "Detects attempts to collect personal information from minors",
+    "pattern": "(?i)(where do you live|how old are you|what's your (address|phone|email))",
+    "severity": "high",
+    "tags": ["child_safety", "privacy"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "child-safety-003",
+    "title": "Child Safety: Harmful Content",
+    "description": "Detects content that could be harmful to minors",
+    "pattern": "(?i)(self-harm|suicide|drugs|alcohol|tobacco)",
+    "severity": "high",
+    "tags": ["child_safety", "harmful"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "child-safety-004",
+    "title": "Child Safety: Grooming Indicators",
+    "description": "Detects potential grooming patterns in conversation",
+    "pattern": "(?i)(our secret|don't tell anyone|special relationship|promise not to tell|just between us)",
+    "severity": "high",
+    "tags": ["child_safety", "grooming"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "child-safety-005",
+    "title": "Child Safety: Age Verification Bypass",
+    "description": "Detects attempts to bypass age verification",
+    "pattern": "(?i)(pretend (i'm|you're|to be) (older|adult|18\\+))",
+    "severity": "high",
+    "tags": ["child_safety", "verification"],
+    "recommended_action": "block"
+  }
+]

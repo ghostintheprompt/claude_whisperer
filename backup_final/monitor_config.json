@@ -1,0 +1,31 @@
+{
+  "alert_threshold": 0.7,
+  "max_conversation_history": 20,
+  "report_interval_minutes": 15,
+  "websocket_port": 8765,
+  "alert_channels": ["console", "log", "webhook"],
+  "webhook_url": "https://example.com/webhook",
+  "vulnerability_pattern_paths": [
+    "advanced_vulnerability_test_suite.json",
+    "vulnerability_patterns.json"
+  ],
+  "severity_thresholds": {
+    "Critical": 0.6,
+    "High": 0.65,
+    "Medium": 0.7,
+    "Low": 0.8
+  },
+  "category_weights": {
+    "Knowledge Manipulation": 1.2,
+    "Multi-turn Exploitation": 1.3,
+    "Psychological Manipulation": 1.1,
+    "System Interaction": 1.0,
+    "Generative Output Manipulation": 1.2
+  },
+  "advanced_features": {
+    "enable_anomaly_detection": true,
+    "enable_learning": true,
+    "enable_fuzzy_matching": true,
+    "adaptive_threshold": true
+  }
+}

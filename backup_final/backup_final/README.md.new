@@ -1,0 +1,102 @@
+# Claude Safeguards Framework
+
+![Project Status: Active](https://img.shields.io/badge/Project%20Status-Active-green)
+![Claude Version: 3.7](https://img.shields.io/badge/Claude%20Version-3.7-purple)
+![Safety Focus](https://img.shields.io/badge/Focus-User%20Wellbeing-blue)
+
+A modern, streamlined framework for enforcing safety policies and protecting user well-being when using Claude 3.7 API.
+
+## 🛡️ Framework Overview
+
+The Claude Safeguards Framework provides real-time monitoring and policy enforcement for applications using the Claude 3.7 API, with special emphasis on:
+
+- **Policy Violation Detection** - Identify content that violates usage policies
+- **Child Safety Protection** - Specialized safeguards for protecting minors
+- **Content Moderation** - Filter inappropriate or harmful content
+- **Safety Analytics** - Visualize and analyze safety metrics
+
+## ✨ Key Features
+
+- **Real-time Monitoring** - WebSocket-based streaming analysis
+- **Configurable Patterns** - Customizable detection rules
+- **Simple Launcher** - One-command startup for all components
+- **User-friendly Client** - Easy integration with your applications
+- **Visual Analytics** - Web-based dashboard for safety metrics
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.8+
+- Anthropic API key
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/claude-safeguards-framework.git
+cd claude-safeguards-framework
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start all components
+./launcher.py
+```
+
+### Interactive Session
+
+```bash
+# Start an interactive Claude session with safeguards
+./launcher.py --client
+```
+
+## 📊 Configuration
+
+All configuration is centralized in `config/safeguards_config.json`:
+
+- Set alert thresholds
+- Configure monitoring settings
+- Customize detection patterns
+- Enable/disable child safety features
+
+## 💻 Usage
+
+### In Your Code
+
+```python
+from safeguards_aware_client import SafeguardsAwareClient
+
+async def main():
+    client = SafeguardsAwareClient(api_key="your_api_key")
+    await client.connect_to_monitor()
+    
+    response = await client.get_completion("Hello, Claude!")
+    print(response)
+    
+    await client.close_monitor_connection()
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
+```
+
+## 🔧 Advanced Configuration
+
+Customize the framework by:
+
+1. Creating new pattern files in the `patterns/` directory
+2. Adjusting monitoring sensitivity in the configuration
+3. Extending the client functionality
+
+## 👥 Contributing
+
+We welcome contributions that improve safety and policy enforcement. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## 📚 Documentation
+
+- [Child Safety Framework](CHILD_SAFETY_FRAMEWORK.md) - Specialized child safety protections
+
+---
+
+*This framework is focused on user safety and policy enforcement. It helps ensure AI systems operate within appropriate boundaries.*
