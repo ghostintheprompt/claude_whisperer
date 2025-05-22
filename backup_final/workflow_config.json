@@ -1,0 +1,70 @@
+{
+  "api_key": "",
+  "workspace_dir": "./research_workspace",
+  "default_models": ["claude-3-7-quick", "claude-3-7-depth"],
+  "test_suites": {
+    "advanced": "advanced_vulnerability_test_suite.json",
+    "mode_comparison": "mode_comparison_test_suite.json",
+    "red_team": "red_team_test_suite.json"
+  },
+  "default_workflows": {
+    "quick_scan": ["run_basic_tests", "analyze_results", "generate_report"],
+    "deep_dive": ["run_advanced_tests", "cross_model_comparison", "pattern_analysis", "benchmark", "generate_dashboard"],
+    "full_research": ["run_basic_tests", "run_advanced_tests", "cross_model_comparison", "pattern_analysis", "benchmark", "generate_dashboard", "generate_report"],
+    "mode_comparison": ["run_basic_tests", "run_advanced_tests", "analyze_results", "generate_report"],
+    "continuous_monitoring": ["setup_monitoring", "run_advanced_tests", "pattern_analysis", "benchmark"],
+    "cross_model_analysis": ["cross_model_comparison", "pattern_analysis", "generate_dashboard"],
+    "trend_analysis": ["benchmark", "analyze_trends", "generate_report"]
+  },
+  "workflow_steps": {
+    "run_basic_tests": {
+      "script": "./run_tests.sh",
+      "args": ["--output", "{results_dir}/basic_test_results_{timestamp}.json"]
+    },
+    "run_advanced_tests": {
+      "script": "./run_advanced_tests.sh",
+      "args": ["--output", "{results_dir}/advanced_test_results_{timestamp}.json"]
+    },
+    "analyze_results": {
+      "script": "python analyze_results.py",
+      "args": ["--input", "{latest_results}", "--output", "{reports_dir}/analysis_{timestamp}.json"]
+    },
+    "cross_model_comparison": {
+      "script": "python cross_model_tester.py",
+      "args": ["--output", "{results_dir}/cross_model_results_{timestamp}.json"]
+    },
+    "pattern_analysis": {
+      "script": "python pattern_analyzer.py",
+      "args": ["--results", "{all_results}", "--report", "{reports_dir}/pattern_analysis_{timestamp}.json", "--visualize", "--vis-dir", "{visualizations_dir}", "--suggest-tests", "{workspace_dir}/suggested_tests_{timestamp}.json"]
+    },
+    "benchmark": {
+      "script": "python benchmark_vulnerability.py",
+      "args": ["--results", "{latest_results}", "--output", "{benchmarks_dir}/benchmark_{timestamp}.json", "--compare-previous"]
+    },
+    "generate_dashboard": {
+      "script": "python generate_dashboard.py",
+      "args": ["--results", "{all_results}", "--benchmarks", "{benchmarks_dir}", "--output", "{reports_dir}/dashboard_{timestamp}.html"]
+    },
+    "generate_report": {
+      "script": "python generate_report.py",
+      "args": ["--results", "{latest_results}", "--output", "{reports_dir}/report_{timestamp}.md"]
+    },
+    "setup_monitoring": {
+      "script": "python realtime_vulnerability_monitor.py",
+      "args": ["--server"]
+    },
+    "analyze_trends": {
+      "script": "python vulnerability_research_workflow.py",
+      "args": ["analyze-trends", "--visualize", "--output", "{reports_dir}/trend_analysis_{timestamp}.json"]
+    }
+  },
+  "advanced_settings": {
+    "parallel_testing": true,
+    "max_parallel_tests": 5,
+    "result_retention_days": 90,
+    "auto_benchmark_interval_days": 7,
+    "notification_email": "",
+    "notification_webhook": "",
+    "enable_auto_pattern_learning": true
+  }
+}

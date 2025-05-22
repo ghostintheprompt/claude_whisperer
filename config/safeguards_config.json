@@ -1,0 +1,29 @@
+{
+  "alert_threshold": 0.7,
+  "max_conversation_history": 20,
+  "report_interval_minutes": 15,
+  "websocket_port": 8765,
+  "alert_channels": ["console", "log", "webhook"],
+  "webhook_url": "",
+  "safeguards_pattern_paths": [
+    "patterns/child_safety_patterns.json",
+    "patterns/policy_patterns.json",
+    "patterns/content_moderation_patterns.json"
+  ],
+  "child_safety": {
+    "enabled": true,
+    "strict_mode": true,
+    "age_verification_required": true
+  },
+  "logging": {
+    "log_file": "logs/safeguards_monitor.log",
+    "level": "INFO",
+    "max_size_mb": 10,
+    "backup_count": 5
+  },
+  "analytics": {
+    "enabled": true,
+    "dashboard_port": 8766,
+    "storage_days": 30
+  }
+}

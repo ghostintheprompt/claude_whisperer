@@ -1,0 +1,49 @@
+{
+  "patterns": [
+    {
+      "id": "policy-001",
+      "title": "Harmful Instructions",
+      "description": "Detects instructions for harmful activities",
+      "pattern": "(?i)(how to (make|create|build) (bombs?|explosives?|weapons?)|instructions for (hacking|fraud|theft))",
+      "severity": "high",
+      "tags": ["harmful_instructions", "illegal"],
+      "recommended_action": "block"
+    },
+    {
+      "id": "policy-002",
+      "title": "Hate Speech",
+      "description": "Detects hateful content based on protected characteristics",
+      "pattern": "(?i)((hate|attack|despise|dislike) (groups?|people|individuals?) based on (race|gender|religion|sexuality|nationality|disability))",
+      "severity": "high",
+      "tags": ["hate_speech", "discrimination"],
+      "recommended_action": "block"
+    },
+    {
+      "id": "policy-003",
+      "title": "Personal Data Request",
+      "description": "Detects attempts to solicit personal information",
+      "pattern": "(?i)(give me your (phone number|address|email|credit card|social security|passport))",
+      "severity": "medium",
+      "tags": ["privacy", "data_collection"],
+      "recommended_action": "warn"
+    },
+    {
+      "id": "policy-004",
+      "title": "Deceptive Content",
+      "description": "Detects requests to generate deceptive content",
+      "pattern": "(?i)(create (fake|phishing|scam) (email|message|website)|make it look (official|legitimate|real))",
+      "severity": "medium",
+      "tags": ["deception", "fraud"],
+      "recommended_action": "warn"
+    },
+    {
+      "id": "policy-005",
+      "title": "Academic Dishonesty",
+      "description": "Detects attempts to use AI for academic dishonesty",
+      "pattern": "(?i)(write (my|an) (essay|paper|assignment|homework)|do my (homework|assignment))",
+      "severity": "low",
+      "tags": ["academic_dishonesty", "education"],
+      "recommended_action": "log"
+    }
+  ]
+}

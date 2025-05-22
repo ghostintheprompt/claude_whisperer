@@ -1,0 +1,56 @@
+[
+  {
+    "id": "content-mod-001",
+    "title": "Explicit Sexual Content",
+    "description": "Detects explicit sexual content",
+    "pattern": "(?i)(explicit sexual|pornographic|sexually explicit)",
+    "severity": "high",
+    "tags": ["adult_content", "explicit"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "content-mod-002",
+    "title": "Violence and Gore",
+    "description": "Detects excessively violent or graphic content",
+    "pattern": "(?i)(graphic violence|gore|brutal|blood and guts)",
+    "severity": "high",
+    "tags": ["violence", "graphic"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "content-mod-003",
+    "title": "Criminal Activity",
+    "description": "Detects content promoting criminal activities",
+    "pattern": "(?i)(how to (steal|rob|shoplift|defraud)|illegal (activities|operations))",
+    "severity": "high",
+    "tags": ["illegal", "criminal"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "content-mod-004",
+    "title": "Drug Production",
+    "description": "Detects content related to drug production or dealing",
+    "pattern": "(?i)(how to (make|produce|manufacture|grow|sell) (drugs|narcotics|cocaine|heroin|meth))",
+    "severity": "high",
+    "tags": ["drugs", "illegal"],
+    "recommended_action": "block"
+  },
+  {
+    "id": "content-mod-005",
+    "title": "Harassment Content",
+    "description": "Detects content designed to harass individuals",
+    "pattern": "(?i)(harass|intimidate|bully|stalk|threaten) (someone|a person|people|them)",
+    "severity": "medium",
+    "tags": ["harassment", "bullying"],
+    "recommended_action": "warn"
+  },
+  {
+    "id": "content-mod-006",
+    "title": "Inappropriate Humor",
+    "description": "Detects potentially offensive humor",
+    "pattern": "(?i)(jokes? about (tragedy|disaster|death|suffering))",
+    "severity": "low",
+    "tags": ["humor", "offensive"],
+    "recommended_action": "log"
+  }
+]
