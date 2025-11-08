@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Whisperer - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧠 Claude Whisperer Settings</h1>
+      <p class="subtitle">Configure your AI red team toolkit</p>
+    </header>
+
+    <main>
+      <section class="settings-section">
+        <h2>🔑 API Configuration</h2>
+        <div class="form-group">
+          <label for="api-key">
+            Anthropic API Key
+            <span class="hint">Optional - for direct API testing</span>
+          </label>
+          <input type="password" id="api-key" placeholder="sk-ant-...">
+          <button class="btn-toggle-password" id="toggle-api-key">👁️ Show</button>
+        </div>
+
+        <div class="form-group">
+          <label for="model-id">
+            Claude Model ID
+          </label>
+          <select id="model-id">
+            <option value="claude-sonnet-4-5-20250929">Claude Sonnet 4.5 (Latest)</option>
+            <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+            <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+            <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+            <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="claude-version">
+            Target Claude Version
+          </label>
+          <input type="text" id="claude-version" value="4.5" placeholder="4.5">
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>⚙️ Extension Behavior</h2>
+
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" id="auto-inject">
+            <span>Auto-inject prompts to Claude.ai</span>
+          </label>
+          <p class="hint">Automatically insert generated prompts into the chat input</p>
+        </div>
+
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" id="save-history" checked>
+            <span>Save test history</span>
+          </label>
+          <p class="hint">Keep a local record of all tests and results</p>
+        </div>
+
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" id="debug-mode">
+            <span>Debug mode</span>
+          </label>
+          <p class="hint">Enable verbose logging to browser console</p>
+        </div>
+
+        <div class="form-group">
+          <label for="max-history">
+            Maximum History Items
+          </label>
+          <input type="number" id="max-history" value="100" min="10" max="1000">
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>📊 Test History</h2>
+        <div class="history-stats">
+          <div class="stat">
+            <span class="stat-label">Total Tests:</span>
+            <span class="stat-value" id="total-tests">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Successful:</span>
+            <span class="stat-value" id="successful-tests">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Storage Used:</span>
+            <span class="stat-value" id="storage-used">0 KB</span>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-secondary" id="view-history">View Full History</button>
+          <button class="btn btn-secondary" id="export-history">Export History</button>
+          <button class="btn btn-danger" id="clear-history">Clear History</button>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>🛡️ Safety & Ethics</h2>
+        <div class="safety-notice">
+          <h3>⚠️ Responsible Use Guidelines</h3>
+          <ul>
+            <li>✅ Use only for authorized security research and testing</li>
+            <li>✅ Comply with all applicable laws and regulations</li>
+            <li>✅ Obtain proper authorization before testing production systems</li>
+            <li>✅ Report findings responsibly through proper channels</li>
+            <li>❌ Do not use for malicious purposes</li>
+            <li>❌ Do not test on systems without authorization</li>
+            <li>❌ Do not distribute exploits for harmful purposes</li>
+          </ul>
+
+          <p class="ethical-notice">
+            This tool is designed for security research, AI safety testing, and educational purposes only.
+            By using this extension, you agree to follow responsible disclosure practices and ethical
+            security research guidelines.
+          </p>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>ℹ️ About</h2>
+        <div class="about-info">
+          <p><strong>Version:</strong> 4.5.0</p>
+          <p><strong>Updated for:</strong> Claude Sonnet 4.5</p>
+          <p><strong>Purpose:</strong> AI Red Team Security Research</p>
+          <p><strong>License:</strong> MIT License</p>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-secondary" id="check-updates">Check for Updates</button>
+          <button class="btn btn-secondary" id="view-docs">Documentation</button>
+          <button class="btn btn-secondary" id="report-issue">Report Issue</button>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <div class="save-area">
+          <div class="save-status" id="save-status"></div>
+          <button class="btn btn-primary btn-large" id="save-settings">Save Settings</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Made for security researchers and AI safety professionals</p>
+      <p class="copyright">© 2024 Claude Whisperer Project</p>
+    </footer>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

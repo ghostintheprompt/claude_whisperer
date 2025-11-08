@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Whisperer - Red Team Toolkit</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>🧠 Claude Whisperer</h1>
+        <p class="subtitle">AI Red Team Toolkit v4.5</p>
+        <div class="status-badge" id="status-badge">
+          <span class="status-indicator"></span>
+          <span id="status-text">Initializing...</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Quick Stats -->
+      <section class="stats-section">
+        <div class="stat-card">
+          <div class="stat-value" id="tests-run">0</div>
+          <div class="stat-label">Tests Run</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="success-rate">0%</div>
+          <div class="stat-label">Success Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="claude-version">4.5</div>
+          <div class="stat-label">Claude Ver</div>
+        </div>
+      </section>
+
+      <!-- Attack Type Selection -->
+      <section class="attack-section">
+        <h2>Attack Vector</h2>
+        <div class="attack-tabs">
+          <button class="tab-btn active" data-tab="semantic">
+            <span class="tab-icon">🧬</span>
+            Semantic Mirror
+          </button>
+          <button class="tab-btn" data-tab="exploit">
+            <span class="tab-icon">🤖</span>
+            Auto-Exploit
+          </button>
+          <button class="tab-btn" data-tab="multimodal">
+            <span class="tab-icon">🖼️</span>
+            Multimodal
+          </button>
+        </div>
+
+        <!-- Semantic Mirror Tab -->
+        <div class="tab-content active" id="semantic-tab">
+          <div class="form-group">
+            <label for="semantic-target">Target Prompt</label>
+            <textarea id="semantic-target" rows="3" placeholder="Enter the prompt you want to test safeguards against..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="semantic-complexity">Complexity Level</label>
+            <input type="range" id="semantic-complexity" min="1" max="5" value="3">
+            <div class="range-labels">
+              <span>Basic</span>
+              <span id="semantic-complexity-value">3</span>
+              <span>Advanced</span>
+            </div>
+          </div>
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="semantic-use-ciphers">
+              <span>Use cipher encoding</span>
+            </label>
+            <label>
+              <input type="checkbox" id="semantic-genetic">
+              <span>Apply genetic algorithm</span>
+            </label>
+          </div>
+          <button class="btn btn-primary" id="semantic-generate">
+            Generate Semantic Variants
+          </button>
+        </div>
+
+        <!-- Exploit Generator Tab -->
+        <div class="tab-content" id="exploit-tab">
+          <div class="form-group">
+            <label for="exploit-target">Target Topic</label>
+            <textarea id="exploit-target" rows="3" placeholder="Enter the topic or behavior to test..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exploit-method">Generation Method</label>
+            <select id="exploit-method">
+              <option value="auto_dan">Auto-DAN Framework</option>
+              <option value="flirt">FLIRT (Feedback Loop Red Team)</option>
+              <option value="mosaic">Mosaic Prompt Assembly</option>
+              <option value="all">All Methods</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exploit-complexity">Complexity Level</label>
+            <input type="range" id="exploit-complexity" min="1" max="5" value="3">
+            <div class="range-labels">
+              <span>Single-turn</span>
+              <span id="exploit-complexity-value">3</span>
+              <span>Multi-turn</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="exploit-generate">
+            Generate Exploit Prompts
+          </button>
+        </div>
+
+        <!-- Multimodal Tab -->
+        <div class="tab-content" id="multimodal-tab">
+          <div class="form-group">
+            <label for="multimodal-target">Hidden Prompt</label>
+            <textarea id="multimodal-target" rows="3" placeholder="Enter the prompt to embed in the image..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="multimodal-method">Embedding Method</label>
+            <select id="multimodal-method">
+              <option value="text_overlay">Text Overlay</option>
+              <option value="steganography">Steganography</option>
+              <option value="metadata">Metadata Injection</option>
+              <option value="visual_pattern">Visual Pattern</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Upload Base Image</label>
+            <input type="file" id="multimodal-image" accept="image/*">
+          </div>
+          <button class="btn btn-primary" id="multimodal-generate">
+            Generate Attack Image
+          </button>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="results-section">
+        <div class="results-header">
+          <h2>Generated Prompts</h2>
+          <button class="btn btn-small" id="clear-results">Clear</button>
+        </div>
+        <div class="results-container" id="results">
+          <div class="empty-state">
+            <span class="empty-icon">🎯</span>
+            <p>No prompts generated yet</p>
+            <p class="empty-hint">Select an attack vector and generate prompts to test</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="actions-section">
+        <button class="btn btn-secondary" id="inject-to-claude">
+          <span>⚡</span> Inject to Claude Chat
+        </button>
+        <button class="btn btn-secondary" id="export-results">
+          <span>💾</span> Export Results
+        </button>
+        <button class="btn btn-secondary" id="view-history">
+          <span>📊</span> View Test History
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <div class="disclaimer">
+        ⚠️ For authorized security research only
+      </div>
+      <div class="footer-links">
+        <a href="#" id="open-options">Settings</a>
+        <a href="#" id="open-docs">Documentation</a>
+        <a href="https://github.com/yourusername/claude-whisperer" target="_blank">GitHub</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
