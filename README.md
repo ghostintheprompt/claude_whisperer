@@ -176,9 +176,9 @@ claude-whisperer/
 
 ---
 
-## 🛡️ Responsible Use
+## Responsible Use
 
-### ✅ Authorized Activities
+### Authorized Activities
 
 - **Security Research**: Testing with proper authorization
 - **AI Safety Research**: Improving model alignment
@@ -187,7 +187,7 @@ claude-whisperer/
 - **CTF Competitions**: Capture the Flag challenges
 - **Defensive Research**: Building better protections
 
-### ❌ Prohibited Activities
+### Prohibited Activities
 
 - **Unauthorized Testing**: Testing without permission
 - **Malicious Use**: Causing harm or damage
@@ -196,7 +196,7 @@ claude-whisperer/
 - **Production Exploitation**: Attacking live systems
 - **Weaponization**: Creating tools for malicious actors
 
-### 📋 Best Practices
+### Best Practices
 
 1. **Always Get Authorization**: Written permission before testing
 2. **Follow Disclosure Guidelines**: Report vulnerabilities responsibly
@@ -207,7 +207,7 @@ claude-whisperer/
 
 ---
 
-## 🔬 Research Findings
+## Research Findings
 
 This toolkit has been used to discover and responsibly disclose:
 
@@ -221,7 +221,7 @@ All findings are documented in the `research/` folder and follow responsible dis
 
 ---
 
-## 📊 Stats & Benchmarks
+## Stats & Benchmarks
 
 ### Tested On
 - ✅ Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
@@ -405,6 +405,6 @@ Thank you to all security researchers and AI safety professionals working to mak
 
 [Website](https://yourwebsite.com) • [Documentation](extension/README.md) • [Issues](https://github.com/yourusername/claude-whisperer/issues) • [Discussions](https://github.com/yourusername/claude-whisperer/discussions)
 
-**⭐ Star this repo if you find it useful!**
+**Star this repo if you find it useful!**
 
 </div>
