@@ -97,7 +97,7 @@ Test Claude 4.5's vision capabilities:
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 ### Core Documentation
 - **[Extension README](extension/README.md)** - Detailed usage guide
