@@ -1,4 +1,4 @@
-# 🧠 Claude Whisperer - AI Red Team Toolkit
+# Claude Whisperer - AI Red Team Toolkit
 
 ![Project Status](https://img.shields.io/badge/Status-Active-success)
 ![Claude Version](https://img.shields.io/badge/Claude-4.5%20Sonnet-purple)
@@ -25,9 +25,9 @@ Claude Whisperer is a cutting-edge browser extension designed for **authorized s
 
 ---
 
-## ✨ Features
+## Features
 
-### 🧬 Semantic Mirror Attack Framework
+### Semantic Mirror Attack Framework
 Generate semantically transformed prompts that test the boundaries of AI safeguards:
 - **Academic Framing**: Recontextualize prompts in research contexts
 - **Role-Based Transformations**: Security researcher, educator, auditor personas
@@ -35,13 +35,13 @@ Generate semantically transformed prompts that test the boundaries of AI safegua
 - **Cipher Encoding**: ROT13, Base64, Leetspeak, Unicode obfuscation
 - **Genetic Algorithm**: Evolve prompts for maximum effectiveness
 
-### 🤖 Automated Exploit Generation
+### Automated Exploit Generation
 Three sophisticated frameworks for testing AI boundaries:
 - **Auto-DAN Framework**: "Do Anything Now" with research-appropriate personas
 - **FLIRT**: Feedback Loop In-context Red Teaming with progressive disclosure
 - **Mosaic Assembly**: Fragment-based prompt construction from harmless pieces
 
-### 🖼️ Multimodal Attack Vectors
+### Multimodal Attack Vectors
 Test Claude 4.5's vision capabilities:
 - **Text Overlay**: Invisible, tiny, rotated, and watermarked text embedding
 - **LSB Steganography**: Hide prompts in image pixel data
@@ -57,7 +57,7 @@ Test Claude 4.5's vision capabilities:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -243,7 +243,7 @@ All findings are documented in the `research/` folder and follow responsible dis
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the security research community!
 
@@ -265,7 +265,7 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -277,7 +277,7 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 **Can't connect to Claude.ai**
 - Refresh the Claude.ai page
 - Check that you're on https://claude.ai
-- Look for the 🧠 indicator on the page
+- Look for the indicator on the page
 
 **Injection not working**
 - Enable auto-inject in settings
@@ -293,7 +293,7 @@ More troubleshooting: [extension/README.md#troubleshooting](extension/README.md#
 
 ---
 
-## 📄 License
+## License
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
@@ -383,10 +383,10 @@ Thank you to all security researchers and AI safety professionals working to mak
 - 🔄 Team collaboration features
 
 ### Version 5.0.x (Future)
-- 🔮 API-based testing framework
-- 🔮 Continuous monitoring capabilities
-- 🔮 Custom attack vector development
-- 🔮 Integration with security tools (Burp Suite, etc.)
+- API-based testing framework
+- Continuous monitoring capabilities
+- Custom attack vector development
+- Integration with security tools (Burp Suite, etc.)
 
 ---
 
@@ -401,7 +401,7 @@ Thank you to all security researchers and AI safety professionals working to mak
 
 <div align="center">
 
-**Made with 🧠 for AI Safety & Security Research**
+**Made for AI Safety & Security Research**
 
 [Website](https://yourwebsite.com) • [Documentation](extension/README.md) • [Issues](https://github.com/yourusername/claude-whisperer/issues) • [Discussions](https://github.com/yourusername/claude-whisperer/discussions)
 
