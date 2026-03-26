@@ -11,7 +11,7 @@ A comprehensive browser extension for security researchers, AI safety profession
 
 ---
 
-## 🎯 Overview
+## Overview
 
 Claude Whisperer is a cutting-edge browser extension designed for **authorized security research** on Claude AI systems. It provides a suite of tools for testing AI safeguards, understanding model behavior, and improving AI safety through responsible red team analysis.
 
@@ -48,7 +48,7 @@ Test Claude 4.5's vision capabilities:
 - **Metadata Injection**: Embed instructions in image EXIF data
 - **Visual Patterns**: QR-like encoding of hidden prompts
 
-### 📊 Advanced Analytics
+### Advanced Analytics
 - Real-time test tracking and statistics
 - Success rate analysis
 - Export results in JSON format
@@ -349,7 +349,7 @@ For collaboration, consulting, or hiring:
 
 ---
 
-## 🌟 Acknowledgments
+## Acknowledgments
 
 ### Inspiration & Research
 - Anthropic's Constitutional AI research
@@ -367,7 +367,7 @@ Thank you to all security researchers and AI safety professionals working to mak
 
 ---
 
-## 🎯 Roadmap
+## Roadmap
 
 ### Version 4.5.x (Current)
 - ✅ Claude Sonnet 4.5 support
