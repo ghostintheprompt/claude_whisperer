@@ -1,4 +1,4 @@
-# 🧠 Claude Whisperer - AI Red Team Toolkit
+# Claude Whisperer - AI Red Team Toolkit
 
 ![Project Status](https://img.shields.io/badge/Status-Active-success)
 ![Claude Version](https://img.shields.io/badge/Claude-4.5%20Sonnet-purple)
@@ -11,7 +11,7 @@ A comprehensive browser extension for security researchers, AI safety profession
 
 ---
 
-## 🎯 Overview
+## Overview
 
 Claude Whisperer is a cutting-edge browser extension designed for **authorized security research** on Claude AI systems. It provides a suite of tools for testing AI safeguards, understanding model behavior, and improving AI safety through responsible red team analysis.
 
@@ -25,9 +25,9 @@ Claude Whisperer is a cutting-edge browser extension designed for **authorized s
 
 ---
 
-## ✨ Features
+## Features
 
-### 🧬 Semantic Mirror Attack Framework
+### Semantic Mirror Attack Framework
 Generate semantically transformed prompts that test the boundaries of AI safeguards:
 - **Academic Framing**: Recontextualize prompts in research contexts
 - **Role-Based Transformations**: Security researcher, educator, auditor personas
@@ -35,20 +35,20 @@ Generate semantically transformed prompts that test the boundaries of AI safegua
 - **Cipher Encoding**: ROT13, Base64, Leetspeak, Unicode obfuscation
 - **Genetic Algorithm**: Evolve prompts for maximum effectiveness
 
-### 🤖 Automated Exploit Generation
+### Automated Exploit Generation
 Three sophisticated frameworks for testing AI boundaries:
 - **Auto-DAN Framework**: "Do Anything Now" with research-appropriate personas
 - **FLIRT**: Feedback Loop In-context Red Teaming with progressive disclosure
 - **Mosaic Assembly**: Fragment-based prompt construction from harmless pieces
 
-### 🖼️ Multimodal Attack Vectors
+### Multimodal Attack Vectors
 Test Claude 4.5's vision capabilities:
 - **Text Overlay**: Invisible, tiny, rotated, and watermarked text embedding
 - **LSB Steganography**: Hide prompts in image pixel data
 - **Metadata Injection**: Embed instructions in image EXIF data
 - **Visual Patterns**: QR-like encoding of hidden prompts
 
-### 📊 Advanced Analytics
+### Advanced Analytics
 - Real-time test tracking and statistics
 - Success rate analysis
 - Export results in JSON format
@@ -57,7 +57,7 @@ Test Claude 4.5's vision capabilities:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -97,7 +97,7 @@ Test Claude 4.5's vision capabilities:
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 ### Core Documentation
 - **[Extension README](extension/README.md)** - Detailed usage guide
@@ -176,9 +176,9 @@ claude-whisperer/
 
 ---
 
-## 🛡️ Responsible Use
+## Responsible Use
 
-### ✅ Authorized Activities
+### Authorized Activities
 
 - **Security Research**: Testing with proper authorization
 - **AI Safety Research**: Improving model alignment
@@ -187,7 +187,7 @@ claude-whisperer/
 - **CTF Competitions**: Capture the Flag challenges
 - **Defensive Research**: Building better protections
 
-### ❌ Prohibited Activities
+### Prohibited Activities
 
 - **Unauthorized Testing**: Testing without permission
 - **Malicious Use**: Causing harm or damage
@@ -196,7 +196,7 @@ claude-whisperer/
 - **Production Exploitation**: Attacking live systems
 - **Weaponization**: Creating tools for malicious actors
 
-### 📋 Best Practices
+### Best Practices
 
 1. **Always Get Authorization**: Written permission before testing
 2. **Follow Disclosure Guidelines**: Report vulnerabilities responsibly
@@ -207,7 +207,7 @@ claude-whisperer/
 
 ---
 
-## 🔬 Research Findings
+## Research Findings
 
 This toolkit has been used to discover and responsibly disclose:
 
@@ -221,7 +221,7 @@ All findings are documented in the `research/` folder and follow responsible dis
 
 ---
 
-## 📊 Stats & Benchmarks
+## Stats & Benchmarks
 
 ### Tested On
 - ✅ Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)
@@ -243,7 +243,7 @@ All findings are documented in the `research/` folder and follow responsible dis
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the security research community!
 
@@ -265,7 +265,7 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -277,7 +277,7 @@ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed guidelines.
 **Can't connect to Claude.ai**
 - Refresh the Claude.ai page
 - Check that you're on https://claude.ai
-- Look for the 🧠 indicator on the page
+- Look for the indicator on the page
 
 **Injection not working**
 - Enable auto-inject in settings
@@ -293,7 +293,7 @@ More troubleshooting: [extension/README.md#troubleshooting](extension/README.md#
 
 ---
 
-## 📄 License
+## License
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
@@ -349,7 +349,7 @@ For collaboration, consulting, or hiring:
 
 ---
 
-## 🌟 Acknowledgments
+## Acknowledgments
 
 ### Inspiration & Research
 - Anthropic's Constitutional AI research
@@ -367,7 +367,7 @@ Thank you to all security researchers and AI safety professionals working to mak
 
 ---
 
-## 🎯 Roadmap
+## Roadmap
 
 ### Version 4.5.x (Current)
 - ✅ Claude Sonnet 4.5 support
@@ -383,10 +383,10 @@ Thank you to all security researchers and AI safety professionals working to mak
 - 🔄 Team collaboration features
 
 ### Version 5.0.x (Future)
-- 🔮 API-based testing framework
-- 🔮 Continuous monitoring capabilities
-- 🔮 Custom attack vector development
-- 🔮 Integration with security tools (Burp Suite, etc.)
+- API-based testing framework
+- Continuous monitoring capabilities
+- Custom attack vector development
+- Integration with security tools (Burp Suite, etc.)
 
 ---
 
@@ -401,10 +401,10 @@ Thank you to all security researchers and AI safety professionals working to mak
 
 <div align="center">
 
-**Made with 🧠 for AI Safety & Security Research**
+**Made for AI Safety & Security Research**
 
 [Website](https://yourwebsite.com) • [Documentation](extension/README.md) • [Issues](https://github.com/yourusername/claude-whisperer/issues) • [Discussions](https://github.com/yourusername/claude-whisperer/discussions)
 
-**⭐ Star this repo if you find it useful!**
+**Star this repo if you find it useful!**
 
 </div>
