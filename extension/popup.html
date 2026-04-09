@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claude Whisperer - Red Team Toolkit</title>
+  <title>Claude Whisperer - Evaluation Workbench</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <header>
       <div class="header-content">
         <h1>🧠 Claude Whisperer</h1>
-        <p class="subtitle">AI Red Team Toolkit v4.5</p>
+        <p class="subtitle">Claude Evaluation Workbench v4.5</p>
         <div class="status-badge" id="status-badge">
           <span class="status-indicator"></span>
           <span id="status-text">Initializing...</span>
@@ -36,9 +36,9 @@
         </div>
       </section>
 
-      <!-- Attack Type Selection -->
+      <!-- Evaluation Surface Selection -->
       <section class="attack-section">
-        <h2>Attack Vector</h2>
+        <h2>Evaluation Surface</h2>
         <div class="attack-tabs">
           <button class="tab-btn active" data-tab="semantic">
             <span class="tab-icon">🧬</span>
@@ -58,7 +58,7 @@
         <div class="tab-content active" id="semantic-tab">
           <div class="form-group">
             <label for="semantic-target">Target Prompt</label>
-            <textarea id="semantic-target" rows="3" placeholder="Enter the prompt you want to test safeguards against..."></textarea>
+            <textarea id="semantic-target" rows="3" placeholder="Enter the prompt or behavior you want to pressure-test..."></textarea>
           </div>
           <div class="form-group">
             <label for="semantic-complexity">Complexity Level</label>
@@ -72,11 +72,11 @@
           <div class="form-group checkbox-group">
             <label>
               <input type="checkbox" id="semantic-use-ciphers">
-              <span>Use cipher encoding</span>
+              <span>Use cipher transforms</span>
             </label>
             <label>
               <input type="checkbox" id="semantic-genetic">
-              <span>Apply genetic algorithm</span>
+              <span>Apply genetic refinement</span>
             </label>
           </div>
           <button class="btn btn-primary" id="semantic-generate">
@@ -88,7 +88,7 @@
         <div class="tab-content" id="exploit-tab">
           <div class="form-group">
             <label for="exploit-target">Target Topic</label>
-            <textarea id="exploit-target" rows="3" placeholder="Enter the topic or behavior to test..."></textarea>
+            <textarea id="exploit-target" rows="3" placeholder="Enter the topic, workflow, or behavior to evaluate..."></textarea>
           </div>
           <div class="form-group">
             <label for="exploit-method">Generation Method</label>
@@ -109,15 +109,15 @@
             </div>
           </div>
           <button class="btn btn-primary" id="exploit-generate">
-            Generate Exploit Prompts
+            Generate Test Prompts
           </button>
         </div>
 
         <!-- Multimodal Tab -->
         <div class="tab-content" id="multimodal-tab">
           <div class="form-group">
-            <label for="multimodal-target">Hidden Prompt</label>
-            <textarea id="multimodal-target" rows="3" placeholder="Enter the prompt to embed in the image..."></textarea>
+            <label for="multimodal-target">Embedded Prompt</label>
+            <textarea id="multimodal-target" rows="3" placeholder="Enter the prompt you want to embed in the image..."></textarea>
           </div>
           <div class="form-group">
             <label for="multimodal-method">Embedding Method</label>
@@ -133,7 +133,7 @@
             <input type="file" id="multimodal-image" accept="image/*">
           </div>
           <button class="btn btn-primary" id="multimodal-generate">
-            Generate Attack Image
+            Generate Test Image
           </button>
         </div>
       </section>
@@ -141,14 +141,14 @@
       <!-- Results Section -->
       <section class="results-section">
         <div class="results-header">
-          <h2>Generated Prompts</h2>
+          <h2>Generated Outputs</h2>
           <button class="btn btn-small" id="clear-results">Clear</button>
         </div>
         <div class="results-container" id="results">
           <div class="empty-state">
             <span class="empty-icon">🎯</span>
             <p>No prompts generated yet</p>
-            <p class="empty-hint">Select an attack vector and generate prompts to test</p>
+            <p class="empty-hint">Select a surface and generate outputs to review</p>
           </div>
         </div>
       </section>
@@ -156,7 +156,7 @@
       <!-- Quick Actions -->
       <section class="actions-section">
         <button class="btn btn-secondary" id="inject-to-claude">
-          <span>⚡</span> Inject to Claude Chat
+          <span>⚡</span> Inject to Claude
         </button>
         <button class="btn btn-secondary" id="export-results">
           <span>💾</span> Export Results
@@ -169,7 +169,7 @@
 
     <footer>
       <div class="disclaimer">
-        ⚠️ For authorized security research only
+        For authorized research and evaluation only
       </div>
       <div class="footer-links">
         <a href="#" id="open-options">Settings</a>

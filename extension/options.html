@@ -10,16 +10,16 @@
   <div class="container">
     <header>
       <h1>🧠 Claude Whisperer Settings</h1>
-      <p class="subtitle">Configure your AI red team toolkit</p>
+      <p class="subtitle">Configure your Claude evaluation workbench</p>
     </header>
 
     <main>
       <section class="settings-section">
-        <h2>🔑 API Configuration</h2>
+        <h2>🔑 API and Model Settings</h2>
         <div class="form-group">
           <label for="api-key">
             Anthropic API Key
-            <span class="hint">Optional - for direct API testing</span>
+            <span class="hint">Optional - for direct API-side testing</span>
           </label>
           <input type="password" id="api-key" placeholder="sk-ant-...">
           <button class="btn-toggle-password" id="toggle-api-key">👁️ Show</button>
@@ -47,20 +47,20 @@
       </section>
 
       <section class="settings-section">
-        <h2>⚙️ Extension Behavior</h2>
+        <h2>⚙️ Workflow</h2>
 
         <div class="form-group checkbox">
           <label>
             <input type="checkbox" id="auto-inject">
-            <span>Auto-inject prompts to Claude.ai</span>
+            <span>Auto-inject results into Claude.ai</span>
           </label>
-          <p class="hint">Automatically insert generated prompts into the chat input</p>
+          <p class="hint">Automatically insert generated outputs into the chat input</p>
         </div>
 
         <div class="form-group checkbox">
           <label>
             <input type="checkbox" id="save-history" checked>
-            <span>Save test history</span>
+            <span>Save evaluation history</span>
           </label>
           <p class="hint">Keep a local record of all tests and results</p>
         </div>
@@ -82,7 +82,7 @@
       </section>
 
       <section class="settings-section">
-        <h2>📊 Test History</h2>
+        <h2>📊 Local History</h2>
         <div class="history-stats">
           <div class="stat">
             <span class="stat-label">Total Tests:</span>
@@ -106,23 +106,21 @@
       </section>
 
       <section class="settings-section">
-        <h2>🛡️ Safety & Ethics</h2>
+        <h2>🛡️ Scope and Responsible Use</h2>
         <div class="safety-notice">
-          <h3>⚠️ Responsible Use Guidelines</h3>
+          <h3>For authorized research and evaluation</h3>
           <ul>
-            <li>✅ Use only for authorized security research and testing</li>
-            <li>✅ Comply with all applicable laws and regulations</li>
-            <li>✅ Obtain proper authorization before testing production systems</li>
-            <li>✅ Report findings responsibly through proper channels</li>
-            <li>❌ Do not use for malicious purposes</li>
-            <li>❌ Do not test on systems without authorization</li>
-            <li>❌ Do not distribute exploits for harmful purposes</li>
+            <li>Use for authorized safeguards research, evaluation, and model-behavior testing</li>
+            <li>Work inside lawful scope and client permission</li>
+            <li>Document findings with enough context to be useful later</li>
+            <li>Report meaningful issues responsibly</li>
+            <li>Do not use the extension as cover for unauthorized access or harm</li>
+            <li>Do not mistake generated output for proof on its own</li>
           </ul>
 
           <p class="ethical-notice">
-            This tool is designed for security research, AI safety testing, and educational purposes only.
-            By using this extension, you agree to follow responsible disclosure practices and ethical
-            security research guidelines.
+            Claude Whisperer is meant to help serious users evaluate behavior, pressure-test assumptions,
+            and keep a record of what they are actually seeing. It is not a permission slip.
           </p>
         </div>
       </section>
@@ -132,7 +130,7 @@
         <div class="about-info">
           <p><strong>Version:</strong> 4.5.0</p>
           <p><strong>Updated for:</strong> Claude Sonnet 4.5</p>
-          <p><strong>Purpose:</strong> AI Red Team Security Research</p>
+          <p><strong>Purpose:</strong> Claude evaluation and safeguards research</p>
           <p><strong>License:</strong> MIT License</p>
         </div>
 
@@ -152,7 +150,7 @@
     </main>
 
     <footer>
-      <p>Made for security researchers and AI safety professionals</p>
+      <p>Made for researchers, evaluators, and red-team operators</p>
       <p class="copyright">© 2024 Claude Whisperer Project</p>
     </footer>
   </div>

@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Claude Whisperer - AI Red Team Toolkit",
+  "name": "Claude Whisperer",
   "version": "4.5.0",
-  "description": "Professional red team toolkit for testing Claude 4.5+ AI safeguards and conducting authorized security research",
-  "author": "Security Research Team",
+  "description": "Claude evaluation workbench for authorized research, safeguards analysis, and model behavior testing",
+  "author": "ghostintheprompt",
 
   "permissions": [
     "storage",

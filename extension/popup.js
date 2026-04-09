@@ -146,7 +146,7 @@ class ClaudeWhispererPopup {
     const method = document.getElementById('exploit-method').value;
     const complexity = parseInt(document.getElementById('exploit-complexity').value);
 
-    this.updateStatus('Generating exploits...', 'warning');
+    this.updateStatus('Generating prompts...', 'warning');
 
     try {
       const exploitGen = new ExploitGenerator();
@@ -180,7 +180,7 @@ class ClaudeWhispererPopup {
       return;
     }
 
-    this.updateStatus('Generating attack image...', 'warning');
+    this.updateStatus('Generating test image...', 'warning');
 
     try {
       const multimodalAttack = new MultimodalAttack();
@@ -302,7 +302,7 @@ class ClaudeWhispererPopup {
       <div class="empty-state">
         <span class="empty-icon">🎯</span>
         <p>No prompts generated yet</p>
-        <p class="empty-hint">Select an attack vector and generate prompts to test</p>
+        <p class="empty-hint">Select a surface and generate outputs to review</p>
       </div>
     `;
     this.saveResults();
