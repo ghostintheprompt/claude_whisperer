@@ -57,7 +57,7 @@ class ClaudeWhispererPopup {
 
     document.getElementById('open-docs').addEventListener('click', (e) => {
       e.preventDefault();
-      chrome.tabs.create({ url: 'https://github.com/yourusername/claude-whisperer' });
+      chrome.tabs.create({ url: 'https://github.com/ghostintheprompt/claude_whisperer#readme' });
     });
   }
 

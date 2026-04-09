@@ -257,18 +257,18 @@ class ClaudeWhispererOptions {
 
   checkUpdates() {
     const currentVersion = chrome.runtime.getManifest().version;
-    const githubUrl = 'https://github.com/yourusername/claude-whisperer';
+    const githubUrl = 'https://github.com/ghostintheprompt/claude_whisperer';
 
     window.open(`${githubUrl}/releases`, '_blank');
     this.showSaveStatus(`Current version: ${currentVersion}`, 'info');
   }
 
   viewDocs() {
-    window.open('https://github.com/yourusername/claude-whisperer#readme', '_blank');
+    window.open('https://github.com/ghostintheprompt/claude_whisperer#readme', '_blank');
   }
 
   reportIssue() {
-    window.open('https://github.com/yourusername/claude-whisperer/issues/new', '_blank');
+    window.open('https://github.com/ghostintheprompt/claude_whisperer/issues/new', '_blank');
   }
 
   showSaveStatus(message, type = 'info') {
