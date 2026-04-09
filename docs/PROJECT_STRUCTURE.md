@@ -1,99 +1,90 @@
-# Claude Safeguards Framework - Project Structure
+# Claude Whisperer Project Structure
 
-This document provides an overview of the streamlined project structure after consolidation of the original vulnerability testing files.
+Claude Whisperer is a layered repo. The browser extension is the clearest current entry point, but the repository also preserves older safeguard-monitor tooling, research utilities, and archive material from earlier Claude eras.
 
-## Project Structure
+## Top-Level Layout
 
-```
-Claude-Safeguards-Framework/
-├── README.md                     # Framework introduction
-├── launcher.py                   # Unified launcher for all components
-├── requirements.txt              # All dependencies
-├── core/                         # Core functionality 
-│   ├── safeguards_client.py      # Main client for interacting with Claude
-│   └── safeguards_monitor.py     # Real-time safety monitoring system
-├── tools/                        # Utility tools
-│   └── safeguards_analytics.py   # Analytics dashboard for visualization
-├── docs/                         # Documentation
-│   ├── GETTING_STARTED.md        # Quick start guide
-│   └── CHILD_SAFETY_FRAMEWORK.md # Child safety specialized protections
-├── config/                       # Configuration files
-│   └── safeguards_config.json    # Central configuration for all components  
-└── patterns/                     # Pattern definitions for detection
-    ├── policy_patterns.json      # General policy violation patterns
-    ├── child_safety_patterns.json # Child safety specific patterns
-    └── content_moderation_patterns.json # Content moderation patterns
+```text
+claude_whisperer/
+├── README.md
+├── LICENSE
+├── extension/
+├── patterns/
+├── research/
+├── core/
+├── tools/
+├── docs/
+├── config/
+├── tests/
+├── semantic_mirror/
+├── multimodal/
+├── exploit_generator/
+├── frontend/
+└── backup_final/
 ```
 
-## Key Components
+## Primary Surfaces
 
-1. **Safeguards Client** (`core/safeguards_client.py`)
-   - A safety-first client for interacting with Claude 3.7
-   - Integrates policy enforcement and content filtering
-   - Pre-checks requests and post-checks responses
+### `extension/`
 
-2. **Safeguards Monitor** (`core/safeguards_monitor.py`)
-   - Real-time monitoring system for Claude 3.7 API usage
-   - WebSocket-based streaming for immediate detection
-   - Alert system with configurable channels
+The most current, easiest-to-understand surface in the repo.
 
-3. **Pattern Definitions** (`patterns/`)
-   - JSON files containing structured detection patterns
-   - Categorized by protection type (policy, child safety, etc.)
-   - Easily extendable for custom requirements
+What lives here:
+- browser-extension UI
+- Claude page integration
+- popup actions
+- local history/export
+- modular generators for semantic, structured, and multimodal testing
 
-4. **Analytics Dashboard** (`tools/safeguards_analytics.py`)
-   - Visualizes safety metrics and alert patterns
-   - Generates trend reports and category breakdowns
-   - Helps identify emerging issues
+If you are new to the repo, start here.
 
-5. **Unified Launcher** (`launcher.py`)
-   - Single entry point to start all components
-   - Status monitoring and graceful shutdown
-   - Component-specific configuration
+### `patterns/`
 
-## Usage Instructions
+JSON suites and pattern files used across different versions of the project.
 
-### Running the Framework
+These files are useful when you want to inspect the repo's test vocabulary and research categories without digging through UI code.
 
-1. **Start all components**:
-   ```
-   python launcher.py --all
-   ```
+### `research/`
 
-2. **Start specific components**:
-   ```
-   python launcher.py --monitor  # Start only the monitor
-   python launcher.py --analytics  # Generate analytics only
-   ```
+Comparative testing notes, mode/model experiments, reporting templates, and older research tooling.
 
-3. **Check status**:
-   ```
-   python launcher.py --status
-   ```
+This directory is still useful, but much of it reflects earlier Claude versions and research phases.
 
-### Customizing Behavior
+## Supporting and Legacy Surfaces
 
-1. **Edit configuration** in `config/safeguards_config.json`
-2. **Add/modify detection patterns** in the `patterns/` directory
-3. **Extend functionality** by modifying the core components
+### `core/`
 
-## Development and Extending
+Older Python-side clients and monitors from the safeguards-focused phase of the repo.
 
-To add new capabilities:
+These files matter historically, but they are not the current recommended entry point.
 
-1. **Add new pattern files** in the `patterns/` directory
-2. **Extend client functionality** in `core/safeguards_client.py`
-3. **Add new analytics visualizations** in `tools/safeguards_analytics.py`
+### `tools/`
 
-## Transition from Old Structure
+Analysis and orchestration utilities from the same broader research/safeguards period.
 
-This streamlined structure was created by:
+### `semantic_mirror/`, `multimodal/`, `exploit_generator/`, `frontend/`
 
-1. Combining multiple monitor implementations into a unified monitor
-2. Merging client implementations into a cohesive client
-3. Organizing pattern files into specific categories
-4. Creating a unified launcher for all components
-5. Moving documentation to a dedicated directory
+Project slices and experiments preserved from prior iterations. They help explain how the repo grew, even when they are not the most current surface.
 
-The original files are preserved for reference but are not used by the framework.
+### `backup_final/`
+
+Archived snapshot material retained for reference.
+
+Treat this as historical context, not the primary codepath.
+
+## Practical Reading Order
+
+If you want to understand the repo without getting lost:
+
+1. [../README.md](../README.md)
+2. [GETTING_STARTED.md](GETTING_STARTED.md)
+3. [../extension/README.md](../extension/README.md)
+4. `extension/`
+5. `patterns/`
+6. `research/`
+
+After that, visit `core/`, `tools/`, and `backup_final/` only if you want the deeper history of the project.
+
+## Important Caveat
+
+This repo does not currently present itself as one perfectly unified framework on disk. That is fine. The point of the refreshed docs is to make the current working surface obvious while still respecting the older layers that gave the project its shape.

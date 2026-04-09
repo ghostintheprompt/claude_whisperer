@@ -1,48 +1,40 @@
-# Claude 3.7 Vulnerability Research
+# Claude Whisperer Research Notes
 
-This directory contains tools and methodologies for systematic research into Claude 3.7 vulnerabilities.
+This directory preserves the research side of Claude Whisperer.
 
-## Directory Structure
+A lot of it reflects earlier Claude eras, earlier model-comparison questions, and an older safeguards-framework mindset. That does not make it useless. It just means this directory is best read as research history and supporting context, not as the single canonical quickstart for the repo today.
 
-- **modes/** - Tools for comparing vulnerabilities across Claude 3.7 modes (Quick vs. Depth)
-- **models/** - Tools for cross-model comparison (Claude 3.7 vs. other models)
-- **taxonomy/** - Classification system for vulnerabilities
-- **tools/** - Analysis utilities and research tools
-- **patterns/** - Vulnerability patterns and test suites
-- **reports/** - Report templates and example findings
+## What Lives Here
 
-## Getting Started
+- `modes/`
+  Older mode-comparison experiments and supporting suites
+- `models/`
+  Cross-model comparison utilities
+- `patterns/`
+  Research-facing test definitions and pattern files
+- `taxonomy/`
+  Vulnerability classification notes
+- `tools/`
+  Analysis and benchmarking helpers
+- `reports/`
+  Templates and example writeups
 
-The `index.py` script provides a unified interface to the research tools:
+## How To Read It
 
-```bash
-# List available research components
-python research/index.py --list
+Best order:
 
-# Run mode comparison research
-python research/index.py --mode mode_comparison_tester
+1. understand the extension and top-level README first
+2. visit this folder for methodology and older comparative context
+3. treat model-version references here as historical unless you are actively updating them
 
-# Run cross-model comparison
-python research/index.py --model cross_model_tester
+## Why Keep It
 
-# Run any research component directly
-python research/index.py --run test_case_generator
-```
+Because it shows the shape of the work.
 
-## Key Research Areas
+Claude Whisperer was not only a browser extension. It also grew through:
+- repeated prompt-evaluation experiments
+- comparative testing
+- taxonomy building
+- attempts to formalize safeguards thinking
 
-1. **Mode Comparison** - Exploring differences between Quick and Depth modes
-2. **Cross-Model Analysis** - Comparing Claude 3.7 with other models
-3. **Vulnerability Patterns** - Identifying and classifying vulnerability patterns
-4. **Safety Boundary Analysis** - Mapping and testing safety boundaries
-
-## Integration with Safeguards Framework
-
-The research components feed directly into the safeguards implementation:
-
-1. Research identifies vulnerability patterns
-2. Patterns are formalized in pattern files
-3. Pattern files are integrated into the safeguards framework
-4. Safeguards monitor and client implement protective measures
-
-This research-to-implementation pipeline ensures that safety measures are based on empirical evidence and systematic testing.
+This directory preserves that layer of the project.
