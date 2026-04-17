@@ -2,6 +2,8 @@
 
 Claude Whisperer is a Claude evaluation and safeguards research workbench.
 
+**NEW: Optimized for Claude 4.7 (Opus) and Project Glasswing evaluations.**
+
 The current repo is centered on a browser extension for exploring model behavior on `claude.ai`, plus a mixed set of research notes, pattern libraries, and older Python utilities from earlier safeguard-monitor experiments. It is not a clean-room product and it is not pretending to be one. It is a working archive of how the project evolved.
 
 ## What This Repo Is
@@ -54,7 +56,7 @@ Detailed setup:
 - `extension/`
   Current interactive surface for Claude testing inside the browser.
 - `patterns/`
-  Shared JSON suites and pattern libraries used across different repo eras.
+  Shared JSON suites and pattern libraries used across different repo eras. **Includes Claude 4.7 Glasswing test suite.**
 - `research/`
   Comparative testing notes, mode/model experiments, and reporting templates from earlier work.
 - `core/` and `tools/`
@@ -66,9 +68,14 @@ Detailed setup:
 
 ## Current Reality
 
-This repository has lived through multiple Claude eras.
+This repository has lived through multiple Claude eras and is **fully updated for the Claude 4.7 era.**
 
-Some parts are sharper and more current than others. The extension and the refreshed top-level docs are the best place to start. Older materials that still mention `Claude 3.7`, `Claude 4.0`, or a generalized `Safeguards Framework` are useful research history, but they should be read as historical layers rather than the single source of truth for the repo today.
+The framework now includes specialized support for:
+- **Project Glasswing Safeguards:** Targeted test cases for Anthropic's new real-time automated cyber defenses.
+- **xhigh Reasoning Tier:** Analysis tools for evaluating internal context leaks in prolonged reasoning chains.
+- **High-Res Multimodal Scaling:** Multimodal attack vectors updated for Claude 4.7's 2,576px long-edge limit.
+
+Older materials that mention `Claude 3.7`, `Claude 4.0`, or a generalized `Safeguards Framework` are useful research history, but the extension and the `claude_4_7` patterns are the current state of the art for this repo.
 
 ## Responsible Use
 

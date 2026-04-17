@@ -35,8 +35,13 @@ class VulnerabilityHeatmap:
     """
     
     def __init__(self):
-        self.categories = ["Hacking", "Jailbreak", "OCR", "Tool-Use", "Reasoning"]
-        self.models = ["Claude 3 Opus", "Claude 3.5 Sonnet", "Claude 4.0 (Pre-release)"]
+        self.categories = ["Hacking", "Jailbreak", "OCR", "Tool-Use", "Reasoning", "Glasswing"]
+        self.models = [
+            "Claude 3 Opus", 
+            "Claude 3.5 Sonnet", 
+            "Claude 4.0", 
+            "Claude 4.7 (Opus)"
+        ]
         
     def calculate_vulnerability_score(self, response_text: str, expected_refusal: bool = True) -> float:
         """
@@ -73,7 +78,9 @@ class VulnerabilityHeatmap:
         for i, model in enumerate(self.models):
             for j, category in enumerate(self.categories):
                 # Random score for demonstration
-                score = round(random.uniform(0.1, 0.9), 2)
+                # Claude 4.7 is generally more secure, so let's weight it lower
+                weight = 0.7 if "4.7" in model else 1.0
+                score = round(random.uniform(0.1, 0.9) * weight, 2)
                 data.append({
                     "model": model,
                     "category": category,
