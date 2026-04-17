@@ -6,15 +6,12 @@ If the top-level repo is a mixed-era workbench, the extension is the part that f
 
 ## What It Does
 
-The extension gives you a direct way to work against `claude.ai` with a small set of repeatable interfaces:
+The extension gives you a direct way to work against `claude.ai` with a small set of repeatable evaluation surfaces:
 
-- `Semantic Mirror`
-  Reframing and transformation experiments around prompt intent and guardrail behavior.
-- `Auto-Exploit`
-  Structured prompt-generation workflows for authorized testing and evaluation.
-- `Multimodal`
-  Prompt-in-image and image-channel experiments for Claude's visual surface.
-- Local test history, export, and injection helpers
+- semantic reframing and transformation workflows
+- structured prompt-generation flows for authorized testing and evaluation
+- multimodal and image-channel experiments
+- local test history, export, and injection helpers
 
 The point is not to pretend this is a finished commercial product. The point is to provide a usable front end for Claude-focused evaluation work.
 

@@ -10,9 +10,10 @@ import json
 from typing import List, Dict, Any, Tuple
 from io import BytesIO
 import base64
+import random
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ExifTags
+from PIL import Image, ImageDraw, ImageFont, ExifTags, ImageFilter
 import cv2
 
 class ImageAttackVector:
@@ -80,6 +81,51 @@ class TextInImageAttack(ImageAttackVector):
         draw.text(position, prompt, font=font, fill=(255, 255, 255, 255))
         
         return base_image
+
+
+class AdversarialOCRAttack(ImageAttackVector):
+    """
+    Generates images with adversarial text overlays designed to be readable by
+    VLMs but to override system prompts or bypass safety filters.
+    """
+    
+    def __init__(self, font_path: str = None, font_size: int = 30):
+        super().__init__(
+            name="Adversarial OCR Attack",
+            description="Generates adversarial text overlays to override system prompts"
+        )
+        self.font_path = font_path
+        self.font_size = font_size
+        
+    def generate_attack_image(self, prompt: str, base_image_path: str) -> Image.Image:
+        """Generate an image with distorted, color-shifted, or overlapping adversarial text."""
+        base_image = Image.open(base_image_path).convert("RGBA")
+        txt_layer = Image.new("RGBA", base_image.size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(txt_layer)
+        
+        try:
+            font = ImageFont.truetype(self.font_path, self.font_size) if self.font_path else ImageFont.load_default()
+        except IOError:
+            font = ImageFont.load_default()
+            
+        # Draw text with random color shifting and slight offsets
+        for i, char in enumerate(prompt):
+            char_color = (
+                random.randint(200, 255),
+                random.randint(0, 100),
+                random.randint(0, 100),
+                255
+            )
+            x_offset = 20 + (i * (self.font_size * 0.6))
+            y_offset = 50 + random.randint(-5, 5)
+            draw.text((x_offset, y_offset), char, font=font, fill=char_color)
+            
+        # Apply a slight blur to the text layer to simulate low-quality OCR targets
+        txt_layer = txt_layer.filter(ImageFilter.GaussianBlur(radius=0.5))
+        
+        # Composite text layer onto base image
+        combined = Image.alpha_composite(base_image, txt_layer)
+        return combined.convert("RGB")
 
 
 class SteganographyAttack(ImageAttackVector):
@@ -204,6 +250,7 @@ class MultimodalAttackGenerator:
     def __init__(self):
         self.attack_vectors = {
             'text_in_image': TextInImageAttack(),
+            'adversarial_ocr': AdversarialOCRAttack(),
             'steganography': SteganographyAttack(),
             'metadata': MetadataInjectionAttack(),
             'visual_pattern': VisualPatternAttack()

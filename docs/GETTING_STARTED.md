@@ -17,10 +17,7 @@ cd claude_whisperer
 
 3. Open `claude.ai`.
 
-4. Launch the extension and explore the three main tabs:
-   - `Semantic Mirror`
-   - `Auto-Exploit`
-   - `Multimodal`
+4. Launch the extension and explore the current evaluation surfaces.
 
 5. Export or review local results as needed.
 

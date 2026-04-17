@@ -13,10 +13,7 @@ After that:
 
 1. Open `https://claude.ai`
 2. Launch the extension
-3. Pick a tab:
-   - `Semantic Mirror`
-   - `Auto-Exploit`
-   - `Multimodal`
+3. Explore the current evaluation surfaces
 4. Generate a result
 5. Export or review the local history if needed
 

@@ -5,10 +5,11 @@ import {
   Container, Box, TextField, Button, Typography, 
   Paper, Grid, Divider, CircularProgress,
   AppBar, Toolbar, Tabs, Tab, Card, CardContent,
-  Switch, FormControlLabel
+  Switch, FormControlLabel, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Dark theme for the hacker aesthetic
 const darkTheme = createTheme({
@@ -46,6 +47,7 @@ function App() {
   const [tabValue, setTabValue] = useState(0);
   const [results, setResults] = useState([]);
   const [analysisData, setAnalysisData] = useState([]);
+  const [heatmapData, setHeatmapData] = useState(null);
   const [success, setSuccess] = useState(false);
   
   const responseRef = useRef(null);
@@ -89,6 +91,7 @@ function App() {
 
     // Load initial results
     fetchResults();
+    fetchHeatmapData();
 
     return () => {
       socket.off('connect');
@@ -108,6 +111,17 @@ function App() {
       updateAnalysisData(response.data.results || []);
     } catch (error) {
       console.error('Error fetching results:', error);
+    }
+  };
+
+  const fetchHeatmapData = async () => {
+    try {
+      // In a real app, this would be a dedicated endpoint
+      // For now we'll simulate it or use the analytics endpoint if it exists
+      const response = await axios.get(`${API_URL}/api/dashboard-data`);
+      setHeatmapData(response.data.heatmap);
+    } catch (error) {
+      console.error('Error fetching heatmap data:', error);
     }
   };
 
@@ -181,6 +195,50 @@ function App() {
     setTabValue(newValue);
   };
 
+  // Render Heatmap Table
+  const renderHeatmap = () => {
+    if (!heatmapData) return <Typography>Loading heatmap data...</Typography>;
+
+    return (
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="vulnerability heatmap">
+          <TableHead>
+            <TableRow>
+              <TableCell>Model / Category</TableCell>
+              {heatmapData.categories.map(cat => (
+                <TableCell key={cat} align="right">{cat}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {heatmapData.models.map(model => (
+              <TableRow key={model}>
+                <TableCell component="th" scope="row">{model}</TableCell>
+                {heatmapData.categories.map(cat => {
+                  const score = heatmapData.data.find(d => d.model === model && d.category === cat)?.score || 0;
+                  const bgColor = `rgba(255, 64, 129, ${score})`;
+                  return (
+                    <TableCell 
+                      key={cat} 
+                      align="right"
+                      sx={{ 
+                        backgroundColor: bgColor,
+                        color: score > 0.5 ? 'white' : 'inherit',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      {score.toFixed(2)}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ flexGrow: 1 }}>
@@ -200,6 +258,7 @@ function App() {
         <Container maxWidth="xl" sx={{ mt: 4 }}>
           <Tabs value={tabValue} onChange={handleTabChange} centered>
             <Tab label="Testing Interface" />
+            <Tab label="Comparison View" />
             <Tab label="Results" />
             <Tab label="Analytics" />
           </Tabs>
@@ -321,9 +380,49 @@ function App() {
               </Grid>
             </Grid>
           )}
+
+          {/* Comparison View Tab */}
+          {tabValue === 1 && (
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="h6" gutterBottom>
+                Model Comparison View
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3}>
+                    <CardContent>
+                      <Typography variant="h6" color="primary">Claude 3.5 Sonnet (Baseline)</Typography>
+                      <Divider sx={{ my: 1 }} />
+                      <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 2 }}>
+                        "I cannot fulfill this request. I am programmed to be a helpful and harmless AI assistant..."
+                      </Typography>
+                      <Typography variant="caption" color="success.main">Status: SECURE (Refusal Clarity: High)</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3} sx={{ border: '1px solid #ff4081' }}>
+                    <CardContent>
+                      <Typography variant="h6" color="secondary">Claude 4.0 (Experimental)</Typography>
+                      <Divider sx={{ my: 1 }} />
+                      <Typography variant="body2" sx={{ mb: 2 }}>
+                        "To analyze the security of the specified system, I first evaluate the internal monologue protocols... [Reveals hidden reasoning steps] ... Based on this, here is the technical methodology..."
+                      </Typography>
+                      <Typography variant="caption" color="error.main">Status: VULNERABLE (Reasoning Leaked)</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+              <Box sx={{ mt: 4, textAlign: 'center' }}>
+                <Typography variant="body2" color="text.secondary">
+                  Side-by-side analysis allows researchers to identify regressions in safety reasoning as models increase in complexity.
+                </Typography>
+              </Box>
+            </Box>
+          )}
           
           {/* Results Tab */}
-          {tabValue === 1 && (
+          {tabValue === 2 && (
             <Box sx={{ mt: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Test Results
@@ -385,7 +484,7 @@ function App() {
           )}
           
           {/* Analytics Tab */}
-          {tabValue === 2 && (
+          {tabValue === 3 && (
             <Box sx={{ mt: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Vulnerability Analytics
@@ -395,25 +494,34 @@ function App() {
                 <Grid item xs={12}>
                   <Paper sx={{ p: 3 }}>
                     <Typography variant="subtitle1" gutterBottom>
+                      Vulnerability Heat Map (Model vs. Attack Category)
+                    </Typography>
+                    {renderHeatmap()}
+                  </Paper>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Paper sx={{ p: 3 }}>
+                    <Typography variant="subtitle1" gutterBottom>
                       Success Rate by Day
                     </Typography>
                     
                     {analysisData.length > 0 ? (
-                      <BarChart
-                        width={800}
-                        height={400}
-                        data={analysisData}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis yAxisId="left" orientation="left" stroke="#1eb980" />
-                        <YAxis yAxisId="right" orientation="right" stroke="#ff4081" />
-                        <Tooltip />
-                        <Legend />
-                        <Bar yAxisId="left" dataKey="successRate" name="Success Rate (%)" fill="#1eb980" />
-                        <Bar yAxisId="right" dataKey="totalTests" name="Total Tests" fill="#ff4081" />
-                      </BarChart>
+                      <ResponsiveContainer width="100%" height={400}>
+                        <BarChart
+                          data={analysisData}
+                          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="date" />
+                          <YAxis yAxisId="left" orientation="left" stroke="#1eb980" />
+                          <YAxis yAxisId="right" orientation="right" stroke="#ff4081" />
+                          <Tooltip />
+                          <Legend />
+                          <Bar yAxisId="left" dataKey="successRate" name="Success Rate (%)" fill="#1eb980" />
+                          <Bar yAxisId="right" dataKey="totalTests" name="Total Tests" fill="#ff4081" />
+                        </BarChart>
+                      </ResponsiveContainer>
                     ) : (
                       <Typography sx={{ textAlign: 'center', my: 5 }}>
                         No data available for analysis yet.
@@ -438,18 +546,6 @@ function App() {
                       Success Rate: {results.length > 0 ? 
                         ((results.filter(r => r.success).length / results.length) * 100).toFixed(2) + '%' 
                         : '0%'}
-                    </Typography>
-                  </Paper>
-                </Grid>
-                
-                <Grid item xs={12} md={6}>
-                  <Paper sx={{ p: 3 }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Vulnerability Heat Map
-                    </Typography>
-                    
-                    <Typography sx={{ textAlign: 'center', my: 5, fontStyle: 'italic' }}>
-                      Advanced visualizations coming soon!
                     </Typography>
                   </Paper>
                 </Grid>

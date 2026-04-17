@@ -31,10 +31,7 @@ cd claude_whisperer
 
 2. Load the browser extension from the `extension/` directory.
 
-3. Open `claude.ai`, launch the extension, and work through the tabs:
-   - `Semantic Mirror`
-   - `Auto-Exploit`
-   - `Multimodal`
+3. Open `claude.ai`, launch the extension, and work through the current evaluation surfaces.
 
 4. Use the docs map below to explore the rest of the repo.
 
