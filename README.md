@@ -1,5 +1,9 @@
 # Claude Whisperer
 
+<div align="center">
+  <img src="claude_whisperer.png" width="256" height="256" alt="Claude Whisperer Icon" />
+</div>
+
 Claude Whisperer is a Claude evaluation and safeguards research workbench.
 
 **NEW: Optimized for Claude 4.7 (Opus) and Project Glasswing evaluations.**
