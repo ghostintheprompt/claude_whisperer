@@ -1,4 +1,6 @@
-<img src="claude_whisperer.png" width="200">
+<p align="center">
+  <img src="claude_whisperer.png" width="520">
+</p>
 
 # Claude Whisperer
 Claude evaluation and safeguards research workbench optimized for Claude 4.7 (Opus) and Project Glasswing evaluations. — v1.0
