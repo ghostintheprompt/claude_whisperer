@@ -1,16 +1,11 @@
+<img src="claude_whisperer.png" width="200">
+
 # Claude Whisperer
-
-<div align="center">
-  <img src="claude_whisperer.png" width="256" height="256" alt="Claude Whisperer Icon" />
-</div>
-
-Claude Whisperer is a Claude evaluation and safeguards research workbench.
-
-**NEW: Optimized for Claude 4.7 (Opus) and Project Glasswing evaluations.**
+Claude evaluation and safeguards research workbench optimized for Claude 4.7 (Opus) and Project Glasswing evaluations. — v1.0
 
 The current repo is centered on a browser extension for exploring model behavior on `claude.ai`, plus a mixed set of research notes, pattern libraries, and older Python utilities from earlier safeguard-monitor experiments. It is not a clean-room product and it is not pretending to be one. It is a working archive of how the project evolved.
 
-## What This Repo Is
+## What it does
 
 - A browser extension for testing semantic reframing, structured prompt generation, and multimodal prompt-in-image ideas against Claude
 - A research workbench for evaluating safeguards, patterns, failure modes, and model drift
