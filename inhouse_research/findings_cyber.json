@@ -1,0 +1,86 @@
+[
+  {
+    "pattern_id": "CYB-001",
+    "type": "Vulnerability Pattern",
+    "title": "Autonomous Zero-Day Discovery",
+    "description": "Model autonomously identifies unpatched vulnerabilities in binary and source code using an agentic harness with minimal human steering.",
+    "capability_fidelity": "High",
+    "context": "Open-source and closed-source software under authorized disclosure programs."
+  },
+  {
+    "pattern_id": "CYB-002",
+    "type": "Vulnerability Pattern",
+    "title": "Proof-of-Concept Exploit Development",
+    "description": "Transition from vulnerability discovery to the creation of functional PoC exploits capable of arbitrary code execution beyond the initial execution environment.",
+    "capability_fidelity": "High",
+    "context": "Real-world targets such as the Firefox 147 SpiderMonkey engine."
+  },
+  {
+    "pattern_id": "CYB-003",
+    "type": "Threat Model",
+    "title": "Enterprise Network Lateral Movement",
+    "description": "Discovering and executing a series of linked exploits across different hosts and network segments to reach an end-state goal (e.g., exfiltration).",
+    "vulnerabilities_leveraged": ["Outdated software", "Configuration errors", "Reused credentials"],
+    "target_scope": "Small-scale enterprise networks with weak security posture."
+  },
+  {
+    "pattern_id": "CYB-004",
+    "type": "Threat Model",
+    "title": "Sandbox Escape via Misconfiguration",
+    "description": "Exploitation of host-level misconfigurations or known vulnerabilities to break out of restricted execution environments (sandboxes).",
+    "capability_fidelity": "High",
+    "outcome": "Successful identifies and exploits misconfigurations to escape sandbox."
+  },
+  {
+    "pattern_id": "TM-001",
+    "type": "Benchmark/Threat Model",
+    "title": "Cybench CTF Framework",
+    "description": "A collection of 40 Capture-the-Flag challenges evaluating general cybersecurity capability coverage.",
+    "metrics": "Pass@1 of 100% (Saturated by Claude Mythos Preview).",
+    "source": "Zhang, A., et al. (2024), arXiv:2408.08926"
+  },
+  {
+    "pattern_id": "TM-002",
+    "type": "Benchmark/Threat Model",
+    "title": "CyberGym Targeted Reproduction",
+    "description": "1,507 tasks requiring the model to find previously-discovered vulnerabilities in real open-source software projects given a high-level description.",
+    "metrics": "Score: 0.83 (Pass@1).",
+    "source": "Wang, Z., et al. (2025), arXiv:2506.02548"
+  },
+  {
+    "pattern_id": "TM-003",
+    "type": "Benchmark/Threat Model",
+    "title": "Firefox 147 Shell Exploitation",
+    "description": "Targeted exploitation of a browser content process (SpiderMonkey shell) without standard browser sandboxing to exfiltrate secrets.",
+    "scenarios": ["Secret exfiltration", "Arbitrary code execution", "Corruption primitive triage"],
+    "outcome": "Reliably leverages 4 distinct bugs for code execution."
+  },
+  {
+    "pattern_id": "SCN-001",
+    "type": "Scenario",
+    "title": "Corporate Network Attack Simulation",
+    "description": "Multi-stage autonomous attack simulation involving network exploitation estimated to take an expert over 10 hours.",
+    "outcome": "Successfully completed end-to-end by Claude Mythos Preview."
+  },
+  {
+    "pattern_id": "SCN-002",
+    "type": "Scenario",
+    "title": "Operational Technology (OT) Failure",
+    "description": "Attempted autonomous attack on an OT environment, identifying the current boundary of model capability.",
+    "outcome": "Failed to solve within token limits."
+  },
+  {
+    "pattern_id": "MIT-001",
+    "type": "Mitigation Strategy",
+    "title": "Constitutional Probe Classifiers",
+    "description": "Real-time monitoring for prohibited uses (e.g., computer worms) and high-risk dual-use (e.g., exploit development).",
+    "methodology": "Probe classifiers for monitoring and detection to enable rapid response to cyber misuse."
+  },
+  {
+    "pattern_id": "DEF-001",
+    "type": "Defensive Program",
+    "title": "Project Glasswing",
+    "description": "Collaborative initiative to secure systems by providing restricted access to Claude Mythos Preview for vetted industry and open-source partners.",
+    "objective": "Leverage model capabilities for vulnerability discovery and defense enhancement."
+  }
+]
