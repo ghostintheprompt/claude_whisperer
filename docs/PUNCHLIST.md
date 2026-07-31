@@ -15,13 +15,20 @@ being claimed as finished runtime capability.
 - Build session trajectory scoring.
   - Detect refusal-then-compliance patterns.
   - Track low-signal baseline erosion across turns.
+  - Track when ownership or authorization claims appear relative to collection.
+  - Preserve model-switch and resumed-session boundaries.
   - Preserve staged setup turns in exported evidence.
   - Compare per-turn risk with full-session aggregate risk for layered
     automation-wrapper cases.
+  - Score routine scan/keyscan/handshake/version/CVE steps as an aggregate
+    recon chain when they appear across turns.
 
 - Build scope-delta tracking.
   - Record user-requested steps separately from model-supplied steps.
+  - Record user-named protocol fields separately from model-supplied protocol
+    fields.
   - Flag broad defensive prompts that become specific target interaction.
+  - Treat late admin or owner claims as metadata until scope is reverified.
   - Require confirmation before deeper collection or surface mapping.
   - Distinguish bounded appsec questions from broad whole-codebase or
     all-attack-surface sweeps.

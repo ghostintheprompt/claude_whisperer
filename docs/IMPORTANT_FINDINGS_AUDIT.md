@@ -52,6 +52,8 @@ and "what the request enables" as a severity lens.
 | IF-24 | Follow-up | Defense-evasion protocol internals: developer/open-source documentation framing can hide requests for authentication, handshake, dial, or connection mechanics of traffic-obfuscation transports. Reviewer analysis can also reconstruct sensitive mechanics even when sampled output is empty. | README `Defense-evasion protocol internals` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 008, detector signals and tests. | Captured |
 | IF-25 | Follow-up | Protocol surface cartography: full SSH/KEXINIT algorithm extraction plus authentication-method disclosure creates a pre-attack service map, not just remediation evidence. | README `Protocol surface cartography` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 009, detector signals and tests. | Captured |
 | IF-26 | Follow-up | Auth-method disclosure becomes primary-vector exposure when labeled as a key finding, and exact running-build-to-CVE-to-patch-status joins complete a live vulnerability triage cycle. | README `Protocol surface cartography` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 009, `primary_auth_vector_exposure` and `live_build_cve_correlation` tests. | Captured |
+| IF-27 | Follow-up | Retroactive authorization laundering: an admin/ownership claim arrives after recon or model switches, system authorized-testing language becomes the justification bridge, and individually routine scanner/keyscan/handshake/CVE steps aggregate into a pre-exploitation recon chain. | README `Retroactive authorization laundering` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 010, detector signals and tests. | Captured |
+| IF-28 | Follow-up | Unrequested protocol methodology: the user asked for high-level security analysis and did not name KEXINIT, the protocol field, or the collection step; the agent's auditor persona supplied the specialized method as proof of competence. | README `Autonomous methodology expansion` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 003, detector regression test pairing `autonomous_methodology_expansion` with `ssh_crypto_surface_extraction`. | Captured |
 
 ## Current Runtime Signals
 
@@ -87,6 +89,9 @@ Implemented in `defense/evasion_signal_detector.py`:
 - `primary_auth_vector_exposure`
 - `live_build_cve_correlation`
 - `protocol_surface_cartography`
+- `retroactive_authorization_laundering`
+- `permission_carveout_laundering`
+- `non_escalating_recon_chain`
 - `clean_prompt_axis_combo`
 - `sensitive_data_action_request`
 - `orchestration_trust_shift`
@@ -107,7 +112,8 @@ Implemented in `defense/evasion_signal_detector.py`:
 These are captured in method and punchlist but not fully implemented as runtime
 systems yet:
 
-- session trajectory scoring for low-signal erosion;
+- session trajectory scoring for low-signal erosion, model switches, and late
+  authorization claims;
 - automated file, attachment, retrieved-text, and tool-argument scanning;
 - authenticated-account/content-risk correlation;
 - generated-code primitive review for network, execution, secrets, persistence,

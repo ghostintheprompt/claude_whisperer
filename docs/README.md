@@ -6,7 +6,8 @@ work.
 ## Current Documents
 
 - [Important Findings Method](IMPORTANT_FINDINGS_METHOD.md) - the 2026
-  case-informed stance, clean-prompt wrapper taxonomy, and red-to-blue workflow.
+  case-informed stance, authorization-timing lessons, clean-prompt wrapper
+  taxonomy, and red-to-blue workflow.
 - [Important Findings Audit](IMPORTANT_FINDINGS_AUDIT.md) - coverage map from
   source findings to README, methodology, detector, and punchlist.
 - [Research Methodology](RESEARCH_METHODOLOGY.md) - repeatable evaluation loop,

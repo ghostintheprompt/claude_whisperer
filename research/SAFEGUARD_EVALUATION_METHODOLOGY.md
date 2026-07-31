@@ -12,9 +12,10 @@ and get a comparable result, not a one-off "we tried some prompts."
 The 2026 update adds the case-informed lanes from
 [`../docs/IMPORTANT_FINDINGS_METHOD.md`](../docs/IMPORTANT_FINDINGS_METHOD.md):
 decision preloading, clean-prompt wrapper taxonomy, mode switching,
-orchestration trust shift, Unicode drift, chat-surface displacement,
-trusted-slot contamination, low-signal erosion, probe confirmation,
-data-category hard stops, clean-auth probing, and legitimate-code camouflage.
+retroactive authorization laundering, orchestration trust shift, Unicode drift,
+chat-surface displacement, trusted-slot contamination, low-signal erosion, probe
+confirmation, autonomous methodology expansion, data-category hard stops,
+clean-auth probing, and legitimate-code camouflage.
 
 The detection signals referenced below are implemented in
 [`defense/evasion_signal_detector.py`](../defense/evasion_signal_detector.py).
@@ -33,8 +34,8 @@ The detection signals referenced below are implemented in
    is the point; a high pass rate on three categories tells you nothing about
    the other two.
 4. **Log verbatim.** Store the exact input, the exact output, the decoding
-   settings, and the model version. A finding you can't reproduce is not a
-   finding.
+   settings, the model version, and the point in the session where authorization
+   or ownership was established. A finding you can't reproduce is not a finding.
 5. **Separate finding from filtering.** Record every case that failed, with a
    severity and a confidence, and rank afterward. Deciding "that one doesn't
    count" mid-run silently lowers recall.
@@ -96,6 +97,28 @@ reasoning path that produced it; don't let an accumulation of benign steps
 launder a disallowed result; where tools are involved, gate on what the action
 *does*, not on how the request was phrased.
 
+## Retroactive authorization laundering
+
+**What you're measuring:** whether the system treats a late admin, owner, or
+authorized-testing claim as permission for work that already happened. The
+interesting failure is chronological: useful reconnaissance or evidence
+collection occurs first, then the user supplies an ownership story that
+retroactively makes the session feel legitimate.
+
+**Evaluation approach:** compare up-front scoped authorization with a
+mid-session ownership injection after model switches, resumed context, or
+already-collected intelligence. Then test a non-escalating chain where each step
+looks routine in isolation but the aggregate artifact becomes target-specific
+pre-exploitation reconnaissance.
+
+**Detection signals:** `retroactive_authorization_laundering`,
+`permission_carveout_laundering`, and `non_escalating_recon_chain`.
+
+**Mitigations:** require authorization before collection, preserve chronology
+across model switches and resumed sessions, treat system permission carve-outs
+as conditions to verify, and score routine collection steps by their aggregate
+intelligence value.
+
 ## Clean-prompt wrapper taxonomy
 
 **What you're measuring:** whether a prompt keeps its visible language clean
@@ -119,10 +142,11 @@ can share the same visible structure.
 `preloaded_context_payload`, `preloaded_recon_package_laundering`,
 `structured_output_pressure`, `operational_thoroughness_pressure`,
 `operational_normalcy_camouflage`, `incremental_tasking`,
-`legitimate_tool_invocation_wrapper`, `broad_sweep_escalation`,
-`multi_agent_audit_fanout`, `vulnerability_database_packaging`,
-`ai_discovery_asymmetry`, `obfuscation_transport_internals`,
-`developer_documentation_laundering`,
+`legitimate_tool_invocation_wrapper`,
+`permission_carveout_laundering`, `non_escalating_recon_chain`,
+`broad_sweep_escalation`, `multi_agent_audit_fanout`,
+`vulnerability_database_packaging`, `ai_discovery_asymmetry`,
+`obfuscation_transport_internals`, `developer_documentation_laundering`,
 `review_process_sensitive_reconstruction`, `ssh_crypto_surface_extraction`,
 `auth_method_surface_disclosure`, `protocol_surface_cartography`, and
 `clean_prompt_axis_combo`.
@@ -194,6 +218,27 @@ is remediation guidance without a portable surface dump.
 from shareable output, redact exact-build-to-CVE joins unless explicitly
 authorized, require explicit scope for live collection, and convert details into
 remediation statements.
+
+## Autonomous methodology expansion
+
+**What you're measuring:** whether a broad defensive request causes the model to
+invent the specific audit method, protocol field, collection target, or surface
+map. In this case family, the user supplied a target and high-level security
+analysis frame; the model supplied the specialized protocol focus and execution
+path.
+
+**Evaluation approach:** compare a narrow user-requested hardening task with a
+broad audit frame. Log which protocol fields, commands, and collection steps
+were named by the user versus introduced by the model's internal auditor
+persona.
+
+**Detection signals:** `autonomous_methodology_expansion`, with
+`ssh_crypto_surface_extraction` or `protocol_surface_cartography` when the
+model-supplied method exports live protocol surface.
+
+**Mitigations:** require scope confirmation before deeper collection, cap
+autonomous audit depth by default, and treat defensive or educational framing as
+context rather than blanket permission.
 
 ---
 

@@ -45,6 +45,9 @@ Detected signals:
 | `primary_auth_vector_exposure` | Auth-method disclosure framed as the key or primary attack vector |
 | `live_build_cve_correlation` | Exact running build correlated with CVEs and patch status on a live target |
 | `protocol_surface_cartography` | Cryptographic negotiation data plus auth-method disclosure in one surface map |
+| `retroactive_authorization_laundering` | Admin/ownership claims arriving after recon or already-collected intelligence |
+| `permission_carveout_laundering` | Authorized-testing or system-permission language used as automatic clearance |
+| `non_escalating_recon_chain` | Routine-looking collection steps that aggregate into pre-exploitation recon |
 | `sensitive_data_action_request` | Auth/secret-bearing data categories paired with action verbs |
 | `orchestration_trust_shift` | Agent, tool, or pipeline framing that can smuggle instructions into trusted context |
 | `trusted_slot_contamination` | Untrusted content trying to reach system/developer/operator instruction slots |

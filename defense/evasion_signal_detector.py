@@ -219,18 +219,28 @@ _BROAD_SECURITY_FRAME_RE = re.compile(
     r"security analysis|security audit|defensive security|analyze security|"
     r"audit this|review security|educational context|authorized analysis|"
     r"professional assessment"
-    r")\b",
+    r")\b"
+    r"|анализ безопасности|проведи мне анализ безопасности",
     re.IGNORECASE,
 )
 
 _AUTONOMOUS_METHOD_RE = re.compile(
     r"\b(?:"
     r"decided|self-generated|self generated|filled in|translated into|"
+    r"reasoning chain decided|agent'?s own reasoning chain|"
+    r"model supplied .* expertise|agent supplied .* expertise|"
+    r"model supplied .* execution|agent supplied .* execution|"
+    r"supplied the expertise and (?:the )?execution|"
+    r"specific offensive tradecraft|offensive tradecraft|"
+    r"user did not request|user never asked|did not name .* protocol field|"
+    r"did not guide .* step|internal security-auditor persona|"
+    r"internal security auditor persona|"
     r"proper .* audit|methodology|thorough|demonstration of competence|"
     r"complete .* surface map|surface map|algorithm proposal|handshake|"
     r"verbose .* command|extract(?:ed)?|map(?:ped)?"
-    r")\b",
-    re.IGNORECASE,
+    r")\b"
+    r"|анализ безопасности",
+    re.IGNORECASE | re.DOTALL,
 )
 
 _REAL_TARGET_RE = re.compile(
@@ -596,6 +606,70 @@ _CVE_CORRELATION_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+_OWNERSHIP_CLAIM_RE = re.compile(
+    r"\b(?:"
+    r"i'?m the admin there|i am the admin there|i'?m admin|i am admin|"
+    r"i'?m the owner|i am the owner|i own this|my server|my system|"
+    r"my host|my domain|my environment|authorized owner|target owner|"
+    r"owner of this"
+    r")\b"
+    r"|я там админ",
+    re.IGNORECASE,
+)
+
+_RETROACTIVE_AUTH_RE = re.compile(
+    r"\b(?:"
+    r"mid-session ownership injection|late ownership claim|late authorization|"
+    r"retroactive authorization|retroactively reframed|after substantial recon|"
+    r"after .* recon|after .* enumeration|after .* intelligence|"
+    r"already-collected intelligence|already collected intelligence|"
+    r"already .* complete|substantial recon .* complete|model switch|"
+    r"switch(?:ed|ing)? models?"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_PERMISSION_CARVEOUT_RE = re.compile(
+    r"\b(?:"
+    r"authorized security testing|authorized testing|permission language|"
+    r"system prompt .* permits|system prompt .* allows|pre-built justification|"
+    r"prebuilt justification|carve-out|carveout|mapped directly .* carve-out|"
+    r"mapped directly .* carveout|refusal heuristics"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_NON_ESCALATING_FRAME_RE = re.compile(
+    r"\b(?:"
+    r"non-escalating progression|non escalating progression|"
+    r"never asked for exploitation|never asked for brute force|"
+    r"never asked for login attempts|no exploitation|no brute force|"
+    r"no login attempts|individually routine|routine in isolation|"
+    r"looked individually routine|each step .* routine"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_RECON_CHAIN_STEP_RE = re.compile(
+    r"\b(?:"
+    r"scanner|scan|keyscan|key scan|verbose handshake|handshake|"
+    r"cve lookup|cve look-up|version lookup|version look-up|kexinit|"
+    r"algorithm proposal|banner grab|banner grabbing|service fingerprint|"
+    r"service fingerprinting|patch status|key exchange"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_PRE_EXPLOIT_CHAIN_RE = re.compile(
+    r"\b(?:"
+    r"pre-exploitation recon chain|pre-exploitation reconnaissance|"
+    r"complete pre-exploitation|pre-exploit recon chain|"
+    r"together they constituted|combined chain|aggregate chain|"
+    r"complete pre-attack|pre-attack service map|pre-attack intelligence"
+    r")\b",
+    re.IGNORECASE,
+)
+
 
 def _detect_invisible(text: str) -> List[Finding]:
     hits: dict[str, int] = {}
@@ -930,6 +1004,15 @@ def _detect_clean_prompt_wrappers(text: str) -> List[Finding]:
     live_build = list(_LIVE_BUILD_RE.finditer(text))
     cve_ids = list(_CVE_ID_RE.finditer(text))
     cve_correlation = list(_CVE_CORRELATION_RE.finditer(text))
+    ownership_claim = list(_OWNERSHIP_CLAIM_RE.finditer(text))
+    retroactive_auth = list(_RETROACTIVE_AUTH_RE.finditer(text))
+    permission_carveout = list(_PERMISSION_CARVEOUT_RE.finditer(text))
+    trusted_slot = list(_TRUSTED_SLOT_RE.finditer(text))
+    non_escalating = list(_NON_ESCALATING_FRAME_RE.finditer(text))
+    recon_chain_steps = list(_RECON_CHAIN_STEP_RE.finditer(text))
+    pre_exploit_chain = list(_PRE_EXPLOIT_CHAIN_RE.finditer(text))
+    recon_artifacts = list(_RECON_ARTIFACT_RE.finditer(text))
+    incremental = list(_INCREMENTAL_TASKING_RE.finditer(text))
 
     defensive = list(_DEFENSIVE_FRAMING_WRAPPER_RE.finditer(text))
     defensive_context_is_safe_auth = (
@@ -1201,7 +1284,71 @@ def _detect_clean_prompt_wrappers(text: str) -> List[Finding]:
             )
         )
 
-    recon_artifacts = list(_RECON_ARTIFACT_RE.finditer(text))
+    if ownership_claim and (retroactive_auth or (incremental and recon_artifacts)):
+        matches = sorted(
+            ownership_claim[:1]
+            + (retroactive_auth[:2] or incremental[:1] + recon_artifacts[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="retroactive_authorization_laundering",
+                severity="high",
+                detail=(
+                    "An ownership or admin claim appears after reconnaissance, "
+                    "model switching, or already-collected intelligence. Late "
+                    "authorization should not bless prior collection; require "
+                    "scope and authority before target interaction or evidence "
+                    "export."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if permission_carveout and (trusted_slot or defensive or analytical_task):
+        matches = sorted(
+            permission_carveout[:2] + (trusted_slot[:1] or defensive[:1] or analytical_task[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="permission_carveout_laundering",
+                severity="medium",
+                detail=(
+                    "The request leans on authorized-security-testing or system "
+                    "permission language as a pre-built justification. Treat the "
+                    "carve-out as a condition to verify, not as automatic "
+                    "clearance for reconnaissance, tool use, or reporting."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if (non_escalating or pre_exploit_chain) and len(recon_chain_steps) >= 3:
+        matches = sorted(
+            (non_escalating[:1] or pre_exploit_chain[:1])
+            + recon_chain_steps[:4]
+            + _non_overlapping(pre_exploit_chain[:1], recon_chain_steps[:4]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="non_escalating_recon_chain",
+                severity="medium",
+                detail=(
+                    "The sequence avoids explicit exploitation, brute force, or "
+                    "login attempts, but routine collection steps combine into "
+                    "pre-exploitation reconnaissance. Score the aggregate chain "
+                    "across turns and model switches, not only each safe-looking "
+                    "step."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
     if (
         broad_sweep
         and (analytical_task or defensive or output_shape or vuln_report_package)
@@ -1383,7 +1530,6 @@ def _detect_clean_prompt_wrappers(text: str) -> List[Finding]:
             )
         )
 
-    incremental = list(_INCREMENTAL_TASKING_RE.finditer(text))
     if incremental and (context_axis or output_shape or defensive):
         matches = sorted(
             incremental[:1] + (context_axis[:1] or output_shape[:1] or defensive[:1]),
