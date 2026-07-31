@@ -16,10 +16,18 @@ Detected signals:
 |---|---|
 | `base64_payload` | A base64 run that decodes to readable text |
 | `homoglyph_substitution` | ASCII letters mixed with look-alike Cyrillic/Greek/Armenian glyphs |
+| `mixed_script_control_surface` | Multiple writing systems around instruction or control-surface language |
 | `invisible_characters` | Zero-width and other non-printing characters |
 | `rot13_concealment` | Text that becomes English under ROT13 |
 | `leetspeak_substitution` | Multiple letter-for-symbol substitutions inside a word |
+| `decision_preloading` | Language that tries to pre-authorize the model's choices and turn it into an execution engine |
+| `sensitive_data_action_request` | Auth/secret-bearing data categories paired with action verbs |
+| `orchestration_trust_shift` | Agent, tool, or pipeline framing that can smuggle instructions into trusted context |
 | `context_dilution` / `oversized_input` | A long body with a short directive isolated in the tail |
+
+The newer signals come from 2026 frontier-model case review. They are meant
+for SOC triage and evaluator workflow design: a hit does not prove malice, but
+it says "slow down here; the trust boundary is being touched."
 
 ### Use as a library
 

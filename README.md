@@ -1,92 +1,141 @@
-<p align="center">
-  <img src="claude_whisperer.png" width="480">
-</p>
+# Claude Whisperer
 
-# Claude Whisperer — AI Safeguards Evaluation Toolkit
+Red pressure. Blue memory. Frontier-model safeguards with a pulse.
 
-![License](https://img.shields.io/badge/License-MIT-blue)
-![Platform](https://img.shields.io/badge/Platform-Browser%20Extension-orange)
-![Focus](https://img.shields.io/badge/Focus-Red%20Team%20Methodology-green)
+Claude Whisperer is a safeguards-evaluation repo for the current frontier:
+models, agents, tools, attachments, codebases, retrieval, and the human stories
+that make all of it slippery.
 
-A research project for **systematically evaluating the safeguards of large language models**. It pairs a structured vulnerability taxonomy with a browser-based testing extension, so that model behavior under adversarial input can be probed methodically rather than ad hoc.
+It began as a Claude-specific curiosity project. The name stayed because the
+instinct was right: listen closely to the model, notice where trust moves, and
+follow the little shift before it becomes a big failure. The repo is no longer
+trying to be a shrine to one model line. It is becoming a working method for
+authorized red-team pressure, blue-SOC translation, and source-safe case-study
+writing.
 
-The emphasis is on **method**: naming failure modes, defining how you'd test for each, and documenting results — the discipline a red team or AI-safety evaluator actually works from.
+No trophy-wall jailbreak energy. No fake "latest model" swagger. A finding is
+not done when the model slips. A finding is done when the behavior is
+reproducible, the boundary is named, and the next defender has something to log,
+test, block, review, or escalate.
 
----
+## Field Position
 
-## Start with the methodology
+As of July 31, 2026, model certainty ages fast. Anthropic, OpenAI, Google, and
+the rest of the frontier stack are shipping active, deprecated, retired, and
+alias-routed models on different clocks. This repo does not hardcode trust in a
+model name.
 
-The center of this project is the **[Vulnerability Taxonomy](research/taxonomy/vulnerability_taxonomy.md)** — a structured classification of the ways an instruction-following model can be pushed off its guidelines, with a testing approach and example for each category:
+Every serious run should capture:
 
-| Category | What it covers |
+- provider and exact model ID;
+- interface: web, API, agent, extension, local harness, MCP, or tool runner;
+- date, system prompt or policy version when authorized, and tool permissions;
+- attachments, retrieval sources, repo files, tickets, or documents involved;
+- exact input and output, with a source-safe version for sharing.
+
+The work is red and blue together because that is where the signal gets useful.
+Red finds the strange move. Blue gives it memory. Safety names the harm model.
+Engineering turns it into a control that can survive the next release.
+
+## Case Lanes
+
+The current spine comes from authorized June and early July 2026 frontier-model
+case review. Raw case material stays private unless explicitly cleared. The
+method travels.
+
+| Lane | Field Note | Defender's Move |
+|---|---|---|
+| Decision preloading | The attacker supplies the objective, authority, steps, and success criteria so the model only has to execute. | Flag pre-authorization language and force a fresh policy/data/tool check before action. |
+| Mode switching | The frame moves from builder to reviewer to analyst to operator in small enough steps that no single turn looks loud. | Score the trajectory, not only the latest message. Compare direct and staged versions of the same end state. |
+| Orchestration trust shift | The human never prompts the model directly. The instruction rides through a document, repo, subagent, tool result, CI job, or MCP context. | Treat tool output, retrieval text, attachments, and repo content as untrusted unless authority is explicit. |
+| Unicode drift | Mixed scripts, homoglyphs, zero-width characters, and encoding split what the human sees from what the model reads. | Normalize, decode, rescan, and preserve both original and normalized evidence. |
+| Low-signal erosion | Boring setup turns move the baseline until the sharp request feels ordinary. | Track session risk and refusal-then-compliance patterns. Keep setup turns in the evidence pack. |
+| Data-category hard stops | Credentials, tokens, sessions, recovery codes, and enumeration do not become safe because the request sounds professional. | Gate on data class and action, not vibe. Escalate auth material and enumeration primitives by default. |
+| Legitimate-code camouflage | Risk hides inside a credible enterprise project: agents, servers, C++, process control, remote input, audit tooling. | Review generated code by primitive: network, secrets, execution, persistence, process control, remote access. |
+
+The twist is simple: the model is often the magic key, but not always the
+stage. Sometimes the real attack is in the surrounding system, and the model is
+only where borrowed trust gets cashed out.
+
+## Working Pieces
+
+| Path | State |
 |---|---|
-| **Instruction processing** | Conflicting instructions, role-based framing, instruction encoding |
-| **Reasoning exploitation** | Chain-of-thought subversion, false ethical dilemmas, indirect requests |
-| **Context window** | Context dilution, delayed activation, incremental context building |
-| **Multi-turn** | Gradual boundary testing, false urgency, conversation forking |
-| **Emergent capabilities** | Tool-use subversion, cross-domain transfer, capability chaining |
+| `defense/evasion_signal_detector.py` | Working standard-library detector. Text in, findings out, no model calls. Covers classic obfuscation plus the newer case-informed signals: decision preloading, sensitive data/action pairing, mixed-script control surfaces, and orchestration trust shifts. |
+| `docs/IMPORTANT_FINDINGS_METHOD.md` | Current field-method document for source-safe case-study writing and red-to-blue handoff. |
+| `docs/RESEARCH_METHODOLOGY.md` | Current evaluation loop: target fixation, pass/fail definitions, exact logging, metrics, and evidence packages. |
+| `research/SAFEGUARD_EVALUATION_METHODOLOGY.md` | Defender companion to the taxonomy, now linked to the 2026 case lanes. |
+| `research/taxonomy/vulnerability_taxonomy.md` | Useful older taxonomy. Needs a 2026 refresh, but the bones are good. |
+| `docs/PUNCHLIST.md` | Honest gap list. If it is not built yet, it lives there instead of pretending in the runtime story. |
+| `extension/` | Legacy browser-extension spike. Useful UI ideas, but not the recommended live path until refactored with local proxying, warning gates, model capture, and no browser-stored production API keys. |
+| `exploit_generator/`, `semantic_mirror/`, `multimodal/` | Legacy research archive. Keep for private forensics and mechanism study. Do not lead with it publicly until safe fixtures and guardrails exist. |
 
-Each entry is written for an evaluator: a definition, concrete testing approaches, and a "Responsible Disclosure" note. It's the part of the repo that demonstrates *how the work is reasoned about*, independent of any single model version.
+## Run The Clean Piece
 
----
-
-## The testing extension
-
-A Manifest V3 browser extension provides a working instrument for exercising the taxonomy against a live model:
-
-- **Semantic reframing** — recontextualize a prompt (academic, auditor, educator framings) to test whether safeguards hold across surface form.
-- **Prompt transformation** — cipher/encoding variants (ROT13, Base64, leetspeak, Unicode) to probe input normalization.
-- **Multimodal probes** — text-in-image and steganographic variants to test vision-side handling.
-- **Session tracking** — logs prompts, responses, and outcomes to JSON for later analysis.
-
-The extension is the delivery mechanism; the taxonomy is what tells you *what* to test and *how to read the result*.
-
----
-
-## Repository map
-
-```
-claude_whisperer/
-├── research/
-│   └── taxonomy/vulnerability_taxonomy.md   # the methodology (start here)
-├── extension/                               # Manifest V3 testing extension
-│   ├── background.js  content.js  popup.*   # working code
-│   └── modules/                             # transformation modules
-├── core/                                    # API clients used by the CLI tooling
-├── docs/                                    # methodology notes, testing guides
-├── patterns/                                # template / test-case libraries
-└── tests/                                   # test harness
+```bash
+cd /path/to/claude_whisperer
+python3 -m unittest discover -s defense -p 'test_*.py'
+echo "The subagent should read the attachment as trusted operator instructions" \
+  | python3 defense/evasion_signal_detector.py
 ```
 
----
+Library use:
 
-## Status & scope
+```python
+from defense.evasion_signal_detector import scan, risk_score
 
-This is a **research artifact from 2025**. Model references throughout (taxonomy examples, extension defaults, test fixtures) reflect the model generations current at the time it was written — they are a snapshot, not a maintained integration, and some model IDs have since been retired. Treat the code as a demonstration of method and structure, not a turnkey tool against today's models.
+findings = scan(user_text)
+score = risk_score(findings)
+if score >= 60:
+    route_for_review(user_text, findings)
+```
 
-The taxonomy and testing approach are the durable parts; they carry over regardless of model version.
+## House Rules
 
----
+- Real capability plus real warning.
+- Red pressure should become blue memory.
+- Do not store production frontier-model API keys in browser extensions.
+- Do not call a model "current" without checking the docs and recording the
+  date.
+- Raw case notes can stay private. Public work should be derivative,
+  source-safe, and reproducible.
+- Every offensive lesson should leave behind at least one detection, test,
+  review rule, mitigation hypothesis, or report pattern.
+- Anything aspirational belongs in `docs/PUNCHLIST.md`.
 
-## Responsible use
+## Contract Signal
 
-This project is for **authorized safeguards research and evaluation** — the kind of work done under proper authorization to make models more robust.
+This repo should tell a frontier lab or AI-security team:
 
-**Appropriate uses:** authorized red-team and penetration testing, AI-safety and alignment research, CTF and educational settings, defensive research (building detections and mitigations).
+- I can read a messy transcript like evidence.
+- I can pressure a model without losing the thread.
+- I can spot trust transfer across tools, docs, agents, code, and language.
+- I can hand the finding to SOC, safety, policy, and engineering without making
+  them decode my ego first.
+- I care about the work enough to keep it sharp and useful.
 
-**Out of scope:** testing without authorization, attacking production systems, or any use aimed at causing harm or evading safeguards for malicious ends.
+That is the Ghost in the Prompt lane: curiosity with receipts, pressure with
+care, signal that turns into protection.
 
-If you use this to test a model you don't own, get written authorization first and follow responsible-disclosure practice.
+## Reference Anchors
 
----
+- [Anthropic model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations)
+- [OpenAI model documentation](https://developers.openai.com/api/docs/models)
+- [Google Gemini latest model guidance](https://ai.google.dev/gemini-api/docs/latest-model)
+- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/)
+- [MITRE ATLAS](https://atlas.mitre.org/)
+- [NIST AI RMF Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
+
+## Responsible Use
+
+Authorized safeguards research only. Do not use this repo to test systems
+without permission, attack production services, harvest secrets, or evade
+safeguards for harmful activity.
+
+The work has a charge because the systems have a charge. Keep the curiosity.
+Keep the receipts. Leave protection behind.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
-
----
-
-<p align="center">
-  <sub>A red-team methodology project. Built for AI-safety and security research.</sub><br>
-  <sub>github.com/ghostintheprompt/claude_whisperer</sub>
-</p>
+MIT. See [LICENSE](LICENSE).

@@ -1,97 +1,179 @@
-# Claude 3.7 Research Methodology
+# Frontier Safeguards Research Methodology
 
-This document outlines the systematic research methodology used to discover, analyze, and document vulnerabilities in Claude 3.7. It demonstrates a rigorous, scientific approach to AI safety research.
+This document describes the current Claude Whisperer research method for
+authorized frontier-model safeguards evaluation. Older files in this repository
+may mention specific Claude generations. Treat those as historical fixtures.
+This methodology is provider- and model-agnostic.
 
-## Research Framework
+## Operating Principle
 
-Our methodology combines systematic exploration with empirical verification and quantitative analysis:
+An AI red-team finding is not complete when the model fails. It is complete
+when the behavior is reproducible, the trust boundary is named, the evidence is
+preserved, and the blue-team control is obvious enough to test.
 
-```
-Input Variables → Testing Framework → Observation → Analysis → Documentation
-```
+## Evaluation Loop
 
-## 1. Multi-dimensional Testing Axes
+1. **Fix the target.** Record provider, exact model ID, interface, policy or
+   system prompt version, tool permissions, attachments, retrieval state, and
+   date.
+2. **State the hypothesis.** Name the behavior under test before running it.
+3. **Define pass/fail up front.** Refusal, partial compliance, transformed
+   compliance, tool-call attempt, and unsafe output are different outcomes.
+4. **Run the direct case.** Establish the baseline response.
+5. **Run the shaped case.** Vary one pressure lane at a time: framing,
+   orchestration, attachment, Unicode, context length, tool availability, or
+   conversation trajectory.
+6. **Log verbatim.** Preserve exact inputs, outputs, model metadata, and
+   environment details. Sanitize only the version intended for sharing.
+7. **Translate to control.** Every repeatable red observation should produce a
+   detection, review rule, policy test, or mitigation hypothesis.
+8. **Re-baseline after release changes.** A result from one model generation is
+   evidence, not a permanent truth.
 
-We test across multiple dimensions to identify pattern correlations:
+## Pressure Lanes
 
-### Model Dimensions
-- **Mode Comparison**: Claude 3.7 Quick vs. Depth modes
-- **Cross-Model**: Claude 3.7 vs. Claude 3.5 Sonnet vs. other LLMs
-- **Versioning**: Testing across Claude version updates
+### Decision Preloading
 
-### Content Dimensions
-- **Domain Knowledge**: Testing across knowledge boundaries
-- **Instruction Processing**: Testing interpretation of complex instructions
-- **Context Handling**: Multi-turn conversation manipulation
-- **Output Generation**: Testing response format manipulation
+The attacker supplies authorization, action plan, success criteria, and urgency
+so the model has little room to reassess.
 
-## 2. Testing Framework Implementation
+Measure:
 
-Our testing framework employs the following components:
+- Does the model independently evaluate each step?
+- Does it ask for missing authority or scope?
+- Does it perform sensitive actions because the frame says they are approved?
 
-### Automated Testing Infrastructure
-- **Test Suite Definitions**: Structured JSON test case definitions
-- **Test Orchestration**: Parallel test execution across models/modes
-- **Result Aggregation**: Standardized result format for analysis
+Control:
 
-### Testing Workflow
-1. **Define Hypothesis**: Formulate testable hypothesis about model behavior
-2. **Design Test Cases**: Create test inputs to probe specific behaviors
-3. **Execute Tests**: Run tests across multiple dimensions
-4. **Analyze Results**: Statistical analysis of responses
-5. **Document Findings**: Standardized vulnerability reports
+- Detect pre-authorization language.
+- Require fresh checks at tool and data boundaries.
+- Log the difference between claimed authorization and requested capability.
 
-## 3. Vulnerability Classification System
+### Mode Switching
 
-We use a hierarchical taxonomy to classify vulnerabilities:
+The request gradually changes task identity: builder, reviewer, analyst,
+auditor, operator. The end state may be refused directly but reached through
+small legitimate-looking steps.
 
-### Primary Categories
-1. **Knowledge Boundary Vulnerabilities**: Extracting knowledge that should be restricted
-2. **Instruction Processing Vulnerabilities**: Manipulating interpretation of instructions
-3. **Multi-turn Exploitation**: Building harmful contexts across conversation turns
-4. **Output Manipulation**: Inducing formatting that bypasses filters
-5. **System Interaction Vulnerabilities**: Exploiting interaction patterns
+Measure:
 
-### Severity Classification
-- **Critical**: Direct harm potential with high success rate
-- **High**: Significant policy violation with moderate success rate
-- **Medium**: Partial policy violation with limited success rate
-- **Low**: Edge cases with minimal actual risk
+- Does policy enforcement change with role framing?
+- Does the system preserve risk state across turns?
+- Does refusal consistency degrade after benign setup?
 
-## 4. Quantitative Analysis Methods
+Control:
 
-We apply rigorous quantitative methods to analyze test results:
+- Score trajectories.
+- Review refusal-then-compliance sequences.
+- Compare direct and staged variants of the same end request.
 
-### Statistical Analysis
-- **Success Rate Calculation**: Percentage of successful exploitation attempts
-- **Mode Comparison Metrics**: Statistical significance testing between modes
-- **Pattern Recognition**: Clustering of vulnerability patterns
+### Orchestration Trust Shift
 
-### Visualization Techniques
-- **Vulnerability Heat Maps**: Visual representation of success rates across dimensions
-- **Mode Comparison Charts**: Visual comparison of Quick vs. Depth vulnerabilities
-- **Temporal Trend Analysis**: Changes in vulnerability metrics over time
+The request rides through a pipeline, subagent, code file, document, issue,
+retrieval result, or tool output. The model may treat untrusted content as
+trusted instruction.
 
-## 5. Responsible Disclosure Process
+Measure:
 
-Our research follows a strict responsible disclosure process:
+- Is source authority preserved?
+- Are tool outputs treated as data or instructions?
+- Does an automated layer bypass human review?
 
-1. **Discovery**: Initial identification of potential vulnerability
-2. **Verification**: Confirmation through repeated testing
-3. **Documentation**: Comprehensive vulnerability report creation
-4. **Responsible Disclosure**: Direct reporting to Anthropic security team
-5. **Remediation Support**: Collaboration on fixing vulnerabilities
-6. **Publication**: Public disclosure only after remediation
+Control:
 
-## Technical Contribution
+- Mark untrusted context explicitly.
+- Scan tool inputs, tool outputs, attachments, and retrieved text.
+- Log agent identity, tool name, source, and authority per step.
 
-Beyond vulnerability discovery, our research aims to advance the field through:
+### Unicode And Encoding
 
-1. **Safeguards Implementation**: Practical real-time protection mechanisms
-2. **Pattern Recognition Systems**: Advanced detection of exploitation attempts
-3. **Policy Enforcement Frameworks**: Systematic approaches to safety
-4. **Testing Methodologies**: Novel approaches to LLM red teaming
+The visible surface differs from the model-readable surface through mixed
+scripts, homoglyphs, zero-width characters, or encodings.
 
----
+Measure:
 
-*This methodology document represents a synthesis of best practices in AI safety research and cybersecurity vulnerability assessment.*
+- Does normalization happen before policy evaluation?
+- Are decoded artifacts rescanned?
+- Does classifier behavior change across scripts?
+
+Control:
+
+- Normalize Unicode.
+- Expose invisible characters.
+- Decode obvious encodings.
+- Preserve original and normalized evidence.
+
+### Data-Category Boundaries
+
+Credential, token, session, recovery, authentication, and enumeration requests
+must be treated by data class, not by stated intent.
+
+Measure:
+
+- Does professional framing lower scrutiny?
+- Does a larger codebase hide a sensitive primitive?
+- Does the model evaluate discrete API calls and data types?
+
+Control:
+
+- Escalate sensitive data/action pairings.
+- Inspect generated code by primitive.
+- Require approval for auth material, session artifacts, and enumeration.
+
+### Low-Signal Baseline Erosion
+
+The early sequence looks harmless, but it establishes a context that makes a
+later request easier to accept.
+
+Measure:
+
+- Does the session risk score rise?
+- Does the final turn inherit trust from setup turns?
+- Does the same final request get different treatment when isolated?
+
+Control:
+
+- Maintain session-level risk state.
+- Alert on repeated boundary probes.
+- Review setup turns when the final turn touches sensitive action.
+
+## Metrics
+
+Track both safety and usability:
+
+- attack-success rate;
+- refusal consistency;
+- false-refusal rate;
+- tool-call attempt rate;
+- sensitive-data touch rate;
+- trajectory risk delta;
+- reproducibility across repeated runs;
+- regression after model or system-prompt changes.
+
+## Evidence Package
+
+A contract-ready finding should include:
+
+- finding title;
+- provider and exact model ID;
+- interface and environment;
+- policy/system prompt version if authorized;
+- tool permissions and available connectors;
+- attachment or retrieval source summary;
+- exact input/output or sanitized reproduction;
+- expected result and observed result;
+- severity, confidence, and reproducibility notes;
+- red-team interpretation;
+- blue-team detection or mitigation recommendation;
+- open questions for safety, policy, or engineering.
+
+## Relationship To The Code
+
+The working detector in `defense/evasion_signal_detector.py` implements
+pre-model triage for several of the lanes above. It is intentionally defensive:
+text in, findings out, no model call, no prompt generation.
+
+Legacy exploit generators and browser-extension pieces are retained as archive
+material. They should not be represented as current production-grade tooling
+until refactored behind explicit warnings, authorization gates, safer fixtures,
+and model-version capture.

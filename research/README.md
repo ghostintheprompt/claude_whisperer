@@ -1,48 +1,41 @@
-# Claude 3.7 Vulnerability Research
+# Research
 
-This directory contains tools and methodologies for systematic research into Claude 3.7 vulnerabilities.
+This directory contains the methodology, taxonomy, fixtures, and analysis tools
+for authorized safeguards evaluation.
+
+The current project direction is frontier-model and provider agnostic. Older
+scripts and pattern files may still reference specific Claude generations; treat
+those as historical fixtures until reviewed.
+
+## Start Here
+
+- [Safeguard Evaluation Methodology](SAFEGUARD_EVALUATION_METHODOLOGY.md)
+- [Vulnerability Taxonomy](taxonomy/vulnerability_taxonomy.md)
+- [Important Findings Method](../docs/IMPORTANT_FINDINGS_METHOD.md)
+- [Defense Detector](../defense/README.md)
+
+## Current Research Questions
+
+- Does the system reassess action and data boundaries when a request is framed
+  as already authorized?
+- Does safety behavior change when the same objective arrives through a
+  document, codebase, tool result, subagent, MCP context, or retrieval source?
+- Does Unicode, script mixing, encoding, or long-context placement create a
+  classifier/model mismatch?
+- Does a low-signal setup sequence erode refusal consistency?
+- Can each red-team finding be translated into a SOC detection, escalation
+  rule, or regression test?
 
 ## Directory Structure
 
-- **modes/** - Tools for comparing vulnerabilities across Claude 3.7 modes (Quick vs. Depth)
-- **models/** - Tools for cross-model comparison (Claude 3.7 vs. other models)
-- **taxonomy/** - Classification system for vulnerabilities
-- **tools/** - Analysis utilities and research tools
-- **patterns/** - Vulnerability patterns and test suites
-- **reports/** - Report templates and example findings
+- `taxonomy/` - category system for failure modes and evaluation lanes.
+- `patterns/` - legacy and current test fixtures. Review before public use.
+- `modes/` and `models/` - older comparison tooling.
+- `tools/` - analysis utilities and generators.
+- `reports/` - report templates and examples.
 
-## Getting Started
+## Working Rule
 
-The `index.py` script provides a unified interface to the research tools:
-
-```bash
-# List available research components
-python research/index.py --list
-
-# Run mode comparison research
-python research/index.py --mode mode_comparison_tester
-
-# Run cross-model comparison
-python research/index.py --model cross_model_tester
-
-# Run any research component directly
-python research/index.py --run test_case_generator
-```
-
-## Key Research Areas
-
-1. **Mode Comparison** - Exploring differences between Quick and Depth modes
-2. **Cross-Model Analysis** - Comparing Claude 3.7 with other models
-3. **Vulnerability Patterns** - Identifying and classifying vulnerability patterns
-4. **Safety Boundary Analysis** - Mapping and testing safety boundaries
-
-## Integration with Safeguards Framework
-
-The research components feed directly into the safeguards implementation:
-
-1. Research identifies vulnerability patterns
-2. Patterns are formalized in pattern files
-3. Pattern files are integrated into the safeguards framework
-4. Safeguards monitor and client implement protective measures
-
-This research-to-implementation pipeline ensures that safety measures are based on empirical evidence and systematic testing.
+Research notes can be raw in private. Public methodology should be source-safe,
+reproducible, and useful to the teams that have to defend the system after the
+red team leaves.

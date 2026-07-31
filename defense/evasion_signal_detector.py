@@ -1,9 +1,10 @@
 """Evasion-signal detector for LLM input guardrails.
 
 A defensive utility. It scans a piece of user-supplied text for the
-*obfuscation and structural* signals that are commonly used to smuggle an
-instruction past a model's safeguards — encoded payloads, homoglyph
-substitution, invisible characters, and disproportionate "context dilution".
+*obfuscation, trust-shift, and structural* signals that are commonly used to
+smuggle an instruction past a model's safeguards: encoded payloads, homoglyph
+substitution, invisible characters, decision preloading, sensitive data/action
+pairing, orchestration trust shifts, and disproportionate context dilution.
 
 It does not generate, transform, or attack anything. Given text in, it returns
 structured findings that a trust-and-safety pipeline can log, score, or route
@@ -32,7 +33,7 @@ import codecs
 import re
 import sys
 import unicodedata
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List
 
 # Severity is an ordered label; higher weight contributes more to risk_score.
@@ -92,6 +93,61 @@ _COMMON = {
     "system", "prompt", "please", "should", "must",
 }
 
+_CONTROL_TERMS_RE = re.compile(
+    r"\b(?:ignore|instruction|instructions|system|prompt|rule|rules|policy|"
+    r"execute|run|call|tool|agent|workflow|developer|operator|authority)\b",
+    re.IGNORECASE,
+)
+
+_DECISION_PRELOAD_RE = re.compile(
+    r"\b(?:"
+    r"follow (?:these|the) steps exactly|"
+    r"do not (?:ask|stop|evaluate|reason|reassess|refuse)|"
+    r"no need to (?:ask|evaluate|reason|verify|check)|"
+    r"already (?:authorized|approved|verified|decided)|"
+    r"just (?:execute|run|perform|do it)|"
+    r"complete the task without|"
+    r"the decision has already been made|"
+    r"treat (?:this|these) as (?:approved|authorized|operator|system)"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_SENSITIVE_DATA_RE = re.compile(
+    r"\b(?:"
+    r"api[-_ ]?key|access[-_ ]?token|bearer token|oauth token|refresh token|"
+    r"session cookie|auth(?:entication)? header|password|passwd|credential(?:s)?|"
+    r"secret(?:s)?|private key|ssh key|jwt|2fa|2sv|two[- ](?:factor|step)|"
+    r"backup code(?:s)?|recovery code(?:s)?|login token"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_SENSITIVE_ACTION_RE = re.compile(
+    r"\b(?:"
+    r"collect|extract|export|dump|list|enumerate|retrieve|scrape|harvest|"
+    r"store|log|print|send|forward|validate|use|authenticate|login|exfiltrate"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_ORCHESTRATION_RE = re.compile(
+    r"\b(?:"
+    r"subagent|sub-agent|worker agent|agent pipeline|automation pipeline|"
+    r"orchestrator|orchestration|workflow runner|ci job|tool call|mcp server|"
+    r"system context|operator-level|developer message|trusted context"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_TRUST_TRANSFER_RE = re.compile(
+    r"\b(?:"
+    r"instructions?|policy|system|operator|developer|trusted|tool output|"
+    r"document|attachment|repository|ticket|issue|pull request|webpage|runbook"
+    r")\b",
+    re.IGNORECASE,
+)
+
 
 def _detect_invisible(text: str) -> List[Finding]:
     hits: dict[str, int] = {}
@@ -134,6 +190,31 @@ def _confusable_script(ch: str) -> str | None:
     return None
 
 
+def _script_name(ch: str) -> str | None:
+    if not ch.isalpha():
+        return None
+    if ch.isascii():
+        return "LATIN"
+    try:
+        name = unicodedata.name(ch)
+    except ValueError:
+        return None
+    for script in (
+        "ARABIC",
+        "ARMENIAN",
+        "CYRILLIC",
+        "GREEK",
+        "HEBREW",
+        "HIRAGANA",
+        "KATAKANA",
+        "CJK",
+        "DEVANAGARI",
+    ):
+        if name.startswith(script):
+            return script
+    return None
+
+
 def _detect_homoglyphs(text: str) -> List[Finding]:
     findings = []
     for m in _WORD_RE.finditer(text):
@@ -158,6 +239,27 @@ def _detect_homoglyphs(text: str) -> List[Finding]:
                 )
             )
     return findings
+
+
+def _detect_mixed_script_control_surface(text: str) -> List[Finding]:
+    scripts = sorted({script for ch in text if (script := _script_name(ch))})
+    if "LATIN" not in scripts or len(scripts) < 3:
+        return []
+    if not _CONTROL_TERMS_RE.search(text):
+        return []
+    return [
+        Finding(
+            signal="mixed_script_control_surface",
+            severity="medium",
+            detail=(
+                "Input mixes Latin text with multiple other writing systems near "
+                "instruction or control-surface language. This can create blind "
+                "spots for classifiers that rely on sliding windows, keyword "
+                "matching, or single-script normalization."
+            ),
+            evidence=", ".join(scripts),
+        )
+    ]
 
 
 def _looks_like_text(raw: bytes) -> bool:
@@ -250,6 +352,74 @@ def _detect_leetspeak(text: str) -> List[Finding]:
     return findings
 
 
+def _detect_decision_preloading(text: str) -> List[Finding]:
+    matches = list(_DECISION_PRELOAD_RE.finditer(text))
+    if len(matches) < 2:
+        return []
+    evidence = "; ".join(m.group(0) for m in matches[:3])
+    return [
+        Finding(
+            signal="decision_preloading",
+            severity="medium",
+            detail=(
+                "Input contains multiple phrases that pre-load authorization or "
+                "decision-making and push the model toward execution without "
+                "reassessment. This is a high-value review signal for agentic "
+                "and code-generation workflows."
+            ),
+            evidence=evidence,
+            span=(matches[0].start(), matches[-1].end()),
+        )
+    ]
+
+
+def _detect_sensitive_data_action_request(text: str) -> List[Finding]:
+    sensitive = list(_SENSITIVE_DATA_RE.finditer(text))
+    actions = list(_SENSITIVE_ACTION_RE.finditer(text))
+    if not sensitive or not actions:
+        return []
+    first = min(sensitive[0].start(), actions[0].start())
+    last = max(sensitive[-1].end(), actions[-1].end())
+    return [
+        Finding(
+            signal="sensitive_data_action_request",
+            severity="high",
+            detail=(
+                "Request combines authentication or secret-bearing data with "
+                "action verbs. Treat this as a data-category boundary first; "
+                "professional framing or claimed authorization should not lower "
+                "scrutiny."
+            ),
+            evidence=f"{sensitive[0].group(0)} + {actions[0].group(0)}",
+            span=(first, last),
+        )
+    ]
+
+
+def _detect_orchestration_trust_shift(text: str) -> List[Finding]:
+    orchestration = list(_ORCHESTRATION_RE.finditer(text))
+    trust_transfer = list(_TRUST_TRANSFER_RE.finditer(text))
+    if not orchestration or len(trust_transfer) < 2:
+        return []
+    evidence_terms = [orchestration[0].group(0)] + [
+        m.group(0) for m in trust_transfer[:2]
+    ]
+    return [
+        Finding(
+            signal="orchestration_trust_shift",
+            severity="medium",
+            detail=(
+                "Input references an agent, tool, or automation layer together "
+                "with trusted-context language. This is the shape where a human "
+                "may never directly prompt the model, and malicious instructions "
+                "can arrive as pipeline or operator context."
+            ),
+            evidence=" + ".join(evidence_terms),
+            span=(orchestration[0].start(), trust_transfer[-1].end()),
+        )
+    ]
+
+
 def _detect_context_dilution(text: str, threshold: int = 4000) -> List[Finding]:
     """Structural signal: a very long body with a short directive-style line
     isolated in the final stretch (delayed-activation / haystack pattern)."""
@@ -290,9 +460,13 @@ def _detect_context_dilution(text: str, threshold: int = 4000) -> List[Finding]:
 _DETECTORS = (
     _detect_invisible,
     _detect_homoglyphs,
+    _detect_mixed_script_control_surface,
     _detect_base64,
     _detect_rot13,
     _detect_leetspeak,
+    _detect_decision_preloading,
+    _detect_sensitive_data_action_request,
+    _detect_orchestration_trust_shift,
     _detect_context_dilution,
 )
 

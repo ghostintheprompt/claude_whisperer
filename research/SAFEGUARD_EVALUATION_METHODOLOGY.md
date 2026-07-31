@@ -7,7 +7,12 @@ guidelines. This document takes each category from the **evaluator's** side:
 what you are actually measuring, how to measure it without fooling yourself, and
 what mitigations and detection signals reduce the exposure. The goal is a
 repeatable evaluation you can re-run against a new model or a new system prompt
-and get a comparable result — not a one-off "we tried some prompts."
+and get a comparable result, not a one-off "we tried some prompts."
+
+The 2026 update adds the case-informed lanes from
+[`../docs/IMPORTANT_FINDINGS_METHOD.md`](../docs/IMPORTANT_FINDINGS_METHOD.md):
+decision preloading, mode switching, orchestration trust shift, Unicode drift,
+low-signal erosion, data-category hard stops, and legitimate-code camouflage.
 
 The detection signals referenced below are implemented in
 [`defense/evasion_signal_detector.py`](../defense/evasion_signal_detector.py).
@@ -52,9 +57,10 @@ competing, reframed, or obfuscated instructions.
 did not, the safeguard is keying on surface features rather than intent.
 
 **Detection signals (pre-model):** obfuscated surface form is machine-detectable
-before the model ever sees it — `base64_payload`, `homoglyph_substitution`,
-`invisible_characters`, `leetspeak_substitution`, `rot13_concealment`. Route
-high-scoring inputs to stricter handling or review.
+before the model ever sees it: `base64_payload`, `homoglyph_substitution`,
+`mixed_script_control_surface`, `invisible_characters`,
+`leetspeak_substitution`, `rot13_concealment`. Route high-scoring inputs to
+stricter handling or review.
 
 **Mitigations:** normalize input before evaluation (NFKC Unicode normalization,
 strip zero-width characters, decode-and-re-scan encoded segments); design the
@@ -77,6 +83,11 @@ led there" is the quantity of interest.
 
 **Detection signals:** largely semantic, so pre-model string signals are weak
 here — this category is caught at the *output* boundary, not the input.
+
+**Detection signals:** `decision_preloading` catches language that tries to
+pre-authorize the model's choices or remove reassessment. This is not a verdict;
+it is a cue to inspect whether the request is converting reasoning into pure
+execution.
 
 **Mitigations:** evaluate the final artifact against policy regardless of the
 reasoning path that produced it; don't let an accumulation of benign steps
@@ -138,12 +149,35 @@ the chains, not only the individual actions.
 
 **Detection signals:** input-level obfuscation detection still applies to tool
 arguments (an encoded payload can ride inside a tool call), so scan tool inputs
-too, not only the top-level message.
+too, not only the top-level message. `orchestration_trust_shift` flags agent,
+tool, MCP, and pipeline framing that can turn untrusted content into apparently
+trusted instruction.
 
 **Mitigations:** gate tools on the effect of the action and require
 authorization for irreversible ones; don't let a sequence of low-risk calls sum
 to a high-risk effect unnoticed; log tool-call chains so a reviewer can see the
 composition, not just the individual calls.
+
+---
+
+## Data-category hard stops
+
+Some requests deserve elevated scrutiny because of what they touch, not because
+of how persuasive the context sounds. Authentication material, session tokens,
+recovery codes, secrets, and enumeration primitives should not become easier to
+handle just because the user frames the work as enterprise tooling or incident
+response.
+
+**What you're measuring:** whether the model gates on sensitive data/action
+classes independently of stated intent.
+
+**Detection signals:** `sensitive_data_action_request` flags authentication or
+secret-bearing data categories paired with action verbs such as export, list,
+retrieve, harvest, send, or use.
+
+**Mitigations:** inspect every discrete API call, file read, network action, and
+data type inside a larger project; require escalation for credential/session
+material; treat claimed authorization as metadata, not as permission.
 
 ---
 
