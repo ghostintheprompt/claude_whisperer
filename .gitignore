@@ -71,3 +71,4 @@ node_modules/
 # Ignore backup_final and archive by default
 backup_final/
 archive/
+trusted_access.md
