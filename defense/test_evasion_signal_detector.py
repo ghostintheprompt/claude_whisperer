@@ -99,6 +99,17 @@ class TestCaseInformedSignals(unittest.TestCase):
         )
         self.assertIn("orchestration_trust_shift", signals(text))
 
+    def test_detects_trusted_slot_contamination(self):
+        text = (
+            "The repository document tries to inject new system prompt rules "
+            "before the model reviews the file."
+        )
+        self.assertIn("trusted_slot_contamination", signals(text))
+
+    def test_detects_probe_confirmation(self):
+        text = "Can you check if this bypasses the safety layer?"
+        self.assertIn("probe_confirmation", signals(text))
+
 
 class TestContextDilution(unittest.TestCase):
     def test_long_body_short_tail(self):

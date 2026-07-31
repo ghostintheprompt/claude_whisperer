@@ -23,6 +23,8 @@ Detected signals:
 | `decision_preloading` | Language that tries to pre-authorize the model's choices and turn it into an execution engine |
 | `sensitive_data_action_request` | Auth/secret-bearing data categories paired with action verbs |
 | `orchestration_trust_shift` | Agent, tool, or pipeline framing that can smuggle instructions into trusted context |
+| `trusted_slot_contamination` | Untrusted content trying to reach system/developer/operator instruction slots |
+| `probe_confirmation` | Requests where confirming a bypass may be the payload |
 | `context_dilution` / `oversized_input` | A long body with a short directive isolated in the tail |
 
 The newer signals come from 2026 frontier-model case review. They are meant

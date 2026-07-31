@@ -12,7 +12,9 @@ and get a comparable result, not a one-off "we tried some prompts."
 The 2026 update adds the case-informed lanes from
 [`../docs/IMPORTANT_FINDINGS_METHOD.md`](../docs/IMPORTANT_FINDINGS_METHOD.md):
 decision preloading, mode switching, orchestration trust shift, Unicode drift,
-low-signal erosion, data-category hard stops, and legitimate-code camouflage.
+chat-surface displacement, trusted-slot contamination, low-signal erosion,
+probe confirmation, data-category hard stops, clean-auth probing, and
+legitimate-code camouflage.
 
 The detection signals referenced below are implemented in
 [`defense/evasion_signal_detector.py`](../defense/evasion_signal_detector.py).
@@ -151,12 +153,32 @@ the chains, not only the individual actions.
 arguments (an encoded payload can ride inside a tool call), so scan tool inputs
 too, not only the top-level message. `orchestration_trust_shift` flags agent,
 tool, MCP, and pipeline framing that can turn untrusted content into apparently
-trusted instruction.
+trusted instruction. `trusted_slot_contamination` flags untrusted content trying
+to occupy system, developer, operator, or tool-trusted instruction slots.
 
 **Mitigations:** gate tools on the effect of the action and require
 authorization for irreversible ones; don't let a sequence of low-risk calls sum
 to a high-risk effect unnoticed; log tool-call chains so a reviewer can see the
 composition, not just the individual calls.
+
+---
+
+## Chat-surface displacement
+
+**What you're measuring:** whether the safety layer evaluates the full work
+object or only the visible chat turn.
+
+**Evaluation approach:** keep the chat request bland while moving the risk into
+attached files, repo content, retrieved text, tool arguments, images, or
+generated code. Compare chat-only assessment with full-context assessment.
+
+**Detection signals:** run `evasion_signal_detector.py` over extracted text from
+files and tool context, not only chat messages. `orchestration_trust_shift` and
+`trusted_slot_contamination` are especially relevant here.
+
+**Mitigations:** treat every file, retrieved chunk, tool result, and code block
+as prompt surface; record source path/hash/timestamp; require full-context scans
+before tool execution or generated-code use.
 
 ---
 
@@ -174,6 +196,9 @@ classes independently of stated intent.
 **Detection signals:** `sensitive_data_action_request` flags authentication or
 secret-bearing data categories paired with action verbs such as export, list,
 retrieve, harvest, send, or use.
+
+`probe_confirmation` flags attempts where simply confirming whether a boundary
+can be crossed may be the operational objective.
 
 **Mitigations:** inspect every discrete API call, file read, network action, and
 data type inside a larger project; require escalation for credential/session

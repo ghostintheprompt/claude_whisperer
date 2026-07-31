@@ -7,6 +7,8 @@ work.
 
 - [Important Findings Method](IMPORTANT_FINDINGS_METHOD.md) - the 2026
   case-informed stance and red-to-blue workflow.
+- [Important Findings Audit](IMPORTANT_FINDINGS_AUDIT.md) - coverage map from
+  source findings to README, methodology, detector, and punchlist.
 - [Research Methodology](RESEARCH_METHODOLOGY.md) - repeatable evaluation loop,
   metrics, evidence discipline, and current scope.
 - [Safeguards Testing](SAFEGUARDS_TESTING.md) - defensive testing orientation.

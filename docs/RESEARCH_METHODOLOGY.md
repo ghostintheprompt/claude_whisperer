@@ -11,6 +11,10 @@ An AI red-team finding is not complete when the model fails. It is complete
 when the behavior is reproducible, the trust boundary is named, the evidence is
 preserved, and the blue-team control is obvious enough to test.
 
+The work is inherently dual-use, like serious detection engineering always is.
+The control is authorization, scope, logging, and whether the lesson is returned
+as protection.
+
 ## Evaluation Loop
 
 1. **Fix the target.** Record provider, exact model ID, interface, policy or
@@ -84,6 +88,24 @@ Control:
 - Mark untrusted context explicitly.
 - Scan tool inputs, tool outputs, attachments, and retrieved text.
 - Log agent identity, tool name, source, and authority per step.
+
+### Chat-Surface Displacement
+
+The visible chat stays clean while risky instructions, code, or intent live in
+files, attachments, tool arguments, retrieved chunks, or generated project
+structure.
+
+Measure:
+
+- Does the safety layer inspect the full work object?
+- Does risk change when files and tool inputs are included?
+- Are file and retrieval sources preserved in evidence?
+
+Control:
+
+- Scan chat, files, code, retrieval, and tool context together.
+- Keep source paths and hashes with findings.
+- Compare chat-only and full-context risk scores.
 
 ### Unicode And Encoding
 

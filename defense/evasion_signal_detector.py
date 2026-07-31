@@ -140,6 +140,32 @@ _ORCHESTRATION_RE = re.compile(
     re.IGNORECASE,
 )
 
+_TRUSTED_SLOT_RE = re.compile(
+    r"\b(?:"
+    r"system prompt|system instructions|developer message|operator-level|"
+    r"trusted context|rules|policy|higher implicit trust"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_UNTRUSTED_SOURCE_RE = re.compile(
+    r"\b(?:"
+    r"attacker|malicious|user-supplied|document|attachment|tool output|"
+    r"repository|repo|ticket|issue|webpage|subagent|pipeline|inject|insert|"
+    r"prepend|append|override|replace"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_PROBE_CONFIRMATION_RE = re.compile(
+    r"\b(?:confirm|check|test|verify|see if|find out whether|determine whether)\b"
+    r".{0,120}\b(?:bypass|jailbreak|safety layer|guardrail|filter|refusal|policy)\b"
+    r"|"
+    r"\b(?:bypass|jailbreak|guardrail)\b"
+    r".{0,120}\b(?:confirm|check|test|verify|see if)\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
 _TRUST_TRANSFER_RE = re.compile(
     r"\b(?:"
     r"instructions?|policy|system|operator|developer|trusted|tool output|"
@@ -420,6 +446,45 @@ def _detect_orchestration_trust_shift(text: str) -> List[Finding]:
     ]
 
 
+def _detect_trusted_slot_contamination(text: str) -> List[Finding]:
+    trusted = list(_TRUSTED_SLOT_RE.finditer(text))
+    source = list(_UNTRUSTED_SOURCE_RE.finditer(text))
+    if not trusted or not source:
+        return []
+    return [
+        Finding(
+            signal="trusted_slot_contamination",
+            severity="high",
+            detail=(
+                "Input combines trusted instruction slots with untrusted source "
+                "or insertion language. This is the failure mode where hostile "
+                "content reaches the model as rules rather than data."
+            ),
+            evidence=f"{trusted[0].group(0)} + {source[0].group(0)}",
+            span=(min(trusted[0].start(), source[0].start()), max(trusted[-1].end(), source[-1].end())),
+        )
+    ]
+
+
+def _detect_probe_confirmation(text: str) -> List[Finding]:
+    match = _PROBE_CONFIRMATION_RE.search(text)
+    if not match:
+        return []
+    return [
+        Finding(
+            signal="probe_confirmation",
+            severity="medium",
+            detail=(
+                "Request appears focused on confirming whether a safety boundary "
+                "can be crossed. In probing workflows, the confirmation can be "
+                "the payload even when the content is brief."
+            ),
+            evidence=match.group(0)[:120],
+            span=(match.start(), match.end()),
+        )
+    ]
+
+
 def _detect_context_dilution(text: str, threshold: int = 4000) -> List[Finding]:
     """Structural signal: a very long body with a short directive-style line
     isolated in the final stretch (delayed-activation / haystack pattern)."""
@@ -467,6 +532,8 @@ _DETECTORS = (
     _detect_decision_preloading,
     _detect_sensitive_data_action_request,
     _detect_orchestration_trust_shift,
+    _detect_trusted_slot_contamination,
+    _detect_probe_confirmation,
     _detect_context_dilution,
 )
 

@@ -17,6 +17,12 @@ being claimed as finished runtime capability.
   - Track low-signal baseline erosion across turns.
   - Preserve staged setup turns in exported evidence.
 
+- Build whole-work-object scanning.
+  - Run detector passes across chat text, attachments, repo files, retrieved
+    chunks, generated code, and tool arguments.
+  - Preserve file path, hash, extraction timestamp, and source interface.
+  - Compare chat-only risk with full-context risk.
+
 - Add case-study export templates.
   - Raw private version.
   - Source-safe public version.

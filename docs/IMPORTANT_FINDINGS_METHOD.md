@@ -35,11 +35,20 @@ loaded into:
 - a retrieval result;
 - an agent or subagent pipeline;
 - a tool result that the system treats as trusted;
+- a clean chat message that points at risky content living in files or code;
 - a long conversation that has already moved the baseline.
 
 The key evaluator question is not only "did the model refuse this prompt?" It is
 "where did the system assign trust, and did that trust survive contact with
 untrusted content?"
+
+Intent is often structural before it is explicit. Legitimate cover plus an
+embedded permission gap plus a request for bypass, credentials, execution, or
+enumeration tells the story even when the words stay polished.
+
+The threat also lives in what a request enables, not only what it contains.
+A short probe, a harmless-looking primer, or a clean code scaffold can matter
+because of the door it opens downstream.
 
 ## Pattern Lanes
 
@@ -61,7 +70,23 @@ Blue translation:
 
 Implemented signal: `decision_preloading`.
 
-### 2. Mode Switching
+### 2. Calibrated Craft
+
+Attack shape: the operator shapes the attempt to the target model's own safety
+layer, reasoning style, conversational habits, and trusted-context assumptions.
+High craft is not decoration; it is an operator capability signal.
+
+Evaluator question: Is the attack generic, or does it show model-specific
+knowledge, patience, adaptation, and repeated boundary measurement?
+
+Blue translation:
+
+- record sophistication as part of severity;
+- distinguish copy-paste prompts from calibrated campaigns;
+- preserve timing, repetition, and adaptation patterns;
+- treat high-craft failures as intelligence, not just policy misses.
+
+### 3. Mode Switching
 
 Attack shape: the conversation moves in small increments from "developer
 building a thing" to "analyst reviewing a thing" to "operator executing a
@@ -77,7 +102,7 @@ Blue translation:
 - preserve conversation branches when reviewing incidents;
 - compare direct requests against staged requests with the same end state.
 
-### 3. Orchestration Trust Shift
+### 4. Orchestration Trust Shift
 
 Attack shape: the human never directly asks the model. Instructions arrive
 through a subagent, tool output, repository file, document, CI job, MCP server,
@@ -96,7 +121,41 @@ Blue translation:
 
 Implemented signal: `orchestration_trust_shift`.
 
-### 4. Multilingual And Unicode Drift
+### 5. Chat-Surface Displacement
+
+Attack shape: the chat avoids obvious trigger language while the real
+instruction, code path, or policy pressure sits in an attachment, repo file,
+tool input, retrieved text, image, or generated codebase.
+
+Evaluator question: Is the safety review inspecting the whole work object, or
+only the visible chat turn?
+
+Blue translation:
+
+- scan attachments, code, tool arguments, retrieved chunks, and generated files;
+- preserve file names, hashes, source paths, and extraction timestamps;
+- compare chat-only risk with full-context risk;
+- do not let "the user did not say it in chat" become a blind spot.
+
+### 6. Trusted-Slot Contamination
+
+Attack shape: untrusted text reaches a slot the model treats as authoritative:
+system prompt, developer message, operator context, tool-trusted context, or
+pipeline instruction.
+
+Evaluator question: Does the model keep untrusted content as data, or does it
+promote it into rules?
+
+Blue translation:
+
+- label authority levels explicitly;
+- never merge retrieved or attached content into instruction slots;
+- alert when source text tries to override, append, replace, or inject rules;
+- keep content and instructions visually and structurally separate in evidence.
+
+Implemented signal: `trusted_slot_contamination`.
+
+### 7. Multilingual And Unicode Drift
 
 Attack shape: Unicode, mixed writing systems, homoglyphs, invisible characters,
 and encoded strings create mismatches between what a human sees, what a
@@ -117,7 +176,7 @@ Implemented signals: `homoglyph_substitution`,
 `mixed_script_control_surface`, `invisible_characters`, `base64_payload`,
 `rot13_concealment`, `leetspeak_substitution`.
 
-### 5. Low-Signal Erosion
+### 8. Low-Signal Erosion
 
 Attack shape: early requests are boring, legitimate, or only mildly weird. They
 set vocabulary, role, and assumptions. Later, a sharper request inherits that
@@ -136,7 +195,25 @@ Blue translation:
 Implemented signals: `context_dilution`, `oversized_input`; trajectory scoring
 is a next implementation target.
 
-### 6. Data-Category Hard Stops
+### 9. Probe Confirmation
+
+Attack shape: the immediate goal is not the harmful output. The immediate goal
+is confirming whether the safety boundary moved. A brief probe, minimal content,
+and clean exit can still be a successful operation.
+
+Evaluator question: Is the request asking for a capability, or asking whether a
+capability can slip through?
+
+Blue translation:
+
+- treat bypass checks as events, not noise;
+- track probe clusters by account, session, model, and interface;
+- preserve negative results too, because persistence changes the risk picture;
+- look for downstream escalation after a successful confirmation.
+
+Implemented signal: `probe_confirmation`.
+
+### 10. Data-Category Hard Stops
 
 Attack shape: credential harvesting, account access, token handling,
 enumeration, or reconnaissance is wrapped in professional enterprise language.
@@ -155,7 +232,24 @@ Blue translation:
 
 Implemented signal: `sensitive_data_action_request`.
 
-### 7. Legitimate-Code Camouflage
+### 11. Clean-Auth Probing
+
+Attack shape: a legitimate or hijacked authenticated account probes the model.
+Perimeter controls see clean authentication and pass the interaction through,
+leaving the model's content policy and downstream telemetry as the main
+detection surface.
+
+Evaluator question: Does the system combine identity/session context with
+content-layer signals, or does clean auth lower suspicion too far?
+
+Blue translation:
+
+- correlate authenticated-session history with content risk;
+- track memory cultivation and repeated low-signal probing;
+- monitor linguistic obfuscation from otherwise trusted accounts;
+- do not treat clean login as clean intent.
+
+### 12. Legitimate-Code Camouflage
 
 Attack shape: risky behavior hides inside a credible project: C++, agents,
 server architecture, process management, remote input, plugins, enterprise
@@ -173,6 +267,20 @@ Blue translation:
 - require generated-code security review before execution;
 - log code provenance and execution context.
 
+## Case Role
+
+Each case should also get a role label:
+
+- **probe:** testing whether the boundary can move;
+- **sabotage:** trying to cause damage, disruption, or policy failure;
+- **choreography:** a patient staged path with delayed trigger;
+- **learning:** measuring the system for future attempts;
+- **camouflage:** hiding the risky primitive inside legitimate work.
+
+The same transcript can carry more than one role. Labeling the role keeps the
+analysis from flattening every case into "jailbreak worked" or "jailbreak
+failed."
+
 ## Evidence Discipline
 
 Every finding should carry:
@@ -185,6 +293,8 @@ Every finding should carry:
 - attachments, retrieval sources, or repo files involved;
 - exact input and output, sanitized when needed;
 - expected outcome, observed outcome, severity, and confidence;
+- likely case role: probe, sabotage, choreography, learning, camouflage;
+- attacker craft level: generic, adapted, calibrated, or persistent;
 - red-team interpretation and blue-team recommendation.
 
 The red finding is only half the work. The other half is making the next

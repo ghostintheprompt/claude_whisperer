@@ -46,22 +46,31 @@ method travels.
 | Lane | Field Note | Defender's Move |
 |---|---|---|
 | Decision preloading | The attacker supplies the objective, authority, steps, and success criteria so the model only has to execute. | Flag pre-authorization language and force a fresh policy/data/tool check before action. |
+| Calibrated craft | High-effort attacks are shaped to the target model's safety layer and reasoning style. The craft level is itself an operator signal. | Record sophistication, patience, model-specific calibration, and repeatability as part of severity. |
 | Mode switching | The frame moves from builder to reviewer to analyst to operator in small enough steps that no single turn looks loud. | Score the trajectory, not only the latest message. Compare direct and staged versions of the same end state. |
 | Orchestration trust shift | The human never prompts the model directly. The instruction rides through a document, repo, subagent, tool result, CI job, or MCP context. | Treat tool output, retrieval text, attachments, and repo content as untrusted unless authority is explicit. |
+| Chat-surface displacement | The chat stays clean while the real pressure sits in attached files, code, retrieved text, or tool inputs where safeguards may inspect less carefully. | Scan the whole work object, not just chat. Treat files and tool context as first-class prompt surface. |
+| Trusted-slot contamination | If attacker text lands in a system, developer, operator, or tool-trusted slot, the model may treat hostile language as rules. | Separate instruction authority from content. Alert when untrusted sources try to occupy trusted slots. |
 | Unicode drift | Mixed scripts, homoglyphs, zero-width characters, and encoding split what the human sees from what the model reads. | Normalize, decode, rescan, and preserve both original and normalized evidence. |
 | Low-signal erosion | Boring setup turns move the baseline until the sharp request feels ordinary. | Track session risk and refusal-then-compliance patterns. Keep setup turns in the evidence pack. |
+| Probe confirmation | Sometimes the first goal is only to learn whether a boundary moved. The confirmation is the payload. | Treat brief bypass checks as security events even when they contain little content. |
 | Data-category hard stops | Credentials, tokens, sessions, recovery codes, and enumeration do not become safe because the request sounds professional. | Gate on data class and action, not vibe. Escalate auth material and enumeration primitives by default. |
+| Clean-auth probing | A legitimate or hijacked account can pass perimeter checks, leaving content policy as the live detection surface. | Correlate identity, session history, memory use, and linguistic obfuscation with content-layer signals. |
 | Legitimate-code camouflage | Risk hides inside a credible enterprise project: agents, servers, C++, process control, remote input, audit tooling. | Review generated code by primitive: network, secrets, execution, persistence, process control, remote access. |
 
 The twist is simple: the model is often the magic key, but not always the
 stage. Sometimes the real attack is in the surrounding system, and the model is
 only where borrowed trust gets cashed out.
 
+That is also why the dual-use argument is boring at this level. Of course the
+work is dual-use. So is every serious detection method in security. The line is
+authorization, scope, logging, and whether the lesson comes back as protection.
+
 ## Working Pieces
 
 | Path | State |
 |---|---|
-| `defense/evasion_signal_detector.py` | Working standard-library detector. Text in, findings out, no model calls. Covers classic obfuscation plus the newer case-informed signals: decision preloading, sensitive data/action pairing, mixed-script control surfaces, and orchestration trust shifts. |
+| `defense/evasion_signal_detector.py` | Working standard-library detector. Text in, findings out, no model calls. Covers classic obfuscation plus the newer case-informed signals: decision preloading, sensitive data/action pairing, mixed-script control surfaces, orchestration trust shifts, trusted-slot contamination, and probe confirmation. |
 | `docs/IMPORTANT_FINDINGS_METHOD.md` | Current field-method document for source-safe case-study writing and red-to-blue handoff. |
 | `docs/RESEARCH_METHODOLOGY.md` | Current evaluation loop: target fixation, pass/fail definitions, exact logging, metrics, and evidence packages. |
 | `research/SAFEGUARD_EVALUATION_METHODOLOGY.md` | Defender companion to the taxonomy, now linked to the 2026 case lanes. |
@@ -94,6 +103,7 @@ if score >= 60:
 
 - Real capability plus real warning.
 - Red pressure should become blue memory.
+- Chat, files, tools, retrieval, and code are all prompt surface.
 - Do not store production frontier-model API keys in browser extensions.
 - Do not call a model "current" without checking the docs and recording the
   date.
