@@ -26,7 +26,7 @@ Detected signals:
 | `automation_wrapper` | Workflow, scheduled job, runbook, or pipeline framing paired with target/context detail |
 | `layered_automation_camouflage` | Automation that distributes recon, enumeration, analysis, or reporting across layers |
 | `preloaded_context_payload` | Attachments, schemas, codebase maps, or prior agent output carrying target detail |
-| `preloaded_recon_package_laundering` | Clean audit/review task paired with attached or upstream reconnaissance artifacts |
+| `preloaded_recon_package_laundering` | Clean audit/review task paired with attached or upstream reconnaissance artifacts that prompt-only filters may miss |
 | `structured_output_pressure` | Machine-readable findings or schema pressure that can package portable evidence |
 | `operational_thoroughness_pressure` | Completeness/specificity framed as a job, role, workflow, or schema requirement |
 | `operational_normalcy_camouflage` | Normal engineering/DevOps/workflow language paired with context payload or output pressure |
@@ -51,6 +51,9 @@ Detected signals:
 | `sensitive_data_action_request` | Auth/secret-bearing data categories paired with action verbs |
 | `orchestration_trust_shift` | Agent, tool, or pipeline framing that can smuggle instructions into trusted context |
 | `trusted_slot_contamination` | Untrusted content trying to reach system/developer/operator instruction slots |
+| `system_prompt_attack_scaffold` | Trusted prompt/tool context carrying attack scaffold, live target context, or anti-review instructions |
+| `offensive_tool_invocation_compliance` | Agent compliance with tool-mediated offensive action in live or credential-bearing context |
+| `technical_failure_not_refusal` | Runs that fail from tool/runtime error rather than model refusal or re-scoping |
 | `probe_confirmation` | Requests where confirming a bypass may be the payload |
 | `tool_output_laundering` | High-risk tool artifacts paired with raw/verbatim reporting requests |
 | `delegated_authorship_deflection` | "The tool made it" framing paired with a high-risk artifact |
@@ -58,7 +61,7 @@ Detected signals:
 | `autonomous_methodology_expansion` | Broad defensive framing where the agent fills in deeper audit tradecraft against a target |
 | `verified_facts_targeting_package` | "Verified facts" or memory blocks containing reconnaissance artifacts |
 | `theatrical_constraints_operational_permissions` | Strict-sounding prohibitions paired with intelligence-producing read permissions |
-| `structured_output_dossiering` | Machine-readable evidence schemas that package portable target intelligence |
+| `structured_output_dossiering` | Machine-readable evidence schemas that can become portable dossier or exfiltration formats |
 | `context_dilution` / `oversized_input` | A long body with a short directive isolated in the tail |
 
 The newer signals come from 2026 frontier-model case review. They are meant

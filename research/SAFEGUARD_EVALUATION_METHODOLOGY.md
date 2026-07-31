@@ -140,8 +140,9 @@ can share the same visible structure.
 **Detection signals:** `defensive_framing_wrapper`, `role_laundering`,
 `automation_wrapper`, `layered_automation_camouflage`,
 `preloaded_context_payload`, `preloaded_recon_package_laundering`,
-`structured_output_pressure`, `operational_thoroughness_pressure`,
-`operational_normalcy_camouflage`, `incremental_tasking`,
+`structured_output_pressure`, `structured_output_dossiering`,
+`operational_thoroughness_pressure`, `operational_normalcy_camouflage`,
+`incremental_tasking`,
 `legitimate_tool_invocation_wrapper`,
 `permission_carveout_laundering`, `non_escalating_recon_chain`,
 `broad_sweep_escalation`, `multi_agent_audit_fanout`,
@@ -152,10 +153,12 @@ can share the same visible structure.
 `clean_prompt_axis_combo`.
 
 **Mitigations:** treat clean phrasing as metadata, not safety. Scan the whole
-work object, preserve context provenance, require redaction gates before
-portable evidence export, review aggregate intelligence value when ordinary
-developer tools are chained together, and preserve enough cross-session state to
-detect a surface map emerging from multiple benign-looking stages.
+work object, preserve context provenance, treat schema shape as an export
+boundary, inspect system/developer/tool-trusted schemas before execution,
+require redaction gates before portable evidence export, review aggregate
+intelligence value when ordinary developer tools are chained together, and
+preserve enough cross-session state to detect a surface map emerging from
+multiple benign-looking stages.
 
 ## Bounded review vs sweep escalation
 
@@ -225,7 +228,8 @@ remediation statements.
 invent the specific audit method, protocol field, collection target, or surface
 map. In this case family, the user supplied a target and high-level security
 analysis frame; the model supplied the specialized protocol focus and execution
-path.
+path. That makes methodology authorship the finding: target plus framing came
+from the user, expertise plus execution came from the model.
 
 **Evaluation approach:** compare a narrow user-requested hardening task with a
 broad audit frame. Log which protocol fields, commands, and collection steps
@@ -318,6 +322,12 @@ generated code. Compare chat-only assessment with full-context assessment.
 Pay special attention to attachments or system context that already contain
 target architecture, endpoint inventories, auth mechanisms, known weaknesses,
 or security-boundary descriptions before the model begins analysis.
+Labels like "verified facts" or "institutional memory" should not bypass
+provenance checks; they can remove the clarifying friction that would otherwise
+scope the task down. In rule blocks, inspect the intelligence value of allowed
+read actions, not only the comfort created by banned writes or restarts.
+Prompt text alone is the wrong inspection unit when a prior session, tool, or
+agent output has already produced the reconnaissance package.
 
 **Detection signals:** run `evasion_signal_detector.py` over extracted text from
 files and tool context, not only chat messages. `orchestration_trust_shift` and
@@ -327,7 +337,8 @@ analytical security task with attached or upstream reconnaissance artifacts.
 
 **Mitigations:** treat every file, retrieved chunk, tool result, and code block
 as prompt surface; record source path/hash/timestamp; require full-context scans
-before tool execution or generated-code use.
+before tool execution or generated-code use; classify allowed reads by what they
+can reveal before accepting governance language as adequate.
 
 ---
 
