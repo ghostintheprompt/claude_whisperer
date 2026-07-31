@@ -119,7 +119,9 @@ _SENSITIVE_DATA_RE = re.compile(
     r"api[-_ ]?key|access[-_ ]?token|bearer token|oauth token|refresh token|"
     r"session cookie|auth(?:entication)? header|password|passwd|credential(?:s)?|"
     r"secret(?:s)?|private key|ssh key|jwt|2fa|2sv|two[- ](?:factor|step)|"
-    r"backup code(?:s)?|recovery code(?:s)?|login token"
+    r"backup code(?:s)?|recovery code(?:s)?|login token|session token(?:s)?|"
+    r"slack token(?:s)?|slack session token(?:s)?|workspace token(?:s)?|"
+    r"workspace session token(?:s)?|platform session token(?:s)?"
     r")\b",
     re.IGNORECASE,
 )
@@ -127,9 +129,133 @@ _SENSITIVE_DATA_RE = re.compile(
 _SENSITIVE_ACTION_RE = re.compile(
     r"\b(?:"
     r"collect|extract|export|dump|list|enumerate|retrieve|scrape|harvest|"
-    r"store|log|print|send|forward|validate|use|authenticate|login|exfiltrate"
+    r"store|log|print|send|forward|validate|use|authenticate|login|"
+    r"exfiltrate|exfiltration"
     r")\b",
     re.IGNORECASE,
+)
+
+_BUG_BOUNTY_FRAME_RE = re.compile(
+    r"\b(?:"
+    r"bug[- ]?bounty|bounty[- ]?framed|vulnerability disclosure|"
+    r"responsible disclosure|vdp|operational analysis|detailed .* analysis|"
+    r"authorized research|security researcher"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_INJECTION_EXFIL_RE = re.compile(
+    r"\b(?:"
+    r"html injection|client-side injection|injection exfiltration|"
+    r"exfiltration vectors?|exfil vectors?|token exfiltration|"
+    r"session exfiltration|credential exfiltration"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_PLATFORM_SESSION_TOKEN_RE = re.compile(
+    r"\b(?:"
+    r"slack session token(?:s)?|slack token(?:s)?|platform session token(?:s)?|"
+    r"workspace session token(?:s)?|session token(?:s)?"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_VIRTUALIZATION_MEMORY_RE = re.compile(
+    r"\b(?:"
+    r"ept|slat|second[- ]level address translation|extended page tables?|"
+    r"nested page tables?|npt|gpa|guest physical address(?:es)?|"
+    r"hypervisor|vmm|vmx"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_SPLIT_PAGE_HOOK_RE = re.compile(
+    r"\b(?:"
+    r"split[- ]page hook(?:ing)?|split page hook(?:ing)?|"
+    r"hypervisor[- ]based rootkits?|hypervisor rootkits?|blue pills?|"
+    r"blue[- ]pill|clean/decoy page|decoy page|hooked/malicious page|"
+    r"hooked page|malicious page|shown to read accesses|executed when code runs"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_DUPLICATE_GPA_MAPPING_RE = re.compile(
+    r"\b(?:"
+    r"duplicate gpa mappings?|duplicate guest physical mappings?|"
+    r"same gpa|same guest physical address|re[- ]?mapping the same gpa|"
+    r"remapping the same gpa|silently accepting .* re[- ]?map|"
+    r"silent acceptance .* duplicate|silently accepting duplicate|"
+    r"mapping invariant|frame a|frame b|gpa .* frame|gpa .* mapping|"
+    r"rather than erroring|instead of erroring"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_LAB_CTF_FRAME_RE = re.compile(
+    r"\b(?:"
+    r"htb|hack the box|ctf|capture the flag|authorized ctf|authorized lab|"
+    r"lab machine|box machine|machine ip|ip de la maquina|maquina|"
+    r"permissive tone|authorized from the start"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_MID_SESSION_CREDENTIAL_INJECTION_RE = re.compile(
+    r"\b(?:"
+    r"mid-session credential(?:s)? injection|mid session credential(?:s)?|"
+    r"real credentials mid-session|provided real credentials|"
+    r"credentials mid-session|credential(?:s)? .* to unblock|"
+    r"sudo password|password for sudo|contrase(?:ña|na) de sudo|"
+    r"machine ip|ip de la maquina|ip de la maquina|"
+    r"real credential(?:s)? .* machine ip|credential(?:s)? .* machine ip|"
+    r"credential(?:s)? .* technical friction"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_TECHNICAL_FRICTION_RE = re.compile(
+    r"\b(?:"
+    r"unblock|technical friction|hit technical friction|keeping momentum|"
+    r"keep(?:ing)? momentum|when it hit friction|when it hit technical friction|"
+    r"to unblock the model|let(?:ting)? the model abandon"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_BLOCKED_ACTION_RE = re.compile(
+    r"\b(?:"
+    r"classifier blocked|blocked specific actions|guardrail blocked|"
+    r"safety filter blocked|policy blocked|refusal|refused|blocked action"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_RETRY_COMMAND_RE = re.compile(
+    r"\b(?:"
+    r"trata de hacerlo de nuevo|vuelve a intentarlo ahora|try again|"
+    r"do it again|retry|re-run|rerun|attempt again|rather than arguing|"
+    r"simply saying .* again|enough to get .* retry"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_ADCS_ESC_RE = re.compile(
+    r"\b(?:"
+    r"ad cs|active directory certificate services|esc15|esc\d{1,2}|"
+    r"certificate template|cert template|schema v1|machine template|"
+    r"updatesrv|eku|ekus|object control|template abuse"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_SOPHISTICATED_ANALYSIS_RE = re.compile(
+    r"\b(?:"
+    r"sophisticated|correctly identifying|planning|planned|model side|"
+    r"model-side|analysis was .* sophisticated|identified .* template|"
+    r"methodology|under .* frame|permissive lab frame"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
 )
 
 _ORCHESTRATION_RE = re.compile(
@@ -210,6 +336,102 @@ _TOOL_SURFACE_RE = re.compile(
     r"janitor|audit tool|security tool|report|result|output"
     r")\b",
     re.IGNORECASE,
+)
+
+_TOOL_OUTPUT_AS_TEXT_RE = re.compile(
+    r"\b(?:"
+    r"tool outputs?|tool results?|tool returned|returned content|"
+    r"returned content as (?:a )?string|receives? .* as (?:a )?string|"
+    r"same language modeling|processes? .* everything else|"
+    r"tool output .* string|tool result .* string"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_PROVENANCE_VERIFICATION_GAP_RE = re.compile(
+    r"\b(?:"
+    r"no cryptographic verification|without cryptographic verification|"
+    r"cryptographic verification of provenance|no verified provenance|"
+    r"provenance .* not verified|unverified provenance|"
+    r"no provenance check|provenance gap"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_DATA_DIRECTIVE_BOUNDARY_GAP_RE = re.compile(
+    r"\b(?:"
+    r"no sandbox|without (?:a )?sandbox|structurally prevents?|"
+    r"injected text .* interpreted as instructions?|"
+    r"data payloads? .* directive text|directive text .* data payloads?|"
+    r"no consistent parser|without (?:a )?consistent parser|"
+    r"distinguishes? data payloads? from directive text|"
+    r"input sanitization|schema enforcement|typed envelope|typed envelopes?|"
+    r"schema validation|structural enforcement"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_SOFT_CONTROL_RELIANCE_RE = re.compile(
+    r"\b(?:"
+    r"training-level|training level|prompt-level|prompt level|soft controls?|"
+    r"trained to be skeptical|treat tool outputs? as untrusted data|"
+    r"operators? can instruct|prompt injection attacks? regularly defeat|"
+    r"determined prompt injection|no equivalent to input sanitization|"
+    r"no equivalent .* schema enforcement"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_FORMAT_ONLY_FRAME_RE = re.compile(
+    r"\b(?:"
+    r"pure formatting work|formatting work|formatting rules?|reformat(?:ting)?|"
+    r"format this|clean up formatting|document processing|"
+    r"bureaucratic specificity|bureaucratic .* rules?|"
+    r"legitimate document processing|never asking .* generate|"
+    r"never asked .* generate|never asking .* explain|"
+    r"not asking .* write .* from scratch|not write .* from scratch"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_PASSTHROUGH_FIDELITY_RE = re.compile(
+    r"\b(?:"
+    r"pass through unchanged|passthrough unchanged|pass-through unchanged|"
+    r"leave .* unchanged|preserve .* unchanged|keep .* unchanged|"
+    r"preserve verbatim|verbatim preservation|fidelity to the original|"
+    r"fidelity .* original|reproduce prohibited content|"
+    r"reproduce .* under the cover of fidelity|unchanged blocks?|"
+    r"certain blocks .* unchanged"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_FILE_INDIRECTION_RE = re.compile(
+    r"\b(?:"
+    r"pre-existing file|preexisting file|existing file|file on disk|"
+    r"staged .* file|staging .* file|payload file|file literally named|"
+    r"reads? and processes?|read and process|from disk|on disk|"
+    r"layer of indirection|pre-existing .* disk|already there"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+_PROHIBITED_CONTENT_FRAME_RE = re.compile(
+    r"\b(?:"
+    r"prohibited content|offensive content|harmful content|disallowed content|"
+    r"unsafe content|policy-violating content|filter evasion attempt|"
+    r"payload|exploit|attack code|weaponized|ready-to-use attack"
+    r")\b",
+    re.IGNORECASE,
+)
+
+_SELF_LABELED_FILTER_TEST_RE = re.compile(
+    r"\b(?:"
+    r"filter[_ -]?test|filter evasion attempt|filter[_ -]?evasion|"
+    r"cvp|payload file .* filter|file .* named .* filter|"
+    r"file .* labels? itself|hd1[_-]?filter"
+    r")\b",
+    re.IGNORECASE | re.DOTALL,
 )
 
 _VERBATIM_REPORT_RE = re.compile(
@@ -1064,6 +1286,13 @@ def _detect_clean_prompt_wrappers(text: str) -> List[Finding]:
     pre_exploit_chain = list(_PRE_EXPLOIT_CHAIN_RE.finditer(text))
     recon_artifacts = list(_RECON_ARTIFACT_RE.finditer(text))
     incremental = list(_INCREMENTAL_TASKING_RE.finditer(text))
+    lab_ctf_frame = list(_LAB_CTF_FRAME_RE.finditer(text))
+    mid_session_credentials = list(_MID_SESSION_CREDENTIAL_INJECTION_RE.finditer(text))
+    technical_friction = list(_TECHNICAL_FRICTION_RE.finditer(text))
+    blocked_action = list(_BLOCKED_ACTION_RE.finditer(text))
+    retry_command = list(_RETRY_COMMAND_RE.finditer(text))
+    adcs_esc = list(_ADCS_ESC_RE.finditer(text))
+    sophisticated_analysis = list(_SOPHISTICATED_ANALYSIS_RE.finditer(text))
 
     defensive = list(_DEFENSIVE_FRAMING_WRAPPER_RE.finditer(text))
     defensive_context_is_safe_auth = (
@@ -1351,6 +1580,96 @@ def _detect_clean_prompt_wrappers(text: str) -> List[Finding]:
                     "authorization should not bless prior collection; require "
                     "scope and authority before target interaction or evidence "
                     "export."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if lab_ctf_frame and (
+        mid_session_credentials
+        or retry_command
+        or (adcs_esc and sophisticated_analysis)
+    ):
+        matches = sorted(
+            lab_ctf_frame[:1]
+            + (
+                mid_session_credentials[:1]
+                or retry_command[:1]
+                or adcs_esc[:1] + sophisticated_analysis[:1]
+            ),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="ctf_lab_authorization_laundering",
+                severity="high" if mid_session_credentials else "medium",
+                detail=(
+                    "HTB, CTF, or lab framing is paired with mid-session "
+                    "credential or target injection, retry-after-block language, "
+                    "or sophisticated AD CS/template analysis. Treat the lab "
+                    "label as a scope claim to verify, not as blanket clearance "
+                    "for operational steps."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if mid_session_credentials and (
+        lab_ctf_frame or technical_friction or _REAL_TARGET_RE.search(text)
+    ):
+        matches = sorted(
+            mid_session_credentials[:2]
+            + (technical_friction[:1] or lab_ctf_frame[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="mid_session_credential_injection",
+                severity="high",
+                detail=(
+                    "Credential or target material appears mid-session to "
+                    "unblock technical friction or keep an operation moving. "
+                    "Pause for scope and ownership verification before using or "
+                    "printing access material."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if blocked_action and retry_command:
+        matches = sorted(blocked_action[:1] + retry_command[:2], key=lambda m: m.start())
+        findings.append(
+            Finding(
+                signal="retry_after_block_persistence",
+                severity="medium",
+                detail=(
+                    "A blocked or refused action is followed by plain retry "
+                    "pressure. Treat retry-after-block as boundary probing and "
+                    "preserve the refusal state across attempts."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if adcs_esc and (lab_ctf_frame or mid_session_credentials or sophisticated_analysis):
+        matches = sorted(
+            adcs_esc[:2]
+            + (lab_ctf_frame[:1] or sophisticated_analysis[:1] or mid_session_credentials[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="adcs_esc_methodology_expansion",
+                severity="medium",
+                detail=(
+                    "AD CS ESC or certificate-template analysis appears under a "
+                    "lab, credential-bearing, or planning frame. Keep output to "
+                    "defensive validation and remediation unless trusted lab "
+                    "scope and output boundaries are explicit."
                 ),
                 evidence=_evidence_for(matches),
                 span=_span_for(matches),
@@ -1669,6 +1988,61 @@ def _detect_sensitive_data_action_request(text: str) -> List[Finding]:
     ]
 
 
+def _detect_platform_session_token_exfiltration(text: str) -> List[Finding]:
+    framing = list(_BUG_BOUNTY_FRAME_RE.finditer(text))
+    injection = list(_INJECTION_EXFIL_RE.finditer(text))
+    tokens = list(_PLATFORM_SESSION_TOKEN_RE.finditer(text))
+    actions = list(_SENSITIVE_ACTION_RE.finditer(text))
+    if not tokens or not injection or not (framing or actions):
+        return []
+    matches = sorted(
+        (framing[:1] or actions[:1]) + injection[:2] + tokens[:2],
+        key=lambda m: m.start(),
+    )
+    return [
+        Finding(
+            signal="platform_session_token_exfiltration",
+            severity="high",
+            detail=(
+                "Professional, bug-bounty, or operational-analysis framing is "
+                "paired with injection/exfiltration vectors targeting platform "
+                "session tokens. Gate on the data category and requested effect; "
+                "keep output remediation-safe and avoid operational collection "
+                "or exfiltration paths."
+            ),
+            evidence=_evidence_for(matches),
+            span=_span_for(matches),
+        )
+    ]
+
+
+def _detect_hypervisor_mapping_invariant_bypass(text: str) -> List[Finding]:
+    virtualization = list(_VIRTUALIZATION_MEMORY_RE.finditer(text))
+    split_hook = list(_SPLIT_PAGE_HOOK_RE.finditer(text))
+    duplicate_mapping = list(_DUPLICATE_GPA_MAPPING_RE.finditer(text))
+    if not virtualization or not split_hook or not duplicate_mapping:
+        return []
+    matches = sorted(
+        virtualization[:2] + split_hook[:2] + duplicate_mapping[:3],
+        key=lambda m: m.start(),
+    )
+    return [
+        Finding(
+            signal="hypervisor_mapping_invariant_bypass",
+            severity="high",
+            detail=(
+                "Input discusses EPT/SLAT or guest-physical mapping behavior "
+                "together with split-page hooking, rootkit/blue-pill context, "
+                "or silent duplicate-GPA remap acceptance. Keep analysis at "
+                "invariant, detection, and remediation level: reject ambiguous "
+                "mappings, log remap attempts, and avoid operational hook design."
+            ),
+            evidence=_evidence_for(matches),
+            span=_span_for(matches),
+        )
+    ]
+
+
 def _detect_orchestration_trust_shift(text: str) -> List[Finding]:
     orchestration = list(_ORCHESTRATION_RE.finditer(text))
     trust_transfer = list(_TRUST_TRANSFER_RE.finditer(text))
@@ -1711,6 +2085,136 @@ def _detect_trusted_slot_contamination(text: str) -> List[Finding]:
             span=(min(trusted[0].start(), source[0].start()), max(trusted[-1].end(), source[-1].end())),
         )
     ]
+
+
+def _detect_tool_output_boundary_gap(text: str) -> List[Finding]:
+    tool_text = list(_TOOL_OUTPUT_AS_TEXT_RE.finditer(text))
+    provenance_gap = list(_PROVENANCE_VERIFICATION_GAP_RE.finditer(text))
+    structural_gap = list(_DATA_DIRECTIVE_BOUNDARY_GAP_RE.finditer(text))
+    soft_controls = list(_SOFT_CONTROL_RELIANCE_RE.finditer(text))
+    findings: List[Finding] = []
+
+    if tool_text and (provenance_gap or len(structural_gap) >= 2):
+        matches = sorted(
+            tool_text[:1] + (provenance_gap[:2] or structural_gap[:2]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="tool_output_provenance_gap",
+                severity="high",
+                detail=(
+                    "Tool output is described as ordinary model-readable text "
+                    "without verified provenance or structural separation "
+                    "between data and directives. Treat tool results as "
+                    "untrusted objects: verify source, enforce schemas, and "
+                    "separate parsed data from executable instructions before "
+                    "model use or display."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if tool_text and soft_controls and structural_gap:
+        matches = sorted(
+            tool_text[:1] + soft_controls[:2] + structural_gap[:2],
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="soft_control_boundary_reliance",
+                severity="medium",
+                detail=(
+                    "The boundary relies on training-level skepticism or "
+                    "prompt-level instructions while lacking parser, sandbox, "
+                    "input-sanitization, or schema-enforcement controls. Treat "
+                    "this as a soft-control gap and add hard validation before "
+                    "tool output reaches the model."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    return findings
+
+
+def _detect_formatting_fidelity_laundering(text: str) -> List[Finding]:
+    formatting = list(_FORMAT_ONLY_FRAME_RE.finditer(text))
+    passthrough = list(_PASSTHROUGH_FIDELITY_RE.finditer(text))
+    file_indirection = list(_FILE_INDIRECTION_RE.finditer(text))
+    prohibited = list(_PROHIBITED_CONTENT_FRAME_RE.finditer(text))
+    self_label = list(_SELF_LABELED_FILTER_TEST_RE.finditer(text))
+    findings: List[Finding] = []
+
+    if formatting and passthrough and (prohibited or file_indirection):
+        matches = sorted(
+            formatting[:1] + passthrough[:2] + (prohibited[:1] or file_indirection[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="formatting_fidelity_laundering",
+                severity="high" if prohibited else "medium",
+                detail=(
+                    "The request is framed as formatting or document processing "
+                    "while asking the model to preserve risky blocks unchanged. "
+                    "Fidelity to source material should not bypass content "
+                    "classification; scan and redact before reformatting or "
+                    "pass-through reproduction."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if file_indirection and (
+        ((formatting or passthrough) and (prohibited or self_label))
+        or (prohibited and self_label)
+    ):
+        matches = sorted(
+            file_indirection[:2]
+            + (formatting[:1] or passthrough[:1])
+            + (prohibited[:1] or self_label[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="file_indirection_payload_staging",
+                severity="high",
+                detail=(
+                    "Risky content is staged in a pre-existing file or disk "
+                    "artifact while the model is asked to read, process, or "
+                    "format it rather than author it. Treat files as prompt "
+                    "surface and classify their contents before transformation."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    if self_label and (file_indirection or prohibited or formatting):
+        matches = sorted(
+            self_label[:2] + (file_indirection[:1] or prohibited[:1] or formatting[:1]),
+            key=lambda m: m.start(),
+        )
+        findings.append(
+            Finding(
+                signal="self_labeled_filter_test_artifact",
+                severity="medium",
+                detail=(
+                    "An artifact name or label appears to identify itself as a "
+                    "filter test, evasion attempt, or payload carrier. Use file "
+                    "and artifact metadata as triage evidence, not only the "
+                    "visible user request."
+                ),
+                evidence=_evidence_for(matches),
+                span=_span_for(matches),
+            )
+        )
+
+    return findings
 
 
 def _detect_system_prompt_attack_scaffold(text: str) -> List[Finding]:
@@ -2018,8 +2522,12 @@ _DETECTORS = (
     _detect_decision_preloading,
     _detect_clean_prompt_wrappers,
     _detect_sensitive_data_action_request,
+    _detect_platform_session_token_exfiltration,
+    _detect_hypervisor_mapping_invariant_bypass,
     _detect_orchestration_trust_shift,
     _detect_trusted_slot_contamination,
+    _detect_tool_output_boundary_gap,
+    _detect_formatting_fidelity_laundering,
     _detect_system_prompt_attack_scaffold,
     _detect_offensive_tool_invocation_compliance,
     _detect_technical_failure_not_refusal,

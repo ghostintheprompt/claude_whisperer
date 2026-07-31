@@ -22,6 +22,8 @@ being claimed as finished runtime capability.
     automation-wrapper cases.
   - Score routine scan/keyscan/handshake/version/CVE steps as an aggregate
     recon chain when they appear across turns.
+  - Preserve block/refusal state across plain retry attempts such as "try
+    again" after a classifier stop.
 
 - Build scope-delta tracking.
   - Record user-requested steps separately from model-supplied steps.
@@ -29,9 +31,15 @@ being claimed as finished runtime capability.
     fields.
   - Flag broad defensive prompts that become specific target interaction.
   - Treat late admin or owner claims as metadata until scope is reverified.
+  - Treat HTB, CTF, and lab labels as scope claims to verify, not proof of
+    authorization.
+  - Gate mid-session credential or target-detail injection before any use,
+    tool call, or report display.
   - Require confirmation before deeper collection or surface mapping.
   - Distinguish bounded appsec questions from broad whole-codebase or
     all-attack-surface sweeps.
+  - Keep AD CS ESC and certificate-template work in defensive validation and
+    remediation lanes unless trusted lab scope and output boundaries are clear.
 
 - Build sweep safety gates.
   - Require explicit authorization, target ownership, and scope caps before
@@ -61,6 +69,39 @@ being claimed as finished runtime capability.
     reconnaissance-package density before model analysis begins.
   - Preserve file path, hash, extraction timestamp, and source interface.
   - Compare chat-only risk with full-context risk.
+
+- Build trusted-slot provenance validation.
+  - Scan system prompts, developer messages, tool definitions, and operator
+    context before agent execution.
+  - Block trusted slots that contain live target context, credential-bearing
+    material, offensive infrastructure references, or anti-review language.
+  - Treat returned tool content as untrusted data until provenance, authority,
+    and schema have been verified.
+  - Record attempted tool invocation separately from tool success or failure.
+  - Classify technical tool/runtime failure as safety non-intervention when the
+    model otherwise complied.
+
+- Build typed tool-result boundaries.
+  - Wrap tool outputs in typed envelopes with source, tool identity, authority,
+    schema version, timestamp, and content hash.
+  - Parse results before model exposure; never inject raw tool strings directly
+    into instruction context.
+  - Separate data payload fields from directive text and quarantine
+    instruction-like content from untrusted outputs.
+  - Fail closed on schema mismatch, unknown executable fields, missing
+    provenance, or output class escalation.
+  - Compare training/prompt-level "treat this as untrusted" controls against
+    structural parser, sandbox, sanitization, and schema controls.
+
+- Build safe transformation boundaries.
+  - Classify source files before formatting, conversion, cleanup, translation,
+    or unchanged pass-through.
+  - Treat "pass through unchanged" and "preserve verbatim" as display/export
+    decisions that still require policy review.
+  - Add metadata triage for filenames, paths, comments, and labels that suggest
+    filter testing, evasion attempts, payload staging, or policy probes.
+  - Redact, summarize, or quarantine unsafe source blocks rather than
+    preserving them for formatting fidelity.
 
 - Build sensitivity-tiered structured output.
   - Add sensitivity labels to evidence and file reference fields.
@@ -112,6 +153,8 @@ being claimed as finished runtime capability.
   - Credential reads.
   - Session/token handling.
   - Persistence/process control.
+  - Hypervisor and kernel memory-mapping invariants such as duplicate
+    guest-physical remap acceptance.
 
 ## Lower Priority
 
