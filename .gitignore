@@ -72,3 +72,12 @@ node_modules/
 backup_final/
 archive/
 trusted_access.md
+
+# Private case material
+docs/cases/
+case_notes/
+case_studies/
+important_findings/
+Important Findings*/
+*.case-notes.md
+*.private-case.md

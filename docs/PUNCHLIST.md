@@ -16,20 +16,63 @@ being claimed as finished runtime capability.
   - Detect refusal-then-compliance patterns.
   - Track low-signal baseline erosion across turns.
   - Preserve staged setup turns in exported evidence.
+  - Compare per-turn risk with full-session aggregate risk for layered
+    automation-wrapper cases.
+
+- Build scope-delta tracking.
+  - Record user-requested steps separately from model-supplied steps.
+  - Flag broad defensive prompts that become specific target interaction.
+  - Require confirmation before deeper collection or surface mapping.
+  - Distinguish bounded appsec questions from broad whole-codebase or
+    all-attack-surface sweeps.
+
+- Build sweep safety gates.
+  - Require explicit authorization, target ownership, and scope caps before
+    multi-agent or full-surface vulnerability sweeps.
+  - Add rate limits and human unlock before parallel auditor fanout.
+  - Route findings to remediation-safe queues instead of portable vulnerability
+    databases.
+  - Track discovery volume against triage, patch, and deployment capacity.
+
+- Build elevated target-class registry.
+  - Start with obfuscation-specific transports and defense-evasion protocols.
+  - Gate authentication, handshake, dial, connection-establishment, and internal
+    mechanics at request stage.
+  - Keep reviewer-analysis notes source-safe when sampled completions are empty
+    or harmless.
 
 - Build whole-work-object scanning.
   - Run detector passes across chat text, attachments, repo files, retrieved
     chunks, generated code, and tool arguments.
+  - Score clean-prompt cases across framing language, context payload, and
+    output shape.
+  - Preserve workflow provenance so recon, enumeration, analysis, and reporting
+    stages can be evaluated together.
+  - Detect reconnaissance artifacts in context blocks: endpoint inventories,
+    auth flows, file refs, log paths, ports, and known weaknesses.
+  - Score analytical security tasks paired with attached or upstream
+    reconnaissance-package density before model analysis begins.
   - Preserve file path, hash, extraction timestamp, and source interface.
   - Compare chat-only risk with full-context risk.
+
+- Build sensitivity-tiered structured output.
+  - Add sensitivity labels to evidence and file reference fields.
+  - Require redaction or human unlock before portable evidence export.
+  - Separate internal evidence from source-safe recommendation text.
+  - Redact live protocol surface dumps, including KEX/cipher/MAC/host-key and
+    authentication-method inventories, from shareable reports.
+  - Redact exact running-build, CVE-correlation, and patch-status joins from
+    shareable reports unless explicitly authorized.
 
 - Add case-study export templates.
   - Raw private version.
   - Source-safe public version.
   - SOC handoff version with detections, logging, and escalation guidance.
+  - Keep private case notes gitignored until explicitly cleared.
 
 - Refresh the vulnerability taxonomy for 2026.
   - Add decision preloading.
+  - Add clean-prompt wrapper taxonomy.
   - Add orchestration trust shift.
   - Add data-category hard stops.
   - Add legitimate-code camouflage.
@@ -47,6 +90,8 @@ being claimed as finished runtime capability.
   - No raw client material.
   - No operational payloads.
   - Mechanism-preserving examples for detection and regression tests.
+  - Add benign DevOps and enterprise-workflow baselines to tune
+    `operational_normalcy_camouflage` false positives.
 
 - Add report generation.
   - Markdown evidence pack.

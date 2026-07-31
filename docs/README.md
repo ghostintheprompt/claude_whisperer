@@ -6,7 +6,7 @@ work.
 ## Current Documents
 
 - [Important Findings Method](IMPORTANT_FINDINGS_METHOD.md) - the 2026
-  case-informed stance and red-to-blue workflow.
+  case-informed stance, clean-prompt wrapper taxonomy, and red-to-blue workflow.
 - [Important Findings Audit](IMPORTANT_FINDINGS_AUDIT.md) - coverage map from
   source findings to README, methodology, detector, and punchlist.
 - [Research Methodology](RESEARCH_METHODOLOGY.md) - repeatable evaluation loop,
@@ -17,6 +17,8 @@ work.
 - [Defense Detector](../defense/README.md) - working pre-model triage utility.
 - [Punchlist](PUNCHLIST.md) - explicit gap list for features not yet claimed as
   runtime capability.
+- [Case Brief Template](templates/CASE_BRIEF_TEMPLATE.md) - reusable private
+  and source-safe brief format for future case work.
 
 ## Legacy Archive
 
@@ -28,3 +30,6 @@ refactored.
 
 The current public story should lead with the method, the defensive detector,
 and source-safe case-study translation.
+
+Private case notes live outside Git. The repo should absorb their lessons as
+methods, detector signals, tests, templates, and sanitized language.

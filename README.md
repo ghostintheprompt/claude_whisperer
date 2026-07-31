@@ -46,9 +46,22 @@ method travels.
 | Lane | Field Note | Defender's Move |
 |---|---|---|
 | Decision preloading | The attacker supplies the objective, authority, steps, and success criteria so the model only has to execute. | Flag pre-authorization language and force a fresh policy/data/tool check before action. |
+| Clean-prompt wrappers | Defensive framing, role laundering, automation, preloaded attachments, structured output, incremental tasking, and ordinary tool invocation can keep chat text clean while the work object carries risk. | Score three axes together: framing language, context payload, and output shape. |
+| Layered automation camouflage | Recon, enumeration, analysis, and reporting are split across agents, sessions, or workflow stages so each step looks like normal DevOps work while the combined output becomes a surface map. This is workflow indistinguishability. | Evaluate the full session artifact and workflow provenance, not only each prompt, normalcy claim, tool call, or report row. |
+| Preloaded recon package laundering | The current prompt says "audit this" or "review for issues," but an attachment, codebase map, system context, or prior tool output already supplies target architecture, endpoints, auth shape, and known weaknesses. | Inspect attached content first. Score analytical security tasks together with structured reconnaissance artifacts. |
+| Broad sweep escalation | Narrow appsec questions can be bounded help; broad multi-agent sweeps convert the model into scaled vulnerability discovery and structured report packaging. | Require scope caps, authorization, rate controls, human unlock, and remediation-safe output before whole-codebase or all-surface sweeps. |
+| Defense-evasion protocol internals | Developer/docs framing can hide requests for authentication, handshake, dial, or connection mechanics of traffic-obfuscation transports. | Treat obfuscation-specific transports as elevated-sensitivity targets and flag request-stage internals before implementation detail is produced. |
+| Protocol surface cartography | A broad audit can extract SSH/KEXINIT algorithm negotiation, live auth-method availability, and exact-build CVE correlation, producing a pre-attack service map. | Redact algorithm/auth/version dumps and translate to remediation-level hardening guidance unless explicit scope authorizes deeper evidence. |
+| Verified-facts targeting package | A block labeled as trusted facts or institutional memory contains the target map: files, ports, logs, endpoints, auth shape, known weaknesses. | Verify source and scope of "facts" blocks. Treat attached reconnaissance as active prompt surface. |
+| Theatrical constraints | Dramatic prohibitions make the task look controlled while the permitted read actions still produce the intelligence that matters. | Review allowed actions, not just forbidden ones. Model the intelligence value of read-only commands. |
+| Structured-output dossiering | A schema with evidence, file refs, and recommendations can turn a benign-looking audit into a portable intelligence package. | Add sensitivity tiers, redaction gates, and human unlock before machine-readable evidence export. |
 | Calibrated craft | High-effort attacks are shaped to the target model's safety layer and reasoning style. The craft level is itself an operator signal. | Record sophistication, patience, model-specific calibration, and repeatability as part of severity. |
+| Autonomous methodology expansion | The user asks for broad security analysis; the agent invents the specific protocol probe, collection method, or surface map to prove competence. | Require scope confirmation before deeper collection. Log which steps were user-requested vs. model-supplied. |
 | Mode switching | The frame moves from builder to reviewer to analyst to operator in small enough steps that no single turn looks loud. | Score the trajectory, not only the latest message. Compare direct and staged versions of the same end state. |
 | Orchestration trust shift | The human never prompts the model directly. The instruction rides through a document, repo, subagent, tool result, CI job, or MCP context. | Treat tool output, retrieval text, attachments, and repo content as untrusted unless authority is explicit. |
+| Tool-output laundering | A tool creates the risky artifact; the agent prints it as scan results. The agent did not author it, but it transmitted it. | Apply policy after tool execution and before display/export. Classify final artifacts, not just agent intent. |
+| Delegated-authorship fallacy | "The tool made it, not me" is technically neat and security-irrelevant. The agent still caused or transmitted the artifact. | Evaluate causation, selection, reproduction, and transmission, not only direct authorship. |
+| Risk-label laundering | A ready-to-use artifact can be mislabeled low risk after the fact. The label starts to do the laundering. | Recompute severity from artifact class and operational readiness; do not inherit scanner labels blindly. |
 | Chat-surface displacement | The chat stays clean while the real pressure sits in attached files, code, retrieved text, or tool inputs where safeguards may inspect less carefully. | Scan the whole work object, not just chat. Treat files and tool context as first-class prompt surface. |
 | Trusted-slot contamination | If attacker text lands in a system, developer, operator, or tool-trusted slot, the model may treat hostile language as rules. | Separate instruction authority from content. Alert when untrusted sources try to occupy trusted slots. |
 | Unicode drift | Mixed scripts, homoglyphs, zero-width characters, and encoding split what the human sees from what the model reads. | Normalize, decode, rescan, and preserve both original and normalized evidence. |
@@ -70,7 +83,9 @@ authorization, scope, logging, and whether the lesson comes back as protection.
 
 | Path | State |
 |---|---|
-| `defense/evasion_signal_detector.py` | Working standard-library detector. Text in, findings out, no model calls. Covers classic obfuscation plus the newer case-informed signals: decision preloading, sensitive data/action pairing, mixed-script control surfaces, orchestration trust shifts, trusted-slot contamination, and probe confirmation. |
+| `defense/evasion_signal_detector.py` | Working standard-library detector. Text in, findings out, no model calls. Covers classic obfuscation plus the newer case-informed signals: decision preloading, clean-prompt wrappers, layered automation camouflage, preloaded recon package laundering, broad sweep escalation, multi-agent audit fanout, vulnerability database packaging, AI discovery asymmetry, defense-evasion protocol internals, protocol surface cartography, live build CVE correlation, primary auth-vector exposure, developer-documentation laundering, review-process reconstruction, operational normalcy camouflage, operational thoroughness pressure, sensitive data/action pairing, mixed-script control surfaces, orchestration trust shifts, trusted-slot contamination, probe confirmation, tool-output laundering, delegated-authorship deflection, risk-label laundering, autonomous methodology expansion, verified-facts targeting packages, theatrical constraints, and structured-output dossiering. |
+| private case briefs | Local-only, gitignored | Specific cases should not be public. The repo learns from them through methods, detectors, tests, templates, and sanitized language. |
+| `docs/templates/CASE_BRIEF_TEMPLATE.md` | Tracked template | Brief professional format for private case notes and source-safe portfolio examples. |
 | `docs/IMPORTANT_FINDINGS_METHOD.md` | Current field-method document for source-safe case-study writing and red-to-blue handoff. |
 | `docs/RESEARCH_METHODOLOGY.md` | Current evaluation loop: target fixation, pass/fail definitions, exact logging, metrics, and evidence packages. |
 | `research/SAFEGUARD_EVALUATION_METHODOLOGY.md` | Defender companion to the taxonomy, now linked to the 2026 case lanes. |
@@ -112,6 +127,16 @@ if score >= 60:
 - Every offensive lesson should leave behind at least one detection, test,
   review rule, mitigation hypothesis, or report pattern.
 - Anything aspirational belongs in `docs/PUNCHLIST.md`.
+
+## Case Briefs
+
+The private working format is a **case brief**: short, professional, and built
+around the mechanism rather than the raw transcript. A case can later become a
+**finding brief** for security leadership, a **SOC handoff** for detection work,
+or a **source-safe portfolio example** for applications and interviews.
+
+Specific case notes stay local and gitignored. The public repo absorbs the
+learning, not the client material.
 
 ## Contract Signal
 

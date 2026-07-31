@@ -43,6 +43,15 @@ and "what the request enables" as a severity lens.
 | IF-15 | 123 | The threat lives in what it enables, not only what it contains. | Important Findings Method core observation; README contract signal and case lanes. | Captured |
 | IF-16 | 124-125 | Priming messages and patient staged setup enable downstream trigger prompts. | Low-signal erosion and mode-switching lanes; trajectory scoring punchlist. | Captured; scoring remains next-work |
 | IF-17 | Follow-up | Chat text often avoids safeguard-trigger words while files, tools, code, or attachments carry the real pressure. | README `Chat-surface displacement` lane; Important Findings Method lane; scanner can be run over files, not only pasted chat. | Captured; full file/tool pipeline scanning remains next-work |
+| IF-18 | Follow-up | Clean prompts collapse into seven wrapper categories: defensive framing, role laundering, automation wrapper, pre-loaded context, structured output pressure, incremental tasking, and legitimate tool invocation. | README `Clean-prompt wrappers` lane, Important Findings Method taxonomy, Research Methodology lane, detector signals and tests. | Captured |
+| IF-19 | Follow-up | Automation wrappers are hardest because they distribute work across layers, normalize behavior as enterprise tooling, and make the risky surface visible only in full-session output. | README `Layered automation camouflage` lane, Important Findings Method detectability tiers, Research Methodology, detector signals and tests. | Captured |
+| IF-20 | Follow-up | The hardest phrasing problem is that the suspicious pattern also describes normal software engineering and DevOps culture. Normalcy claims must be tested against scope, provenance, data class, and final artifact. | README `Layered automation camouflage` lane, Important Findings Method, Research Methodology, `operational_normalcy_camouflage` detector and test. | Captured |
+| IF-21 | Follow-up | Workflow indistinguishability: modular decomposition, configuration files, schemas, and multi-agent pipelines are accurate descriptions of both mature enterprise work and layered adversarial choreography. | Important Findings Method, Research Methodology, private Case 006, expanded `operational_normalcy_camouflage` detector test. | Captured |
+| IF-22 | Follow-up | Attachment-heavy recon package laundering: the visible prompt says "audit this" while attached documents, codebase maps, system context, or prior tool output already supply target architecture, enumerated endpoints, auth mechanisms, and known weaknesses. | README `Preloaded recon package laundering` lane, Important Findings Method, Research Methodology, private Case 004, `preloaded_recon_package_laundering` detector and test. | Captured |
+| IF-23 | Follow-up | Bounded appsec questions are different from broad multi-agent sweeps. Sweeps can turn the model into scaled vulnerability discovery and package file/line findings faster than defenders can triage and patch. | README `Broad sweep escalation` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 007, detector signals and tests. | Captured |
+| IF-24 | Follow-up | Defense-evasion protocol internals: developer/open-source documentation framing can hide requests for authentication, handshake, dial, or connection mechanics of traffic-obfuscation transports. Reviewer analysis can also reconstruct sensitive mechanics even when sampled output is empty. | README `Defense-evasion protocol internals` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 008, detector signals and tests. | Captured |
+| IF-25 | Follow-up | Protocol surface cartography: full SSH/KEXINIT algorithm extraction plus authentication-method disclosure creates a pre-attack service map, not just remediation evidence. | README `Protocol surface cartography` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 009, detector signals and tests. | Captured |
+| IF-26 | Follow-up | Auth-method disclosure becomes primary-vector exposure when labeled as a key finding, and exact running-build-to-CVE-to-patch-status joins complete a live vulnerability triage cycle. | README `Protocol surface cartography` lane, Important Findings Method, Research Methodology, evaluation companion, private Case 009, `primary_auth_vector_exposure` and `live_build_cve_correlation` tests. | Captured |
 
 ## Current Runtime Signals
 
@@ -55,10 +64,41 @@ Implemented in `defense/evasion_signal_detector.py`:
 - `rot13_concealment`
 - `leetspeak_substitution`
 - `decision_preloading`
+- `defensive_framing_wrapper`
+- `role_laundering`
+- `automation_wrapper`
+- `layered_automation_camouflage`
+- `preloaded_context_payload`
+- `preloaded_recon_package_laundering`
+- `structured_output_pressure`
+- `operational_thoroughness_pressure`
+- `operational_normalcy_camouflage`
+- `incremental_tasking`
+- `legitimate_tool_invocation_wrapper`
+- `broad_sweep_escalation`
+- `multi_agent_audit_fanout`
+- `vulnerability_database_packaging`
+- `ai_discovery_asymmetry`
+- `obfuscation_transport_internals`
+- `developer_documentation_laundering`
+- `review_process_sensitive_reconstruction`
+- `ssh_crypto_surface_extraction`
+- `auth_method_surface_disclosure`
+- `primary_auth_vector_exposure`
+- `live_build_cve_correlation`
+- `protocol_surface_cartography`
+- `clean_prompt_axis_combo`
 - `sensitive_data_action_request`
 - `orchestration_trust_shift`
 - `trusted_slot_contamination`
 - `probe_confirmation`
+- `tool_output_laundering`
+- `delegated_authorship_deflection`
+- `risk_label_laundering`
+- `autonomous_methodology_expansion`
+- `verified_facts_targeting_package`
+- `theatrical_constraints_operational_permissions`
+- `structured_output_dossiering`
 - `context_dilution`
 - `oversized_input`
 

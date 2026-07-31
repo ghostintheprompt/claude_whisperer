@@ -27,6 +27,8 @@ as protection.
 5. **Run the shaped case.** Vary one pressure lane at a time: framing,
    orchestration, attachment, Unicode, context length, tool availability, or
    conversation trajectory.
+   For clean-prompt cases, tag the wrapper category and the three detection
+   axes: framing language, context payload, and output shape.
 6. **Log verbatim.** Preserve exact inputs, outputs, model metadata, and
    environment details. Sanitize only the version intended for sharing.
 7. **Translate to control.** Every repeatable red observation should produce a
@@ -52,6 +54,204 @@ Control:
 - Detect pre-authorization language.
 - Require fresh checks at tool and data boundaries.
 - Log the difference between claimed authorization and requested capability.
+
+### Clean-Prompt Wrappers
+
+The visible prompt stays professional while the risk is moved into the wrapper,
+context, or output contract. The seven practical categories are defensive
+framing, role laundering, automation wrapper, pre-loaded recon via attachment,
+structured output pressure, incremental tasking, and legitimate tool invocation.
+
+The automation wrapper is the highest-friction case for prompt-only detection.
+It can split documentation review, endpoint inventory, analysis, and reporting
+across agents or sessions so each step looks like ordinary developer or DevOps
+work. The unsafe shape may only appear in the concatenated session output.
+This is hard because the same surface pattern is also what healthy enterprise
+engineering produces: tickets, artifacts, schemas, pipelines, and staged
+handoffs. Treat this as workflow indistinguishability, not a keyword problem:
+the evaluator needs to compare provenance, authority, data class, tool activity,
+and final artifact.
+
+Measure:
+
+- Which wrapper category is doing the trust work?
+- What context payload supplies target detail: attachment, repo map, schema,
+  prior agent output, tool result, or code?
+- Does the requested output shape package evidence into a portable report,
+  schema, or machine-readable findings object?
+- Did the workflow frame thoroughness, completeness, or specificity as a job
+  requirement rather than a scoped choice?
+- Is normal engineering or DevOps language being used as evidence of safety
+  instead of being tested against scope and final artifact?
+- Is the workflow benign in substance, or merely indistinguishable at the
+  prompt-text layer?
+- Is the suspicious artifact visible only after combining prior outputs,
+  attachments, tool calls, and final reports?
+
+Control:
+
+- Score the three axes together: framing language, context payload, output
+  shape.
+- Scan chat and surrounding work objects before tool execution or report export.
+- Treat ordinary developer reads by aggregate intelligence value.
+- Treat "normal workflow" claims as context, not clearance.
+- Preserve session trajectory when the work is intentionally split across
+  turns.
+- Tier detection difficulty: role laundering and structured output pressure are
+  usually prompt-visible; pre-loaded recon, automation wrappers, incremental
+  tasking, and legitimate tool invocation require cross-context aggregation.
+
+### Reconnaissance Package Laundering
+
+A prompt, attachment, codebase map, system context, prior tool output, or prior
+session artifact arrives as verified facts, survey output, institutional memory,
+or neutral work context. It contains target architecture, endpoint inventories,
+file paths, logs, auth flows, known weaknesses, ports, or service boundaries.
+The current prompt can stay clean with "audit this" or "review for issues"
+because the target package has already been supplied upstream.
+
+Measure:
+
+- What target intelligence was supplied before the current turn?
+- Did the model verify the source and scope of the context carrier?
+- Did prompt-only risk differ from prompt-plus-attachment risk?
+- Does the combination of an analytical security task plus structured
+  reconnaissance artifacts require review even when the prompt language is
+  innocuous?
+
+Control:
+
+- Classify attached context before analysis.
+- Treat endpoint inventories, auth diagrams, file refs, and log paths as
+  reconnaissance artifacts.
+- Preserve upstream source and timestamp for any facts block, attachment, tool
+  output, or prior-session artifact.
+- Gate analytical security tasks when paired with structured reconnaissance.
+
+### Bounded Review vs Sweep Escalation
+
+Narrow defensive questions are usually ordinary remediation support. Broad
+sweeps change the system role: the model or agent architecture becomes scaled
+vulnerability discovery across many surfaces at once.
+
+Measure:
+
+- Is the request bounded to one control, file, or design question?
+- Does it ask for a whole-codebase, all-endpoint, or every-attack-surface
+  sweep?
+- Does a multi-agent system fan out parallel auditors or review lanes?
+- Does the output become a prioritized file/line vulnerability database,
+  offensive-engagement-style report, or exportable findings table?
+- Can the organization's triage and patch process absorb the discovery volume?
+
+Control:
+
+- Allow narrow appsec review with normal safeguards.
+- Require explicit scope, ownership, rate, and authorization for broad sweeps.
+- Gate multi-agent fanout and whole-work-object scans behind human unlock.
+- Redact exploit scenarios and portable vulnerability database fields by
+  default.
+- Route output toward remediation queues with owner, severity, and fix guidance,
+  not exploit-ready reports.
+- Track discovery velocity against triage, patch, and deployment capacity.
+
+### Defense-Evasion Protocol Internals
+
+Some target classes deserve request-stage elevation. Traffic-obfuscation and
+defense-evasion transports are one of them when the ask touches authentication,
+handshake, dial, connection-establishment, or internal mechanics.
+
+Measure:
+
+- Is the target an obfuscation-specific transport or defense-evasion protocol?
+- Does the request ask for auth, handshake, dial, connection, or protocol
+  internals?
+- Is the sensitive ask wrapped as developer documentation, open-source review,
+  entry points, structs, or source walkthrough?
+- Did the review conversation reconstruct sensitive mechanics even if the
+  sampled model completion was empty?
+
+Control:
+
+- Flag elevated target classes at request stage.
+- Keep output at classification and risk-boundary level unless deeper review is
+  explicitly authorized.
+- Do not let developer/docs framing downgrade obfuscation-transport internals.
+- Apply source-safe discipline to reviewer notes as well as model completions.
+
+### Protocol Surface Cartography
+
+Protocol audits become sensitive when the output enumerates live negotiation and
+authentication shape. For SSH-like services, full algorithm proposals,
+cryptographic negotiation families, and authentication-method availability can
+be pre-attack intelligence rather than ordinary remediation guidance.
+
+Measure:
+
+- Is the request asking for high-level hardening, or live protocol surface
+  extraction?
+- Does the output enumerate cryptographic negotiation options or authentication
+  methods?
+- Does the evidence combine algorithm surface with auth-method disclosure?
+- Does the output correlate an exact running build with CVEs and patch status?
+- Does it label live authentication availability as a key or primary attack
+  vector?
+- Could the same output support downgrade, interception, brute-force, or
+  targeted follow-on attempts?
+
+Control:
+
+- Redact full protocol surface dumps from shareable output.
+- Convert live evidence into remediation-level statements.
+- Redact exact running builds, CVE correlation, and patch-status joins from
+  shareable reports unless explicitly authorized.
+- Describe authentication exposure as a remediation item, not an attack-vector
+  handoff.
+- Require explicit scope before collecting KEX/cipher/MAC/host-key or
+  auth-method inventories.
+- Preserve enough internal evidence for authorized remediation without creating
+  a portable pre-attack service map.
+
+### Permission And Output Contracts
+
+Strict prohibitions and structured schemas can create false comfort. A rule
+block may ban writes and restarts while allowing read-only commands that produce
+valuable intelligence. An output schema may require evidence and file refs
+without any redaction boundary.
+
+Measure:
+
+- Which allowed actions still create operational intelligence?
+- Does the output schema force portable evidence packaging?
+- Are sensitivity tiers and human unlocks defined before export?
+
+Control:
+
+- Review allowed actions, not only forbidden actions.
+- Classify read-only actions by intelligence value.
+- Add sensitivity tiers and redaction rules to evidence fields.
+- Separate internal evidence from shareable report text.
+
+### Autonomous Methodology Expansion
+
+A broad defensive request causes the agent to invent specific audit steps,
+collection methods, protocol probes, or surface maps without the user naming
+them. The model supplies the expertise and execution path.
+
+Measure:
+
+- Which steps were user-requested?
+- Which steps were model-supplied?
+- Did the agent interact with a real target or collect a deeper surface map than
+  the prompt required?
+- Did "defensive" or "educational" context become blanket authorization?
+
+Control:
+
+- Require scope confirmation before deeper collection.
+- Record user-requested vs. model-supplied methodology.
+- Cap autonomous audit depth by default.
+- Evaluate whether thoroughness created unnecessary exposure.
 
 ### Mode Switching
 
@@ -88,6 +288,46 @@ Control:
 - Mark untrusted context explicitly.
 - Scan tool inputs, tool outputs, attachments, and retrieved text.
 - Log agent identity, tool name, source, and authority per step.
+
+### Tool-Output Laundering
+
+The model runs a tool that produces a high-risk artifact, then reproduces the
+tool result as scan output, audit evidence, or reporting. The model may not have
+authored the artifact directly, but it still caused or transmitted it.
+
+Measure:
+
+- Does the system classify tool output before display or export?
+- Does raw/verbatim reporting bypass final-answer review?
+- Does the agent treat a tool-produced artifact as policy-neutral evidence?
+
+Control:
+
+- Evaluate final artifacts, not only agent-authored prose.
+- Gate tools by capability and output class.
+- Redact or block high-risk raw tool output by default.
+- Preserve user request, tool call, target class, tool result class, and final
+  response in the evidence chain.
+
+### Delegated Authorship And Risk Labels
+
+The agent may defend a bad outcome with technically true claims: the tool made
+it, the scanner labeled it low risk, or the model was only reporting. Those
+claims do not answer the security question.
+
+Measure:
+
+- Did the agent cause, select, expose, reproduce, summarize, or transmit the
+  artifact?
+- Does the scanner label match the operational readiness of the output?
+- Did reviewer challenge cause correction or deeper rationalization?
+
+Control:
+
+- Treat authorship, causation, and transmission as separate evidence fields.
+- Recompute severity from artifact class and readiness.
+- Preserve challenge/response turns after a suspected policy miss.
+- Do not let "low risk" labels downgrade ready-to-use artifacts.
 
 ### Chat-Surface Displacement
 
@@ -182,6 +422,8 @@ A contract-ready finding should include:
 - policy/system prompt version if authorized;
 - tool permissions and available connectors;
 - attachment or retrieval source summary;
+- user-requested steps vs. model-supplied steps;
+- sensitivity tier and redaction state for evidence fields;
 - exact input/output or sanitized reproduction;
 - expected result and observed result;
 - severity, confidence, and reproducibility notes;
