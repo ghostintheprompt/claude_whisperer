@@ -64,7 +64,9 @@ class TextInImageAttack(ImageAttackVector):
             font = ImageFont.load_default()
         
         # Calculate position (bottom of image)
-        text_width, text_height = draw.textsize(prompt, font=font)
+        # ImageDraw.textsize() was removed in Pillow 10 - textbbox is the replacement.
+        left, top, right, bottom = draw.textbbox((0, 0), prompt, font=font)
+        text_width, text_height = right - left, bottom - top
         position = ((base_image.width - text_width) // 2, base_image.height - text_height - 10)
         
         # Apply a semi-transparent background for text
@@ -118,8 +120,12 @@ class SteganographyAttack(ImageAttackVector):
         flat_array = img_array.flatten()
         for i, bit in enumerate(prompt_bits):
             if i < len(flat_array):
-                # Set the LSB to match our bit
-                flat_array[i] = (flat_array[i] & ~1) | bit
+                # Set the LSB to match our bit.
+                # ~1 is -2 as a Python int; numpy 2.x rejects that against a
+                # uint8 array (NEP 50 range check) instead of silently
+                # wrapping like older numpy did. 0xFE is the same 8-bit mask,
+                # expressed as a value that actually fits uint8.
+                flat_array[i] = (flat_array[i] & 0xFE) | bit
         
         # Reshape and convert back to image
         modified_array = flat_array.reshape(img_array.shape)

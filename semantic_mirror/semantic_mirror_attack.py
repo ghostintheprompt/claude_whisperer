@@ -1,4 +1,4 @@
-ye"""
+"""
 Semantic Mirror Attack Framework for Claude 4.0.
 
 This module implements the Semantic Mirror technique, which generates jailbreak prompts 

@@ -75,8 +75,8 @@ def run_tests(test_filter=None, verbose=False, report_path=None):
             "errors": len(result.errors),
             "pass_rate": pass_rate,
             "duration": duration,
-            "failures": [f"{test_case}.{test_method}" for test_case, _ in result.failures],
-            "errors": [f"{test_case}.{test_method}" for test_case, _ in result.errors]
+            "failures": [str(test_case) for test_case, _ in result.failures],
+            "error_details": [str(test_case) for test_case, _ in result.errors]
         }
         
         os.makedirs(os.path.dirname(report_path), exist_ok=True)
