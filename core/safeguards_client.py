@@ -143,6 +143,7 @@ class SafeguardsClient:
                     },
                     "interventions": {
                         "block_policy_violations": True,
+                        "block_content_moderation": True,
                         "alert_threshold": 0.7,
                         "warn_threshold": 0.5
                     },
@@ -174,34 +175,61 @@ class SafeguardsClient:
                 }
             }
     
+    # Severity carries no numeric weight in the pattern files themselves
+    # (only high/medium/low) - this is the confidence each maps to when a
+    # pattern has no explicit "confidence" field of its own.
+    SEVERITY_CONFIDENCE = {"high": 0.9, "medium": 0.6, "low": 0.3}
+
     def _load_patterns(self):
         """
-        Load patterns from pattern files
-        
+        Load patterns from pattern files.
+
+        Every file is {"patterns": [...]}; each entry is tagged with a
+        "category" matching the check each detect_* method filters on
+        (policy_violation / child_safety / content_moderation), and the
+        combined result is keyed by each pattern's own "id" - not merged
+        positionally, so patterns from different files can't collide or
+        silently overwrite each other.
+
         Returns:
-            dict: Combined patterns from all pattern files
+            dict: pattern id -> pattern data (with "category" and
+                  "confidence" filled in)
         """
         patterns = {}
-        
+
         patterns_path = self.config.get("patterns_path", "./patterns")
-        
-        # List of pattern files to load
+
+        # (file, category) - category is what detect_policy_violations /
+        # detect_child_safety_concerns / detect_content_moderation filter on.
         pattern_files = [
-            os.path.join(patterns_path, "policy_patterns.json"),
-            os.path.join(patterns_path, "child_safety_patterns.json"),
-            os.path.join(patterns_path, "content_moderation_patterns.json")
+            ("policy_patterns.json", "policy_violation"),
+            ("child_safety_patterns.json", "child_safety"),
+            ("content_moderation_patterns.json", "content_moderation"),
         ]
-        
-        for file_path in pattern_files:
+
+        for filename, category in pattern_files:
+            file_path = os.path.join(patterns_path, filename)
             try:
                 if os.path.exists(file_path):
                     with open(file_path, 'r') as f:
-                        file_patterns = json.load(f)
-                        patterns.update(file_patterns)
-                        logger.info(f"Loaded {len(file_patterns)} patterns from {file_path}")
+                        file_data = json.load(f)
+                    pattern_list = file_data.get("patterns", []) if isinstance(file_data, dict) else file_data
+                    for pattern_data in pattern_list:
+                        pattern_id = pattern_data.get("id")
+                        if not pattern_id:
+                            logger.warning(f"Skipping pattern with no id in {file_path}")
+                            continue
+                        pattern_data = dict(pattern_data)
+                        pattern_data["category"] = category
+                        if "confidence" not in pattern_data:
+                            pattern_data["confidence"] = self.SEVERITY_CONFIDENCE.get(
+                                pattern_data.get("severity", "medium"), 0.6
+                            )
+                        patterns[pattern_id] = pattern_data
+                    logger.info(f"Loaded {len(pattern_list)} patterns from {file_path}")
             except Exception as e:
                 logger.error(f"Error loading patterns from {file_path}: {e}")
-        
+
         return patterns
     
     def detect_policy_violations(self, text, threshold=None):
@@ -230,7 +258,7 @@ class SafeguardsClient:
             
         # Check for policy patterns
         for pattern_name, pattern_data in self.patterns.items():
-            if pattern_data.get("type") != "policy_violation":
+            if pattern_data.get("category") != "policy_violation":
                 continue
                 
             pattern = pattern_data.get("pattern", "")
@@ -278,7 +306,7 @@ class SafeguardsClient:
             
         # Check for child safety patterns
         for pattern_name, pattern_data in self.patterns.items():
-            if pattern_data.get("type") != "child_safety":
+            if pattern_data.get("category") != "child_safety":
                 continue
                 
             pattern = pattern_data.get("pattern", "")
@@ -297,6 +325,53 @@ class SafeguardsClient:
                     })
                     results["highest_score"] = max(results["highest_score"], confidence)
         
+        return results
+
+    def detect_content_moderation(self, text, threshold=None):
+        """
+        Detect content-moderation concerns (explicit content, graphic
+        violence, etc.) in text using pattern matching.
+
+        Args:
+            text: Text to analyze
+            threshold: Override the default threshold from config
+
+        Returns:
+            dict: Detection results with matched patterns and confidence scores
+        """
+        if threshold is None:
+            threshold = self.config.get("interventions", {}).get("alert_threshold", 0.7)
+
+        results = {
+            "concerns_detected": False,
+            "matches": [],
+            "highest_score": 0.0
+        }
+
+        # Skip if no text or safeguard disabled
+        if not text or not self.active_safeguards.get("content_moderation", True):
+            return results
+
+        # Check for content moderation patterns
+        for pattern_name, pattern_data in self.patterns.items():
+            if pattern_data.get("category") != "content_moderation":
+                continue
+
+            pattern = pattern_data.get("pattern", "")
+            if not pattern:
+                continue
+
+            if re.search(pattern, text, re.IGNORECASE):
+                confidence = pattern_data.get("confidence", 0.5)
+                if confidence >= threshold:
+                    results["concerns_detected"] = True
+                    results["matches"].append({
+                        "pattern": pattern_name,
+                        "confidence": confidence,
+                        "category": pattern_data.get("category", "unknown")
+                    })
+                    results["highest_score"] = max(results["highest_score"], confidence)
+
         return results
     
     def analyze_message(self, message):
@@ -333,6 +408,14 @@ class SafeguardsClient:
                 # Always block child safety concerns
                 results["should_block"] = True
                 logger.warning(f"Child safety concern detected with score {results['child_safety_concerns']['highest_score']}")
+
+        # Detect content moderation concerns
+        if self.active_safeguards.get("content_moderation", True):
+            results["content_moderation"] = self.detect_content_moderation(message)
+            if results["content_moderation"]["concerns_detected"]:
+                if self.config.get("interventions", {}).get("block_content_moderation", True):
+                    results["should_block"] = True
+                logger.warning(f"Content moderation concern detected with score {results['content_moderation']['highest_score']}")
         
         return results
     
