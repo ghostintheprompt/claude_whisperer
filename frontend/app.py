@@ -196,9 +196,15 @@ def get_context_around_word(text: str, word: str, window: int = 10) -> str:
     if word_pos == -1:
         return ""
     
+    # If the word is near a text boundary, one side of the window gets
+    # clamped - redistribute that lost budget to the other side so words
+    # near the start/end still get a full-size window, not a truncated one.
     start = max(0, word_pos - window)
-    end = min(len(text), word_pos + len(word) + window)
-    
+    start_deficit = window - (word_pos - start)
+    end = min(len(text), word_pos + len(word) + window + start_deficit)
+    end_deficit = (word_pos + len(word) + window + start_deficit) - end
+    start = max(0, start - end_deficit)
+
     return text[start:end]
 
 
