@@ -98,6 +98,7 @@ authorization, scope, logging, and whether the lesson comes back as protection.
 | `docs/RESEARCH_METHODOLOGY.md` | Current evaluation loop: target fixation, pass/fail definitions, exact logging, metrics, and evidence packages. |
 | `research/SAFEGUARD_EVALUATION_METHODOLOGY.md` | Defender companion to the taxonomy, now linked to the 2026 case lanes. |
 | `research/taxonomy/vulnerability_taxonomy.md` | Useful older taxonomy. Needs a 2026 refresh, but the bones are good. |
+| `inhouse_research/findings_*.json` | 23 original findings (alignment, cyber, welfare) derived from close-reading Anthropic's public Claude Mythos system card — attack-vector taxonomy, not raw source. Source material for the [ghostintheprompt.com Mythos article](https://ghostintheprompt.com/articles/anthropic-claude-mythos-system-card-prompt-map). |
 | `docs/PUNCHLIST.md` | Honest gap list. If it is not built yet, it lives there instead of pretending in the runtime story. |
 | `extension/` | Legacy browser-extension spike. Useful UI ideas, but not the recommended live path until refactored with local proxying, warning gates, model capture, and no browser-stored production API keys. |
 | `exploit_generator/`, `semantic_mirror/`, `multimodal/` | Legacy research archive. Keep for private forensics and mechanism study. Do not lead with it publicly until safe fixtures and guardrails exist. |
