@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="claude_whisperer.png" width="500" alt="Claude Whisperer artwork: an amber whisper enters a sculptural figure with teal circuitry">
+</p>
+
 # Claude Whisperer
 
 Red pressure. Blue memory. Frontier-model safeguards with a pulse.
