@@ -187,3 +187,16 @@ Keep the receipts. Leave protection behind.
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+
+## Safeguards client regression checks
+
+October 24, 2026: `tests/test_safeguards.py` runs eight client tests with synthetic pattern markers in temporary directories. They cover the current pattern-file schema, all three categories, explicit and severity-derived confidence, positive/negative detection, threshold and category controls, blocked requests, successful mocked responses, and conversation history. The HTTP session is mocked and real Requests transport is guarded against accidental use. No API key or live model is needed.
+
+Run from the repository with the `requests` dependency installed:
+
+```bash
+python3 tests/test_safeguards.py
+```
+
+Verified result: 9 tests discovered, 8 passed, 1 skipped. The skipped live end-to-end test is unimplemented; it previously contained only an unconditional assertion. This suite verifies client mechanics with synthetic fixtures, not real-world moderation accuracy or live provider integration. Application code and production pattern files were unchanged by this repair.
